@@ -1,0 +1,11 @@
+<!-- -*- mode: XML -*- -->
+
+<launch>
+
+  <remap from="low_level/ackermann_cmd_mux/input/teleop" to="/vesc/low_level/ackermann_cmd_mux/input/teleop"/>
+
+  <include file="$(find racecar_gazebo)/launch/racecar_walker.launch"/>
+
+  <include file="$(find racecar_control)/launch/teleop_joy.launch"/>
+
+</launch>
