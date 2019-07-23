@@ -197,7 +197,7 @@ void VescInterface::send(const VescPacket& packet)
   if (written != packet.frame().size()) {
     std::stringstream ss;
     ss << "Wrote " << written << " bytes, expected " << packet.frame().size() << ".";
-    throw SerialException(ss.str().c_str());
+   // throw SerialException(ss.str().c_str());
   }
 }
 

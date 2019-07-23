@@ -76,6 +76,9 @@ void VescToOdom::vescStateCallback(const vesc_msgs::VescStateStamped::ConstPtr& 
   /** @todo could probably do better propigating odometry, e.g. trapezoidal integration */
 
   // propigate odometry
+  if(fabs(current_speed)<=0.0015){
+    current_speed=0.0;
+  }
   double x_dot = current_speed * cos(yaw_);
   double y_dot = current_speed * sin(yaw_);
   x_ += x_dot * dt.toSec();
@@ -107,6 +110,7 @@ void VescToOdom::vescStateCallback(const vesc_msgs::VescStateStamped::ConstPtr& 
   odom->pose.covariance[35] = 0.4; ///< yaw
 
   // Velocity ("in the coordinate frame given by the child_frame_id")
+  
   odom->twist.twist.linear.x = current_speed;
   odom->twist.twist.linear.y = 0.0;
   odom->twist.twist.angular.z = current_angular_velocity;

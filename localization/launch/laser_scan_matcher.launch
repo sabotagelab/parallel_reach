@@ -9,7 +9,7 @@
   <param name="/use_sim_time" value="true"/>
   <param name="/stamped_vel" value="$(arg IS_TWISTSTAMPED)"/>
 
-  <node pkg="rosbag" type="play" name="play_rosbag" args="$(find localization)/bags/moore-loop.bag --delay=5 --clock "/>
+  <node pkg="rosbag" type="play" name="play_rosbag" args="$(find localization)/bags/moore-6-29-18.bag --delay=5 --clock "/>
 	
 <group if="$(arg use_rviz)">
     <node pkg="rviz" type="rviz" name="rviz"

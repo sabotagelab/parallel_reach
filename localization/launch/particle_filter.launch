@@ -7,15 +7,36 @@
 	<!-- Always need this when playing back files-->
   	<param name="/use_sim_time" value="true"/>
 
-  	<node pkg="rosbag" type="play" name="play_rosbag" args="$(find localization)/bags/moore-loop.bag --clock --delay 5" output="screen"/>
+  	<node pkg="rosbag" type="play" name="play_rosbag" args="$(find localization)/bags/levine-fast-extra-right.bag --clock --delay 5" output="screen"/>
   	
   	<!-- Run map server -->
-	<arg name="map_file" default="$(find localization)/maps/moore.yaml"/>
+	<arg name="map_file" default="$(find localization)/maps/levine.yaml"/>
 	<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
 
-  	<node pkg="tf2_ros" type="static_transform_publisher" name="base_footprint_to_laser" args="0 0 0 0 0 0 			base_footprint laser" output="screen"/>
+  	<node pkg="tf2_ros" type="static_transform_publisher" name="base_footprint_to_laser" args="0 0 0 0 0 0 base_footprint laser" output="screen"/>
 	
 	<node pkg="rviz" type="rviz" name="rviz" args="-d $(find localization)/rviz_cfg/particle_filter.rviz" output="screen"/>
+
+<!--	Publish initial pose to /initialpose topic so don't have to manually set in rviz each time  	-->
+	<node pkg="rostopic" type="rostopic" name="rostopic" args="pub initialpose geometry_msgs/PoseWithCovarianceStamped '
+	{
+		header: {
+			frame_id: map
+		}, 
+		pose: {
+			pose: {
+				position: {
+					x: 1.91, 
+					y: -0.17, 
+					z: 0.0}, 
+				orientation: {
+					x: 0.0,
+					y: 0.0,
+					z: -0.0469996587588,
+					w: 0.998894905421}
+			}
+		}
+	}'" />
 	
 	<arg name="scan_topic" default="/scan"/>
 	<arg name="odometry_topic" default="/vesc/odom"/>
