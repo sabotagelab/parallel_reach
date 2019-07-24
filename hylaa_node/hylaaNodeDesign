@@ -1,0 +1,7 @@
+generate dynamics matrix from equation (python script) - export as csv
+manaully create variables with bounds as json/yaml (bounds_mat and bounds_rhs)
+convert variable bounds using python to matrices - export as csv
+
+python script to create something describing unsafe condition
+
+approximately follow space station example (substitute csv files for .mat)

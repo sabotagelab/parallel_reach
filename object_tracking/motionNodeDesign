@@ -1,0 +1,16 @@
+two parts: where is the tag right now?, where will the tag be next?
+
+--- where is it now?
+get item locations from apriltags
+get matching depth from raw image data
+calculate metadata from depth
+use depth to find location in camera coords (x, y, z=0?)
+convert camera coords to world coords
+store item location with historical data
+
+--- where will it be?
+do linear regression on last [n] positions
+or do non-linear regression on last [n] positions (curvature calculations?)
+publish equations?
+publish estimate after t?
+
