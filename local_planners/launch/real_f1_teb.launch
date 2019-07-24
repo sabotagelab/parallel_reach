@@ -20,6 +20,6 @@
 	</node>
 
 	  <!--  **************** Visualisation ****************  -->
-	  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find local_planners)/cfg/rviz_navigation.rviz"/>
+	 <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find local_planners)/cfg/rviz_navigation.rviz"/>-->
 
 </launch>
