@@ -1,4 +1,4 @@
-from sympy import sin, cos, symbols
+from sympy import sin, cos, tan, symbols, Matrix
 
 #nonlinear dynamics represented with sympy
 class F1Dynamics:
@@ -6,24 +6,28 @@ class F1Dynamics:
         self.setupEquations()
     
     def setupEquations(self):
-        x, y, e, d, v = symbols("x, y, e, d, v, dt")
-        self.frontDynamics = [
+        L = .32
+        x, y, e, v, d, dt = symbols("x y e v d dt")
+        self.varSym = [x, y, e, v, d, dt]
+        self.frontDynamics = Matrix([
             x + dt * v * cos(e + d),
             y + dt * v * sin(e + d),
             e + dt * (v/L) * sin(d)
-        ]
+        ])
 
-        self.rearDynamics = [
+        self.rearDynamics = Matrix([
             x + dt * v * cos(e + d),
             y + dt * v * sin(e + d),
             e + dt * (v / L) * tan(d)
-        ]
+        ])
 
-    def frontStep(self, state, input, dt):
-        return self.frontDynamics.subs(state + input + dt)
+    def frontStep(self, caller, state, input, dt):
+        varSub = list(zip(self.varSym, state + input + [dt]))
+        return list(self.frontDynamics.subs(varSub).evalf())
     
-    def rearStep(self, state, input, dt):
-        return self.rearDynamics.subs(state + input + dt)
+    def rearStep(self, caller, state, input, dt):
+        varSub = list(zip(self.varSym, state + input + [dt]))
+        return list(self.rearDynamics.subs(varSub).evalf())
     
     def getDims(self):
         return {

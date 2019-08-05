@@ -13,7 +13,7 @@ from hylaa.stateset import StateSet
 from hylaa import lputil
 
 import model
-import dynamics
+from dynamics import F1Dynamics
 import simulator
 
 
@@ -25,17 +25,19 @@ def make_automaton(dt, total):
     #state = [x, y, yaw]
     initialState = [0, 0, 0]
 
-    nlDynamics = dynamics.F1Dynamics()
-    stepFunc = bind(nlDynamics, nlDynamics.frontStep)
-    inputFunc = lambda t : [ 3.14/6, 1]
+    nlDynamics = F1Dynamics()
+    stepFunc = partial(nlDynamics.frontStep, nlDynamics)
+    inputFunc = lambda t : [ 1, 3.14/4]
 
 
     sim = simulator.ModelSimulator(dt, total, initialState, stepFunc, inputFunc)
-    stateEstimates = simulator.simulate()
+    predictions = sim.simulate()
 
     modeLabelIncrement = 0
-    for state in stateEstimates:
-        dynamics = model.getTimeAugmentMatrices(*state)
+    lastMode = None
+    for state, inputs in predictions:
+        print(state)
+        dynamics = model.getTimeAugmentMatrices(state, inputs)
 
         mode = ha.new_mode('m{}'.format(modeLabelIncrement))
 
@@ -50,10 +52,12 @@ def make_automaton(dt, total):
 
         if lastMode:        
             t = ha.new_transition(lastMode, mode)
-            guard_mat = [
-                
-            ]
+            guard_mat = [ [0.0, 0.0, 0.0, -1.0] ]
+            guard_rhs = [ -state[-1] ] #time from last state is bound
+            t.set_guard(guard_mat, guard_rhs)
 
+        lastMode = mode
+        modeLabelIncrement += 1
 
     #TODO error checking
     #error = ha.new_mode('error')
@@ -87,17 +91,16 @@ def make_init(ha):
 
     return init_list
 
-def make_settings():
+def make_settings(dt, total):
     'make the reachability settings object'
 
     # see hylaa.settings for a list of reachability settings
-    settings = HylaaSettings(0.1, 10.0) # step size = 0.1, time bound 20.0
+    settings = HylaaSettings(dt, total) # step size = 0.1, time bound 20.0
     settings.plot.plot_mode = PlotSettings.PLOT_IMAGE
     settings.stdout = HylaaSettings.STDOUT_VERBOSE
     settings.plot.filename = "f1_kinematics.png"
 
 
-    outputs = dynamics["C"]
     settings.plot.xdim_dir = 0 #outputs[0][0] # x dimension will bethe car's x position 
     settings.plot.ydim_dir = 1 #outputs[1][1] # y dimension will be the car's y position 
     settings.plot.label.title = "Linearized Kinematics"
@@ -109,11 +112,14 @@ def make_settings():
 def run_hylaa():
     'main entry point'
 
-    ha = make_automaton(dynamics)
+    dt = .1
+    total = 1
+
+    ha = make_automaton(dt, total)
 
     init_states = make_init(ha)
 
-    settings = make_settings(dynamics)
+    settings = make_settings(dt, total)
 
     Core(ha, settings).run(init_states)
 

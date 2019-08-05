@@ -13,7 +13,7 @@ p0 = 0  #yaw
 
 # ---------- INPUT (U) -----------
 #variables
-v, d = symbols('v, d')
+v, d = symbols('v d')
 inputVars = [v, d]
 
 vMax = 5
@@ -43,7 +43,7 @@ v0 = 0  #velocity
 # ---------- CONSTANTS -----------
 #variables
 L = symbols('L')
-constantSym = ['L']
+constantSym = [L]
 
 #values
 L0 = .32 #wheelbase in m
@@ -79,9 +79,10 @@ usingDynamics = frontJacobian
 
 #3 X 2 matrix that does something
 C = [
-    [ 1, 0, 0 ],
-    [ 0, 1, 0 ],
-    [ 0, 0, 1 ]
+    [ 1, 0, 0, 0 ],
+    [ 0, 1, 0, 0 ],
+    [ 0, 0, 1, 0 ],
+    [ 0, 0, 0, 1 ]
 ]
 def getMatrices(state, inputs):
     current = list(zip(stateVars + inputVars + constantSym, state + inputs + constants))
@@ -95,12 +96,13 @@ def getMatrices(state, inputs):
     }
 
 def getTimeAugmentMatrices(state, inputs):
+    state = state[:-1]
     mat = getMatrices(state, inputs)
     mat["A"] = mat["A"].row_insert(len(state), Matrix([[0] * len(state)])).col_insert(len(state), Matrix([0] * len(state) + [1]))
     mat["B"] = mat["B"].row_insert(len(state), Matrix([[0] * len(inputs)]))
     return mat
 
-pprint(getTimeAugmentMatrices([0, 0, 0], [0, 1]))
+#pprint(getTimeAugmentMatrices([0, 0, 0], [0, 1]))
 
 #pprint(getMatrices([0, 0, 0], [1, 3.14/8]))
 #print("\nREAR JACOBIAN:")
