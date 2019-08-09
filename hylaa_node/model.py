@@ -16,16 +16,20 @@ p0 = 0  #yaw
 v, d = symbols('v d')
 inputVars = [v, d]
 
-vMax = 5
-vMin = 0
-dMax = 3.14/2
-dMin = -3.14/2
+vMax = 1.2
+vMin = .8
+dMax = 3.14/45
+dMin = -3.14/45
 #bound
 bounds_mat = [
     [1, 0],[-1, 0],
     [0, 1],[0, -1]
 ]
 
+#bounds_rhs = [
+    #dMax, -dMin,
+    #vMax, -vMin
+#]
 bounds_rhs = [
     vMax, -vMin,
     dMax, -dMin

@@ -17,17 +17,16 @@ from dynamics import F1Dynamics
 import simulator
 
 
-def make_automaton(dt, total):
+def make_automaton(dt, total, initialState):
     'make the hybrid automaton'
 
     ha = HybridAutomaton()
 
-    #state = [x, y, yaw]
-    initialState = [0, 0, 0]
+
 
     nlDynamics = F1Dynamics()
     stepFunc = partial(nlDynamics.frontStep, nlDynamics)
-    inputFunc = lambda t : [ 1, 3.14/4]
+    inputFunc = lambda t : [ 1, 0]
 
 
     sim = simulator.ModelSimulator(dt, total, initialState, stepFunc, inputFunc)
@@ -49,6 +48,19 @@ def make_automaton(dt, total):
         bounds_mat = dynamics["bounds_mat"]
         bounds_rhs = dynamics["bounds_rhs"]
         mode.set_inputs(b_matrix, bounds_mat, bounds_rhs)
+
+        invariant_mat = [
+            [0, 0, 0, 0], #x
+            [0, 0, 0, 0], 
+            [0, 0, 0, 0], #y
+            [0, 0, 0, 0], 
+            [0, 0, 0, 0], #e
+            [0, 0, 0, 0],
+            [0, 0, 0, -1],
+        ],
+        invariant_rhs = [
+            0, 0, 0, 0, 0, 0, -state[-1]
+        ]
 
         if lastMode:        
             t = ha.new_transition(lastMode, mode)
@@ -77,14 +89,18 @@ def make_automaton(dt, total):
 
     return ha
 
-def make_init(ha):
+def make_init(ha, initialState):
     'make the initial states'
 
-    # initial set has every variable as [-0.0001, 0.0001]
+    # initial set has every variable as [-0.1, 0.1]
     mode = ha.modes['m0']
 
     dims = mode.a_csr.shape[0]
     init_box = dims * [[-0.1, 0.1]]
+    print(init_box)
+    for s in range(len(init_box)):
+        init_box[s] = [bound + initialState[s] for bound in init_box[s]]
+
     init_lpi = lputil.from_box(init_box, mode)
     
     init_list = [StateSet(init_lpi, mode)]
@@ -96,9 +112,11 @@ def make_settings(dt, total):
 
     # see hylaa.settings for a list of reachability settings
     settings = HylaaSettings(dt, total) # step size = 0.1, time bound 20.0
-    settings.plot.plot_mode = PlotSettings.PLOT_IMAGE
+    settings.plot.plot_mode = PlotSettings.PLOT_VIDEO
     settings.stdout = HylaaSettings.STDOUT_VERBOSE
-    settings.plot.filename = "f1_kinematics.png"
+    #settings.process_urgent_guards = True
+    settings.optimize_tt_transitions = True
+    #settings.plot.filename = "f1_kinematics%01.png"
 
 
     settings.plot.xdim_dir = 0 #outputs[0][0] # x dimension will bethe car's x position 
@@ -114,10 +132,12 @@ def run_hylaa():
 
     dt = .1
     total = 1
+    #state = [x, y, yaw]
+    initialState = [0, 0, 3.14/4]
 
-    ha = make_automaton(dt, total)
+    ha = make_automaton(dt, total, initialState)
 
-    init_states = make_init(ha)
+    init_states = make_init(ha, initialState+[0])
 
     settings = make_settings(dt, total)
 
