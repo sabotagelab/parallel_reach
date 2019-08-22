@@ -18,8 +18,8 @@ inputVars = [v, d]
 
 vMax = 1.2
 vMin = .8
-dMax = 3.14/45
-dMin = -3.14/45
+dMax = 3.14/4 + .2
+dMin = 3.14/4 - .2
 #bound
 bounds_mat = [
     [1, 0],[-1, 0],
@@ -102,8 +102,26 @@ def getMatrices(state, inputs):
 def getTimeAugmentMatrices(state, inputs):
     state = state[:-1]
     mat = getMatrices(state, inputs)
-    mat["A"] = mat["A"].row_insert(len(state), Matrix([[0] * len(state)])).col_insert(len(state), Matrix([0] * len(state) + [1]))
-    mat["B"] = mat["B"].row_insert(len(state), Matrix([[0] * len(inputs)]))
+    a = mat["A"]
+    arow = lambda : a.shape[0]
+    acol = lambda : a.shape[1]
+    b = mat["B"]
+    brow = lambda : b.shape[0]
+    bcol = lambda : b.shape[1]
+
+    #insert two columns of 0's
+    a = a.col_insert(acol(), Matrix([0] * arow()))
+    a = a.col_insert(acol(), Matrix([0] * arow()))
+    #insert row with trailing one (time) and of 0's (time augment)
+    a = a.row_insert(arow(), Matrix([[0] * (acol()-1) + [1]]))
+    a = a.row_insert(arow(), Matrix([[0] * acol()]))
+    mat["A"] = a
+
+    #augment B with rows of 0's
+    b = b.row_insert(brow(), Matrix([[0] * bcol()]))
+    b = b.row_insert(brow(), Matrix([[0] * bcol()]))
+    mat["B"] = b
+
     return mat
 
 #pprint(getTimeAugmentMatrices([0, 0, 0], [0, 1]))

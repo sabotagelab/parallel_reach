@@ -16,7 +16,7 @@ def exampleInputFunc(time):
 
 class ModelSimulator():
 
-    def __init__(self, dt, totalTime, initialState, stepFunc=None, inputFunc=None):
+    def __init__(self, dt, totalTime, initialState, stepFunc=None, inputFunc=None, headless=False):
         self.dt = dt
         self.totalTime = totalTime
         assert(dt < totalTime, "dt >= total time - undefined configuration")
@@ -24,6 +24,8 @@ class ModelSimulator():
         self.stepFunc = stepFunc
         self.inputFunc = inputFunc
         self.currentState = initialState
+
+        self.verbose = not headless
     
     def simulate(self, stepFunc=None, inputFunc=None):
         if stepFunc:
@@ -37,11 +39,14 @@ class ModelSimulator():
         time = 0
         steps = int(self.totalTime / self.dt)
 
-        print("Simulating {} steps with dt={}".format(steps, self.dt))
+        if self.verbose:
+            print("Simulating {} steps with dt={}".format(steps, self.dt))
 
         #this will store all the generated states
         self.stateList = [(self.currentState + [time], self.inputFunc(time))]
-        print("Initial state at time {}: \n\t{}".format(time, self.stateList[-1]))
+
+        if self.verbose:
+            print("Initial state at time {}: \n\t{}".format(time, self.stateList[-1]))
 
         for step in range(steps):
             time += self.dt
@@ -53,7 +58,8 @@ class ModelSimulator():
                 inputs
             ))
             
-            print("Step {} at time {}: \n\t{}".format(step+1, time, self.stateList[-1]))
+            if self.verbose:
+                print("Step {} at time {}: \n\t{}".format(step+1, time, self.stateList[-1]))
         
         return self.stateList
 
