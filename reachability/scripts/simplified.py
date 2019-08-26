@@ -1,5 +1,4 @@
-#simplified to understand how this works.
-# State Variables are: 
+#simplified to understand how hylaa TTT work.
 from functools import partial
 from contextlib import redirect_stdout
 

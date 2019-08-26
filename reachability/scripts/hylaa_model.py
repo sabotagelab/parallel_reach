@@ -1,17 +1,22 @@
 # This is a 3 dimensional model with 2 inputs
 # It represents the kinematics of the f110 car
+# the state is augented with two rows where the first augment is time and the second is an accumulation buffer
+# so the final dimensionality is 5
 
 # State Variables are: 
-from functools import partial
 
+# library imports
+from functools import partial
 from scipy.io import loadmat
 
+#hylaa imports
 from hylaa.hybrid_automaton import HybridAutomaton
 from hylaa.settings import HylaaSettings, PlotSettings, LabelSettings
 from hylaa.core import Core
 from hylaa.stateset import StateSet
 from hylaa import lputil
 
+#local imports
 import model
 from dynamics import F1Dynamics
 import simulator
