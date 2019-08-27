@@ -29,14 +29,13 @@ teleop:
       -
         axis: 1
         target: drive.speed
-        scale: -2.5                   # joystick will command plus or minus 2 meters / second
+        scale: 2.0               # joystick will command plus or minus 2 meters / second
         offset: 0.0
       -
         axis: 2
         target: drive.steering_angle
-        scale: 0.34                  # joystick will command plus or minus ~20 degrees steering angle
-        offset: 0.0
-
+        scale: 0.34  #0.34                # joystick will command plus or minus ~20 degrees steering angle
+        offset: 0.0        #-0.0285
   # Enable autonomous control by pressing right bumper
   # This switch causes the joy_teleop to stop sending messages to input/teleop
   # And send messages to /dev/null (an unused ROS topic)

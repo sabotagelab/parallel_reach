@@ -8,7 +8,7 @@
   <include file="$(find racecar)/launch/teleop.launch"/>
 
   <!-- Run map server -->
-	<arg name="map_file" default="$(find localization)/maps/levine-and-moore.yaml"/>
+	<arg name="map_file" default="$(find localization)/maps/complete_dearborn_hall.yaml"/>
 	<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
 
 <!--  	<node pkg="tf2_ros" type="static_transform_publisher" name="base_footprint_to_laser" args="0 0 0 0 0 0 			base_footprint laser" output="screen"/>-->
@@ -39,7 +39,7 @@
 	<arg name="scan_topic" default="/scan"/>
 	<arg name="odometry_topic" default="/vesc/odom"/>
 	<arg name="angle_step" default="18"/>
-	<arg name="max_particles" default="4000"/>
+	<arg name="max_particles" default="3000"/>
 	<arg name="squash_factor" default="2.2"/>
 	<arg name="viz" default="1"/>
 	
@@ -56,7 +56,7 @@
 		<param name="squash_factor" value="$(arg squash_factor)"/>
 		<param name="theta_discretization" value="112"/>
 		<!-- max sensor range in meters -->
-		<param name="max_range" value="10"/> 
+		<param name="max_range" value="5"/> 
 		<param name="viz" value="$(arg viz)"/> 
 		<param name="fine_timing" value="0"/> 
 		<param name="publish_odom" value="1"/> 
@@ -66,7 +66,7 @@
 		<param name="z_max" value="0.07"/> 
 		<param name="z_rand" value="0.12"/> 
 		<param name="z_hit" value="0.75"/> 
-		<param name="sigma_hit" value="8.0"/> 
+		<param name="sigma_hit" value="4.8"/>  <!--8.0-->
 
 		<!-- motion model dispersion constant, this could be improved. Large values will spread out
 		     the particle distribution more. Too much and it is overly computational to represent the
@@ -75,7 +75,7 @@
 		-->
 		<param name="motion_dispersion_x" value="0.05"/> 
 		<param name="motion_dispersion_y" value="0.025"/> 
-		<param name="motion_dispersion_theta" value="0.25"/> 
+		<param name="motion_dispersion_theta" value="0.35"/> 
 
 		<!-- this option switches between different sensor model variants, high values are more
 		     optimized. range_variant 3 does not work for rmgpu, but variant 2 is very good. variant

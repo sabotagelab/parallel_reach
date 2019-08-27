@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<launch>        
+        <!--  ************** Global Parameters ***************  -->
+        <param name="/use_sim_time" value="true"/>
+
+        <!-- Uses the true x, y coordinates from Gazebo and maps it to /pf/viz/inferred_pose.-->
+  	<include file="$(find racecar_gazebo)/launch/racecar.launch">
+            <arg name="world_name" value="track_empty"/>
+  	</include>
+  
+  	<!-- Run map server -->
+	<arg name="map_file" default="$(find local_planners)/maps/kelley_third_floor.yaml"/>
+	<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+        <node pkg="local_planners" name="remap_gazebo_pose_node" type="remap_gazebo_pose.py" output="screen" />
+  	<node pkg="local_planners" name="sim_connector_node" type="sim_connector.py" output="screen"/>
+
+        <!--  ************** Navigation ***************  -->
+	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+  	  	<rosparam file="$(find local_planners)/cfg/carlike/costmap_common_params.yaml" command="load" ns="global_costmap" />
+  	 	<rosparam file="$(find local_planners)/cfg/carlike/costmap_common_params.yaml" command="load" ns="local_costmap" />
+  		<rosparam file="$(find local_planners)/cfg/carlike/local_costmap_params.yaml" command="load" />
+  		<rosparam file="$(find local_planners)/cfg/carlike/global_costmap_params.yaml" command="load" />
+  		<rosparam file="$(find local_planners)/cfg/carlike/teb_local_planner_params.yaml" command="load" />
+
+		<param name="base_global_planner" value="global_planner/GlobalPlanner" />
+		<param name="planner_frequency" value="1.0" />
+		<param name="planner_patience" value="5.0" />
+
+		<param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
+		<param name="controller_frequency" value="5.0" />
+		<param name="controller_patience" value="15.0" />
+
+                <param name="clearing_rotation_allowed" value="false" /> <!-- Our carlike robot is not able to rotate in place -->
+	</node>
+
+	<!--  **************** Visualisation ****************  -->
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find local_planners)/cfg/rviz_navigation.rviz"/>
+
+</launch>
