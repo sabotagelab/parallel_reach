@@ -2,8 +2,11 @@ import rospy
 import yaml
 
 class Reachability:
-    def __init__(self):
+    def __init__(self, configFile):
         rospy.init_node('reachability_node', anonymouse=True)
+
+        with open(configFile, "r")
+        self.config = 
 
         #subscribe to mpc input predictions
         #subscribe to current state 
