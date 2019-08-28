@@ -23,7 +23,10 @@ def cmd_callback(data):
   
   v = data.linear.x
   steering = convert_trans_rot_vel_to_steering_angle(v, data.angular.z, wheelbase)
-  
+  if v<0.35 and v>0.05:
+  	v=0.35
+  elif v>-0.35 and v<-0.05:
+  	v=-0.35
   msg = AckermannDriveStamped()
   msg.header.stamp = rospy.Time.now()
   msg.header.frame_id = frame_id

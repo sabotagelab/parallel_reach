@@ -5,7 +5,7 @@
     <!--  ****** MPC Node ******  -->
     <node name="MPC_Kinematic_node" pkg="mpc_racecar" type="MPC_Kinematic_node" output="screen" >
         <rosparam file="$(find mpc_racecar)/params/mpc/mpc_params.yaml" command="load" />
-        <param name="waypoints_filepath" value="$(find mpc_racecar)/waypoints/kelley_third_floor.csv"/>
+        <param name="waypoints_filepath" value="$(find mpc_racecar)/waypoints/dearborne1.csv"/>
     </node>
 
 </launch>

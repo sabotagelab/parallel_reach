@@ -83,20 +83,20 @@ private:
 
 MPCKinematicNode::MPCKinematicNode(ros::NodeHandle nh, ros::NodeHandle private_nh) {
 
-    private_nh.param<std::string>("waypoints_filepath",waypoint_filename_," ");
+    private_nh.param<std::string>("waypoints_filepath",waypoint_filename_,"/home/houssam/racing/f110_ws/src/ppcm/mpc_racecar/waypoints/kelley_third_floor.csv");
     //Parameter for MPC solver
     private_nh.param("mpc_steps", mpc_params_.mpc_steps_, 20);
     private_nh.param("mpc_ref_cte", mpc_params_.ref_cte_, 0.0);
     private_nh.param("mpc_ref_epsi", mpc_params_.ref_epsi_, 0.0);
-    private_nh.param("mpc_ref_vel", mpc_params_.ref_vel_, 1.5);
-    private_nh.param("mpc_w_cte", mpc_params_.w_cte_, 100.0);
-    private_nh.param("mpc_w_epsi", mpc_params_.w_epsi_, 100.0);
-    private_nh.param("mpc_w_vel", mpc_params_.w_vel_, 100.0);
+    private_nh.param("mpc_ref_vel", mpc_params_.ref_vel_, 1.25);
+    private_nh.param("mpc_w_cte", mpc_params_.w_cte_, 2500.0);
+    private_nh.param("mpc_w_epsi", mpc_params_.w_epsi_, 2000.0);
+    private_nh.param("mpc_w_vel", mpc_params_.w_vel_, 300.0);
     private_nh.param("mpc_w_delta", mpc_params_.w_delta_, 100.0);
     private_nh.param("mpc_w_accel", mpc_params_.w_accel_, 50.0);
     private_nh.param("mpc_w_turn", mpc_params_.w_turn_, 50.0);
-    private_nh.param("mpc_w_delta_d", mpc_params_.w_delta_d_, 0.0);
-    private_nh.param("mpc_w_accel_d", mpc_params_.w_accel_d_, 0.0);
+    private_nh.param("mpc_w_delta_d", mpc_params_.w_delta_d_, 200.0);
+    private_nh.param("mpc_w_accel_d", mpc_params_.w_accel_d_, 40.0);
     private_nh.param("mpc_max_steering", mpc_params_.max_steering_, 0.523); // Maximal steering radian (~30 deg)
     private_nh.param("mpc_max_throttle", mpc_params_.max_throttle_, 1.0); // Maximal throttle accel
     private_nh.param("mpc_bound_value", mpc_params_.bound_value_, 1.0e3); // Bound value for other variables
@@ -106,13 +106,13 @@ MPCKinematicNode::MPCKinematicNode(ros::NodeHandle nh, ros::NodeHandle private_n
     private_nh.param("pub_twist_cmd", _pub_twist_flag, true);
     private_nh.param("debug_info", _debug_info, false);
     private_nh.param("delay_mode", _delay_mode, true);
-    private_nh.param("max_speed", _max_speed, 2.0); // unit: m/s
+    private_nh.param("max_speed", _max_speed, 1.5); // unit: m/s
     private_nh.param("waypoints_dist", _waypointsDist, -1.0); // unit: m
-    private_nh.param("path_length", _pathLength, 8.0); // unit: m
-    private_nh.param("waypoints_fov", _waypoint_fov, 1.57); // unit: radians
-    private_nh.param("goal_radius", _goalRadius, 0.5); // unit: m
+    private_nh.param("path_length", _pathLength, 3.0); // unit: m
+    private_nh.param("waypoints_fov", _waypoint_fov, 2.09); // unit: radians
+    private_nh.param("goal_radius", _goalRadius, 0.2); // unit: m
     private_nh.param("controller_freq", _controller_freq, 10);
-    private_nh.param("vehicle_Lf", _Lf, 0.25); // distance between the front of the vehicle and its center of gravity
+    private_nh.param("vehicle_Lf", _Lf, 0.325); // distance between the front of the vehicle and its center of gravity
 
     _dt = double(1.0 / _controller_freq); // time step duration dt in s
     mpc_params_.Lf_ = _Lf;
@@ -129,8 +129,8 @@ MPCKinematicNode::MPCKinematicNode(ros::NodeHandle nh, ros::NodeHandle private_n
     private_nh.param<std::string>("map_frame", _map_frame, "map");
     private_nh.param<std::string>("odom_frame", _odom_frame, "odom");
     private_nh.param<std::string>("car_frame", _car_frame, "base_link");
-    private_nh.param<std::string>("cmd_vel_topic", cmd_vel_topic, "/ackermann_cmd");
-    private_nh.param<std::string>("localized_pose_topic", localized_pose_topic, "/amcl_pose");
+    private_nh.param<std::string>("cmd_vel_topic", cmd_vel_topic, "/vesc/high_level/ackermann_cmd_mux/input/nav_0");
+    private_nh.param<std::string>("localized_pose_topic", localized_pose_topic, "/pf/viz/inferred_pose");
 
     //Display the parameters
     cout << "\n===== Parameters =====" << endl;

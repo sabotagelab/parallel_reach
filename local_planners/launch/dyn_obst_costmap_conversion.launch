@@ -6,12 +6,12 @@
   <param name="/use_sim_time" value="true"/>
 
   <!--  ************** Stage Simulator *****************  -->
-  <node pkg="stage_ros" type="stageros" name="stageros" args="$(find teb_local_planner_tutorials)/stage/$(arg map_file).world">
+  <node pkg="stage_ros" type="stageros" name="stageros" args="$(find local_planners)/stage/$(arg map_file).world">
     <remap from="/robot_0/base_scan" to="/robot_0/scan"/>
   </node>
 
   <!--  ******************* Maps ***********************  -->
-  <node name="map_server" pkg="map_server" type="map_server" args="$(find teb_local_planner_tutorials)/maps/$(arg map_file).yaml" output="screen">
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find local_planners)/maps/$(arg map_file).yaml" output="screen">
     <param name="frame_id" value="map"/>
   </node>
 
@@ -26,13 +26,13 @@
     <rosparam command="delete" ns="move_base" />
 
     <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-      <rosparam file="$(find teb_local_planner_tutorials)/cfg/diff_drive/costmap_common_params.yaml" command="load" ns="global_costmap" />
-      <rosparam file="$(find teb_local_planner_tutorials)/cfg/diff_drive/costmap_common_params.yaml" command="load" ns="local_costmap" />
-      <rosparam file="$(find teb_local_planner_tutorials)/cfg/diff_drive/dyn_obst/local_costmap_params.yaml" command="load" />
-      <rosparam file="$(find teb_local_planner_tutorials)/cfg/diff_drive/dyn_obst/global_costmap_params.yaml" command="load" />
-      <rosparam file="$(find teb_local_planner_tutorials)/cfg/diff_drive/dyn_obst/teb_local_planner_params.yaml" command="load" />
+      <rosparam file="$(find local_planners)/cfg/diff_drive/costmap_common_params.yaml" command="load" ns="global_costmap" />
+      <rosparam file="$(find local_planners)/cfg/diff_drive/costmap_common_params.yaml" command="load" ns="local_costmap" />
+      <rosparam file="$(find local_planners)/cfg/diff_drive/dyn_obst/local_costmap_params.yaml" command="load" />
+      <rosparam file="$(find local_planners)/cfg/diff_drive/dyn_obst/global_costmap_params.yaml" command="load" />
+      <rosparam file="$(find local_planners)/cfg/diff_drive/dyn_obst/teb_local_planner_params.yaml" command="load" />
       <!-- Here we load our costmap conversion settings -->
-      <!--rosparam file="$(find teb_local_planner_tutorials)/cfg/diff_drive/dyn_obst/costmap_converter_params.yaml" command="load" /-->
+      <!--rosparam file="$(find local_planners)/cfg/diff_drive/dyn_obst/costmap_converter_params.yaml" command="load" /-->
 
       <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
       <param name="controller_frequency" value="5.0" />
@@ -44,10 +44,10 @@
   <!-- ******************* Obstacles ******************* -->
   <group ns="robot_1">
     <param name="tf_prefix" value="robot_1"/>
-    <node name="Mover" pkg="teb_local_planner_tutorials" type="move_obstacle.py" output="screen"/>
+    <node name="Mover" pkg="local_planners" type="move_obstacle.py" output="screen"/>
       <param name="pos_ub" value="2.0" />
       <param name="pos_lb" value="-2.0" />
-    <node name="visualize_obstacle_velocity_profile" pkg="teb_local_planner_tutorials" type="visualize_obstacle_velocity_profile.py" output="screen" />
+    <node name="visualize_obstacle_velocity_profile" pkg="local_planners" type="visualize_obstacle_velocity_profile.py" output="screen" />
   </group>
 
   <node name="standalone_converter" pkg="costmap_converter" type="standalone_converter" output="screen">
@@ -57,7 +57,7 @@
   </node>
 
   <!--  **************** Visualisation ****************  -->
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find teb_local_planner_tutorials)/cfg/rviz_navigation_cc.rviz">
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find local_planners)/cfg/rviz_navigation_cc.rviz">
     <remap from="/move_base_simple/goal" to="/robot_0/move_base_simple/goal" />
   </node>
 
