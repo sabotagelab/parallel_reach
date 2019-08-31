@@ -10,6 +10,7 @@ from geometry_msgs.msg import Pose, PoseStamped, Point, Quaternion, Twist
 from ackermann_msgs.msg import AckermannDriveStamped
 from nav_msgs.msg import Path, Odometry
 from std_msgs.msg import Duration, Header
+from osuf1_common.msg import MPC_metadata, StampedFloat2d
 from tf.transformations import quaternion_from_euler, euler_from_quaternion
 
 class MPC:
@@ -212,7 +213,7 @@ class MPC:
         # Shift trajectory and control solution to initialize the next step
         self.X0 = vertcat(self.X0[1:, :], self.X0[self.X0.size1() - 1, :])
         self.u0 = vertcat(u[1:, :], u[u.size1() - 1, :])
-        return con_first, trajectory
+        return con_first, trajectory, u
 
 
 ########################################################################################################################
@@ -281,8 +282,10 @@ class MPCKinematicNode:
         #Publishers
         self.ackermann_pub = rospy.Publisher(cmd_vel_topic, AckermannDriveStamped, queue_size=1)
         self.mpc_trajectory_pub = rospy.Publisher('/mpc_trajectory', Path, queue_size=1)
+        self.mpc_inputs_pub = rospy.Publisher('/mpc_inputs', Inputs, queue_size=1)
         self.mpc_reference_pub = rospy.Publisher('/mpc_reference', Path, queue_size=1)
         self.mpc_coeffs_path_pub = rospy.Publisher('/mpc_coeffs_path', Path, queue_size=1)
+        self.mpc_metadata_pub = rospy.Publisher('/mpc_metadata', MPC_metadata, queue_size=1)
         #Subscribers
         rospy.Subscriber(pose_topic, PoseStamped, self.pf_pose_callback, queue_size=1)
         rospy.Subscriber(goal_topic, PoseStamped, self.goalCB, queue_size=1)
@@ -310,7 +313,7 @@ class MPCKinematicNode:
                 tempPose.header = self.local_path.header
                 tempPose.pose.position.x = self.total_path.poses[i].pose.position.x
                 tempPose.pose.position.y = self.total_path.poses[i].pose.position.y
-                tempPose.pose.orientation.w = 1.0
+                tempPose.pose.orientation.w = self.heading.trajectory[i,2]
                 self.local_path.poses.append(tempPose)
 
     def heading(self, yaw):
@@ -432,7 +435,8 @@ class MPCKinematicNode:
 
             # Solve MPC Problem
             mpc_time=time.time()
-            first_control,trajectory = self.mpc.solve(current_state)
+            first_control, trajectory, all_controls = self.mpc.solve(current_state)
+
             print("Control loop time mpc=:", time.time() - mpc_time)
 
             # MPC result (all described in car frame)
@@ -472,6 +476,19 @@ class MPCKinematicNode:
             self.t_plot.append(self.current_time)
             self.v_plot.append(speed)
             self.steering_plot.append(np.rad2deg(steering))
+
+            #publish predicted inputs for whole time horizon
+            all_inputs_msg = StampedFloat2d()
+            all_inputs_msg.header = self.create_header(self.car_frame)
+            all_inputs_msg.data = all_inputs
+
+
+            #publish metadata about the MPC controller runtime
+            metadata_msg = MPC_metadata()
+            metadata_msg.header = self.create_header(self.car_frame)
+            metadata_msg.dt = dt
+
+
 
         else:
             steering = 0.0
