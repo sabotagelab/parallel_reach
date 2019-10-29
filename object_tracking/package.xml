@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>mpc_racecar</name>
+  <name>object_tracking</name>
   <version>0.0.0</version>
-  <description>The mpc_racecar package</description>
+  <description>The object tracking package which estimated future object positions of tracked objects</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
-  <maintainer email="nirajbasnet2008@gmail.com">Niraj Basnet</maintainer>
+  <maintainer email="ncjewell@gmail.com">Nathan Jewell</maintainer>
 
 
   <!-- One license tag required, multiple allowed, one license per tag -->

@@ -28,7 +28,8 @@ class TrackingNode {
         double* evaluatePrediction_polynomial(double * prediction, double t);
 
     private:
-        ros::Subscriber
+        ros::Subscriber boundingBox_sub, depth_sub;
+        ros::publisher prediction_pub, position_sub;
         tf::TransformListener tf_listener;
 
         double* boundingBoxCB(const AprilTag::msg::ConstPtr &bbMsg);

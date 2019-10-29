@@ -8,6 +8,9 @@
 # library imports
 from functools import partial
 from scipy.io import loadmat
+from matplotlib.patches import Circle, Ellipse
+from matplotlib import collections
+from matplotlib import pyplot as plt
 
 #hylaa imports
 from hylaa.hybrid_automaton import HybridAutomaton
@@ -19,10 +22,11 @@ from hylaa import lputil
 #local imports
 import model
 from dynamics import F1Dynamics
+from lin_dynamics import F1Dynamics_Linear
 import simulator
 
 
-def make_automaton(dt, total, initialState, headless):
+def make_automaton(dt, total, initialState, inputFunc, headless):
     'make the hybrid automaton'
 
     ha = HybridAutomaton()
@@ -31,7 +35,6 @@ def make_automaton(dt, total, initialState, headless):
 
     nlDynamics = F1Dynamics()
     stepFunc = partial(nlDynamics.frontStep, nlDynamics)
-    inputFunc = lambda t : [ 1, 3.14/4]
 
 
     sim = simulator.ModelSimulator(dt, total, initialState, stepFunc, inputFunc, headless)
@@ -39,10 +42,16 @@ def make_automaton(dt, total, initialState, headless):
 
     modeLabelIncrement = 0
     lastMode = None
+    prevState = initialState
+    prevInputs = inputFunc(0)
     for state, inputs in predictions:
         #print(state)
-
-        dynamics = model.getTimeAugmentMatrices(state, inputs)
+        print(state)
+        print(inputs)
+        e0d0 = [prevState[2], prevInputs[1]]
+        dynamics = model.getTimeAugmentMatrices(state, inputs + e0d0)
+        prevState = state
+        prevInputs = inputs
 
         mode = ha.new_mode('m{}'.format(modeLabelIncrement))
 
@@ -53,16 +62,17 @@ def make_automaton(dt, total, initialState, headless):
 
         bounds_mat = dynamics["bounds_mat"]
         bounds_rhs = dynamics["bounds_rhs"]
-        mode.set_inputs(b_matrix, bounds_mat, bounds_rhs)
+        mode.set_inputs(b_matrix, bounds_mat, bounds_rhs, allow_constants=True)
 
         criticalTime = state[-1]# + 1e-4 #using time offset frome rendevous example
 
         invariant_mat = [
             [0, 0, 0, 1, 0]
+            #[0, 0, 0, 0, 0, 1, 0]
         ]
 
         invariant_rhs = [
-            criticalTime
+            criticalTime + 1e-4
         ]
 
         mode.set_invariant(invariant_mat, invariant_rhs)
@@ -70,6 +80,7 @@ def make_automaton(dt, total, initialState, headless):
         if lastMode:        
             t = ha.new_transition(lastMode, mode)
             guard_mat = [ [0.0, 0.0, 0.0, -1.0, 0.0] ]
+            #guard_mat = [ [0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0] ]
             guard_rhs = [ -criticalTime + 1e-4] #time from last state is bound
             t.set_guard(guard_mat, guard_rhs)
 
@@ -92,7 +103,7 @@ def make_automaton(dt, total, initialState, headless):
     #trans2 = ha.new_transition(mode, error)
     #trans2.set_guard(-1 * y3, [-limit])
 
-    return ha
+    return ha, predictions
 
 def make_init(ha, uncertainty, initialState):
     'make the initial states'
@@ -119,12 +130,12 @@ def make_init(ha, uncertainty, initialState):
 
     return init_list
 
-def make_settings(dt, total, headless):
+def make_settings(dt, total, predictions, headless, lin_predictions=None):
     'make the reachability settings object'
 
     # see hylaa.settings for a list of reachability settings
     settings = HylaaSettings(dt, total) # step size = 0.1, time bound 20.0
-    settings.plot.filename = "f1_kinematics.png"
+    settings.plot.filename = "f1_kinematics_sim0.png"
     settings.plot.plot_mode = PlotSettings.PLOT_IMAGE
     settings.stdout = HylaaSettings.STDOUT_VERBOSE
     settings.optimize_tt_transitions = True
@@ -146,26 +157,70 @@ def make_settings(dt, total, headless):
     xyplot.title = "Linearized Kinematics"
     xyplot.x_label = "X Position"
     xyplot.y_label = "Y Position"
+    xyplot.axes_limits = [-6, 6, -6, 6]
+
+    xyCenters = [(state[0], state[1]) for state, _ in predictions]
+    xyPatches = [Ellipse(center, .2, .2) for center in xyCenters]
+    xyCircles = collections.PatchCollection(xyPatches, facecolors='red', edgecolors='black')    
+
+    #create visualization for test of linear dynamics simulation.
+    lin_xyCircles = None
+    if lin_predictions != None:
+        lin_xyCenters = [(state[0], state[1]) for state, _ in lin_predictions]
+        lin_xyPatches = [Ellipse(center, .2, .2) for center in lin_xyCenters]
+        lin_xyCircles = collections.PatchCollection(lin_xyPatches, facecolors='blue', edgecolors='black')    
 
     #yaw time plot
     ytplot.big(size=26)
     ytplot.title = "Yaw Vs Time"
     ytplot.x_label = "Time"
     ytplot.y_label = "Yaw"
+
+    yawCenters = [(state[3], state[2]) for state, _ in predictions]
+    yawPatches = [Ellipse(center, dt/4 * 2, 3.14/32) for center in yawCenters]
+    yawCircles = collections.PatchCollection(yawPatches, facecolors='red', edgecolors='black')
+    
+    lin_yawCircles = None
+    if lin_predictions != None:
+        lin_yawCenters = [(state[3], state[2]) for state, _ in lin_predictions]
+        lin_yawPatches = [Ellipse(center, dt/4 * 2, 3.14/32) for center in lin_yawCenters]
+        lin_yawCircles = collections.PatchCollection(lin_yawPatches, facecolors='blue', edgecolors='black')
+    
+    #hacked in code for generating standalone non-linear simulation results
+    #simfig = plt.figure()
+    #ax = simfig.add_subplot(1, 1, 1)
+    #ax.set_xlim(-3, 3)
+    #ax.set_ylim(-3, 3)
+    #ax.add_collection(xyCircles)
+    #ax.set_title("Non-linear Kinematic Simulation")
+    #ax.set_xlabel('x-position')
+    #ax.set_ylabel('y-position')
+    #ax.axis("equal")
+    #simfig.savefig("nonlinear-kinematics-og.png")
+    #simfig.clf()
+
+    settings.plot.extra_collections = [[xyCircles, lin_xyCircles],[yawCircles, lin_yawCircles]]
     return settings
 
-def run_hylaa( total = 1, dt = .1, headless=False, outfile="f110_reach.dat"):
+def run_hylaa( total = 2, dt = .1, headless=False, outfile="f110_reach.dat"):
     'main entry point'
 
     #state = [x, y, yaw]
     initialState = [0, 0, 0]
     uncertainty = [.1, .1, .00]
+    inputFunc = lambda t : [ 3, 3.14/16]
 
-    ha = make_automaton(dt, total, initialState, headless)
+    #initializing linear dynamics simulation for test
+    lin_Dynamics = F1Dynamics_Linear(initialState)
+    lin_stepFunc = partial(lin_Dynamics.frontStep, lin_Dynamics)
+    lin_sim = simulator.ModelSimulator(dt, total, initialState, lin_stepFunc, inputFunc, headless)
+    lin_predictions = lin_sim.simulate()
+
+    ha, predictions = make_automaton(dt, total, initialState, inputFunc, headless)
 
     init_states = make_init(ha, uncertainty, initialState)
 
-    settings = make_settings(dt, total, headless)
+    settings = make_settings(dt, total, predictions, headless, lin_predictions=lin_predictions)
 
     result = Core(ha, settings).run(init_states)
 

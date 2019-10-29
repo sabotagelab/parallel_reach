@@ -1,4 +1,4 @@
-from sympy import sin, cos, Matrix, symbols, pprint
+from sympy import sin, cos, tan, Matrix, symbols, pprint
 
 # ---------- STATE (X) -----------
 #variables
@@ -13,33 +13,35 @@ p0 = 0  #yaw
 
 # ---------- INPUT (U) -----------
 #variables
-v, d = symbols('v d')
-inputVars = [v, d]
+v, d, e0, d0 = symbols('v d e0 d0')
+inputVars = [v, d, e0, d0]
 
-vMax = 1.2
-vMin = .8
-dMax = 3.14/4 + .2
-dMin = 3.14/4 - .2
+vSpread = .1 #how far around the current velocity input the reachability input could be
+dSpread = .05 # """"""   steering input """"
 #bound
 bounds_mat = [
-    [1, 0],[-1, 0],
-    [0, 1],[0, -1]
+    [1, 0, 0, 0],[-1, 0, 0, 0],
+    [0, 1, 0, 0],[0, -1, 0 , 0],
+    [0, 0, 1, 0], [0, 0, -1, 0],
+    [0, 0, 0, 1], [0, 0, 0, -1]
 ]
 
 #bounds_rhs = [
     #dMax, -dMin,
     #vMax, -vMin
 #]
-bounds_rhs = [
-    vMax, -vMin,
-    dMax, -dMin
-]
+bounds_rhs = Matrix([
+    v + vSpread, -(v - vSpread),
+    d + dSpread, -(d - dSpread),
+    e0, -e0,
+    d0, -d0
+])
 
 # for example, iff vMin <= v <= vMax
 
 #initial values
-d0 = 0  #steering angle
-v0 = 0  #velocity
+#d0 = 0  #steering ngle
+#v0 = 0  #velocity
 
 # --------------------------------
 
@@ -57,6 +59,7 @@ constants = [L0]
 #define matrices
 rear_mat = Matrix([v*cos(p), v*sin(p), (v/L)*d])
 front_mat = Matrix([v*cos(p + d), v*sin(p + d), (v/L)*sin(d)])
+#front_mat = Matrix([v*cos(p + d), v*sin(p + d), (v/L)*sin(d), v*cos(p+d), (v/L)*sin(d)])
 
 def showJacobianSet(js, lb):
     for j,l in zip(js, lb):
@@ -69,19 +72,30 @@ labels = [
     "\n------U------"]
 
 #calculate jacobians
+linSubs = [(p, e0), (d,d0)]
 rearJacobian = (
     rear_mat.jacobian(stateVars),   #X
     rear_mat.jacobian(inputVars)    #U
 )
 
 frontJacobian = (
-    front_mat.jacobian(stateVars),  #X
-    front_mat.jacobian(inputVars)   #U
+    front_mat.jacobian(stateVars).subs(linSubs),  #X
+    front_mat.jacobian(inputVars).subs(linSubs)   #U
 )
+matidx = lambda shape, r, c : shape[1] * r + c
+idx_A = lambda r, c : matidx(frontJacobian[0].shape, r, c)
+idx_B = lambda r, c : matidx(frontJacobian[1].shape, r, c)
+
+frontJacobian[1][idx_B(0,2)] = -1 * frontJacobian[0][idx_A(0,2)] #e0 for x
+frontJacobian[1][idx_B(1,2)] = -1 * frontJacobian[0][idx_A(1,2)] #e0 for y
+frontJacobian[1][idx_B(0,3)] = -1 * frontJacobian[1][idx_B(0,1)] #d0 for x
+frontJacobian[1][idx_B(1,3)] = -1 * frontJacobian[1][idx_B(1,1)] #d0 for y
+frontJacobian[1][idx_B(2,3)] = -1 * frontJacobian[1][idx_B(2,1)] #d0 for e
+pprint(frontJacobian)
 
 usingDynamics = frontJacobian
 
-#3 X 2 matrix that does something
+#3 X 2 matrix that does something (actually nothing)
 C = [
     [ 1, 0, 0, 0 ],
     [ 0, 1, 0, 0 ],
@@ -90,12 +104,13 @@ C = [
 ]
 def getMatrices(state, inputs):
     current = list(zip(stateVars + inputVars + constantSym, state + inputs + constants))
+    print(current)
     return {
         "A" : usingDynamics[0].subs(current).evalf(),
         "B" : usingDynamics[1].subs(current).evalf(),
         "C" : C,
         "bounds_mat" : bounds_mat,
-        "bounds_rhs" : bounds_rhs,
+        "bounds_rhs" : bounds_rhs.subs(current).evalf(),
         "current" : current
     }
 
@@ -118,8 +133,10 @@ def getTimeAugmentMatrices(state, inputs):
     mat["A"] = a
 
     #augment B with rows of 0's
-    b = b.row_insert(brow(), Matrix([[0] * bcol()]))
-    b = b.row_insert(brow(), Matrix([[0] * bcol()]))
+    #b = b.row_insert(brow(), Matrix([[0] * bcol()])) #extra for e0 dim
+    #b = b.row_insert(brow(), Matrix([[0] * bcol()])) #extra for d0 dim
+    b = b.row_insert(brow(), Matrix([[0] * bcol()])) #time
+    b = b.row_insert(brow(), Matrix([[0] * bcol()])) #time accum
     mat["B"] = b
 
     return mat

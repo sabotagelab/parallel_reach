@@ -1,4 +1,4 @@
-from run_model import run_hylaa
+from hylaa_model_OLD import run_hylaa
 from matplotlib import pyplot as plt
 import numpy as np
 
