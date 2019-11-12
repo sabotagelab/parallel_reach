@@ -11,6 +11,7 @@ from scipy.io import loadmat
 from matplotlib.patches import Circle, Ellipse
 from matplotlib import collections
 from matplotlib import pyplot as plt
+import math
 
 #hylaa imports
 from hylaa.hybrid_automaton import HybridAutomaton
@@ -157,18 +158,18 @@ def make_settings(dt, total, predictions, headless, lin_predictions=None):
     xyplot.title = "Linearized Kinematics"
     xyplot.x_label = "X Position"
     xyplot.y_label = "Y Position"
-    xyplot.axes_limits = [-6, 6, -6, 6]
+    xyplot.axes_limits = [-10, 10, -10, 10]
 
     xyCenters = [(state[0], state[1]) for state, _ in predictions]
     xyPatches = [Ellipse(center, .2, .2) for center in xyCenters]
-    xyCircles = collections.PatchCollection(xyPatches, facecolors='red', edgecolors='black')    
+    xyCircles = collections.PatchCollection(xyPatches, facecolors='red', edgecolors='black', zorder=1000)    
 
     #create visualization for test of linear dynamics simulation.
     lin_xyCircles = None
     if lin_predictions != None:
         lin_xyCenters = [(state[0], state[1]) for state, _ in lin_predictions]
         lin_xyPatches = [Ellipse(center, .2, .2) for center in lin_xyCenters]
-        lin_xyCircles = collections.PatchCollection(lin_xyPatches, facecolors='blue', edgecolors='black')    
+        lin_xyCircles = collections.PatchCollection(lin_xyPatches, facecolors='blue', edgecolors='black', zorder=0)    
 
     #yaw time plot
     ytplot.big(size=26)
@@ -176,9 +177,9 @@ def make_settings(dt, total, predictions, headless, lin_predictions=None):
     ytplot.x_label = "Time"
     ytplot.y_label = "Yaw"
 
-    yawCenters = [(state[3], state[2]) for state, _ in predictions]
-    yawPatches = [Ellipse(center, dt/4 * 2, 3.14/32) for center in yawCenters]
-    yawCircles = collections.PatchCollection(yawPatches, facecolors='red', edgecolors='black')
+    yawcenters = [(state[3], state[2]) for state, _ in predictions]
+    yawpatches = [ellipse(center, dt/4 * 2, 3.14/32) for center in yawcenters]
+    yawcircles = collections.patchcollection(yawpatches, facecolors='red', edgecolors='black', zorder=1000)
     
     lin_yawCircles = None
     if lin_predictions != None:
@@ -206,9 +207,10 @@ def run_hylaa( total = 2, dt = .1, headless=False, outfile="f110_reach.dat"):
     'main entry point'
 
     #state = [x, y, yaw]
-    initialState = [0, 0, 0]
+    initialState = [-8, 0, 0]
     uncertainty = [.1, .1, .00]
-    inputFunc = lambda t : [ 3, 3.14/16]
+    inputFunc = lambda t : [ 6, -1 * math.cos(2*t)/4]
+
 
     #initializing linear dynamics simulation for test
     lin_Dynamics = F1Dynamics_Linear(initialState)

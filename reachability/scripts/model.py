@@ -5,11 +5,6 @@ from sympy import sin, cos, tan, Matrix, symbols, pprint
 x, y, p = symbols('x y p')
 stateVars = [x, y, p]
 
-#initial values 
-x = 0   #x coord
-y = 0   #y coord
-p0 = 0  #yaw
-# --------------------------------
 
 # ---------- INPUT (U) -----------
 #variables
@@ -58,8 +53,8 @@ constants = [L0]
 
 #define matrices
 rear_mat = Matrix([v*cos(p), v*sin(p), (v/L)*d])
+#front_mat = Matrix([v*cos(e0 + d0), v*sin(e0 + d0), (v/L)*sin(d0)])
 front_mat = Matrix([v*cos(p + d), v*sin(p + d), (v/L)*sin(d)])
-#front_mat = Matrix([v*cos(p + d), v*sin(p + d), (v/L)*sin(d), v*cos(p+d), (v/L)*sin(d)])
 
 def showJacobianSet(js, lb):
     for j,l in zip(js, lb):
@@ -74,14 +69,19 @@ labels = [
 #calculate jacobians
 linSubs = [(p, e0), (d,d0)]
 rearJacobian = (
-    rear_mat.jacobian(stateVars),   #X
-    rear_mat.jacobian(inputVars)    #U
+    rear_mat.jacobian(stateVars),   #A
+    rear_mat.jacobian(inputVars)    #B
 )
 
+#frontJacobian = (
+    #front_mat.jacobian([x, y, e0]),  #A
+    #front_mat.jacobian([v, d0, e0, d0])   #B
+#)
 frontJacobian = (
-    front_mat.jacobian(stateVars).subs(linSubs),  #X
-    front_mat.jacobian(inputVars).subs(linSubs)   #U
+    front_mat.jacobian(stateVars).subs(linSubs),  #A
+    front_mat.jacobian(inputVars).subs(linSubs)   #B
 )
+
 matidx = lambda shape, r, c : shape[1] * r + c
 idx_A = lambda r, c : matidx(frontJacobian[0].shape, r, c)
 idx_B = lambda r, c : matidx(frontJacobian[1].shape, r, c)
@@ -91,6 +91,11 @@ frontJacobian[1][idx_B(1,2)] = -1 * frontJacobian[0][idx_A(1,2)] #e0 for y
 frontJacobian[1][idx_B(0,3)] = -1 * frontJacobian[1][idx_B(0,1)] #d0 for x
 frontJacobian[1][idx_B(1,3)] = -1 * frontJacobian[1][idx_B(1,1)] #d0 for y
 frontJacobian[1][idx_B(2,3)] = -1 * frontJacobian[1][idx_B(2,1)] #d0 for e
+#pprint(frontJacobian)
+
+#negate -e
+#frontJacobian[1][idx_B(1,3)] = -1 * frontJacobian[1][idx_B(1,3)] #d0 for y
+#frontJacobian[1][idx_B(2,3)] = -1 * frontJacobian[1][idx_B(2,3)] #d0 for e
 pprint(frontJacobian)
 
 usingDynamics = frontJacobian

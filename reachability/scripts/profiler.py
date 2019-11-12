@@ -8,17 +8,17 @@ numDataTrials = 3
 
 #dt config
 dt_Min = .01
-dt_Max = .05
-dt_numSteps = 30
+dt_Max = .3
+dt_numSteps = 10
 dt_StepFunc = linear
 dt_Steps = [dt_StepFunc(dt_Min, dt_Max, step/dt_numSteps) for step in range(dt_numSteps)]
 print("DT steps are:")
 print(dt_Steps)
 
 #total time config
-ttime_Min = .4
-ttime_Max = .4
-ttime_numSteps = 1
+ttime_Min = .5
+ttime_Max = 4
+ttime_numSteps = 10
 ttime_StepFunc = linear
 ttime_Steps = [ttime_StepFunc(ttime_Min, ttime_Max, step/ttime_numSteps) for step in range(ttime_numSteps)]
 print("Total Time Steps are")
@@ -30,7 +30,7 @@ def printResult(r):
 
 results = []
 
-maxSimSteps = 100
+maxSimSteps = 30
 #testing on dt and total
 for totalTime in ttime_Steps:
     step_results = []

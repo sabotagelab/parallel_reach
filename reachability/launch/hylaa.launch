@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<launch>
+    <arg name="hylaa_config" value="$(find reachability)/config/hylaa.yaml">
+    <arg name="mpc_sim" value=0>
+
+    <!-- ****** HYLAA Reachability Node ****** -->
+    <node name="F1Hylaa" pkg="reachability" type="reachability_node" output="screen">
+        <rosparam file="$(arg hylaa_config)" command="load">
+    </node>
+
+    <!-- conditionally starts nonlinear simulator instead of mpc -->
+    <group if="$(arg mpc_sim)">
+        <include file="$(find reachability)/launch/mpc_sim.launch">
+    </group>
+</launch>

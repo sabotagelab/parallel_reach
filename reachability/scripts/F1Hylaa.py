@@ -14,6 +14,10 @@ import model
 from dynamics import F1Dynamics
 import simulator
 
+#ROS imports
+import rospy
+from osuf1_common import StampedFloat2d, MPC_metadata
+
 #wrapper to run hylaa repeatedly with different inputs
 class F1Hylaa:
     def __init__(self):
@@ -21,18 +25,63 @@ class F1Hylaa:
         self.modeList = None    #store list of all modes so we can retrieve correct reachsets
         self.initialBox = None  #we need to store the initial stateset
         self.core = None        #core object for running hylaa with settings
+        self.predictions = None #predictions from MPC
+        self.dt = None          #dt from MPC metdata
+        self.mpc_horizon = None #horizon from MPC metadata
 
-        self.uncertainty = [
-            rospy.get_param("px_variation"),
-            rospy.get_param("py_variation"),
-            rospy.get_param("psi_variation")
+        #TODO automatic or otherwise validated variability
+        self.state_uncertainty = [
+            rospy.get_param("px"),
+            rospy.get_param("py"),
+            rospy.get_param("psi"),
         ]
 
+        self.input_uncertainty = [
+            rospy.get_param("velocity"),
+            rospy.get_param("steer")
+        ]
 
-    def initializeModel(self, params, trajectory, inputs):
+        #custom interval or begin immediately
+        self.reachability_interval = rospy.get_param("interval", 0)
+
+        #custom horizon or utilize all computed MPC steps
+        self.reachability_horizon = rospy.get_param("horizon", 0)
+
+        self.hylaa_verbosity = rospy.get_param("output_verbosity", "VERBOSE").upper() #TODO integrate with roslogger 
+        self.graph_predictions = rospy.getparam("graph_predictions", False) #wether predicted sim results should be overlayed on reach set graph (if displayed)
+        self.prediction_topic = rospy.get_param("mpc_prediction_topic", "mpc_prediction") #topic which publishes predicted trajectory
+        self.metadata_topic = rospy.get_param("mpc_metadata_topic", "mpc_metadata")
+        self.reach_pub_topic = "hylaa_reach" #topic where reach sets are published
+
+        self.prediction_sub = rospy.Subscriber(prediction_topic, StampedFloat2d, self.storePredictions)
+        self.metadata_sub = rospy.Subscriber(metadata_topic, MPC_metadata, self.storeMetadata)
+        self.reach_pub = rospy.Publisher(reach_pub_topic, String, queue_size=1)
+
+        self.running_model = False 
+        self.current_metadata = False
+
+    def storePredictions(self, data):
+        if not self.running_model:
+            self.predictions = data
+            if self.current_metadata
+
+    def storeMetadata(self, data):
+        if not self.running_model:
+            self.dt = data.dt
+            self.mpc_horizon = data.horizon
+            self.current_metadata = True
+
+            if self.reachability_horizon > self.mpc_horizon:
+                rospy.logerr("Reachability horizon exceeds mpc prediction horizon. Exiting Hylaa Node")
+                rospy.logdebug("Reachability horizon: {}\nMPC horizon: {}".format(
+                    self.reachability_horizon, self.mpc_horizon
+                ))
+                exit(1)
+
+
+    def initializeModel(self, params):
         self.modeList = []
-        ha = HybridAutomaton()
-        generateModes(ha, zip(trajectory, inputs))
+        ha = self.make_automaton(ha, zip(trajectory, inputs))
         settings = self.getSettings(params["dt"], params["total"])
         self.initialBox = self.boundState(trajectory[0])
         self.core = Core(ha, settings)
@@ -45,13 +94,11 @@ class F1Hylaa:
         settings = HylaaSettings(dt, total) # step size = 0.1, time bound 20.0
         settings.plot.filename = rospy.get_param("display_filename", "f1_kinematics.png")
         settings.optimize_tt_transitions = True
+
         #wwe want to store the reach set cuz that is the whole point of this
         settings.plot.store_plot_result = True 
 
         displayType = rospy.get_param("display_type", "NONE").upper()
-        verbosity = rospy.get_param("output_verbosity", "VERBOSE").upper()
-
-
         settings.plot.plot_mode = PlotSettings.PLOT_IMAGE
         settings.stdout = HylaaSettings.STDOUT_VERBOSE
 
@@ -92,9 +139,23 @@ class F1Hylaa:
             ytplot.x_label = "Time"
             ytplot.y_label = "Yaw"
 
+            #plot the predicted trajectory (MPC output)
+            nl_Circles = None
+            if self.graph_predictions:
+                nl_Centers = [(state[0], state[1]) for state, _ in self.predictions]
+                nl_Patches = [Ellipse(center, .2, .2) for center in nl_Centers]
+                nl_Circles = collections.PatchCollection(nl_Patches, facecolors='red', edgecolors='black', zorder=1000)    
+
+                nl_yaw_centers = [(state[3], state[2]) for state, _ in self.precitions]
+                nl_yaw_patches = [ellipse(center, dt/4 * 2, 3.14/32) for center in nl_yaw_Centers]
+                nl_yaw_circles = collections.patchcollection(yawpatches, facecolors='red', edgecolors='black', zorder=1000)
+            
+                settings.plot_extra_collections = [[nl_Circles]]
+
+
         return settings
 
-    def boundState(self, initialState):
+    def make_init(self, initialState):
         'make the initial states'
 
         # initial set has every variable as [-0.1, 0.1]
@@ -108,8 +169,8 @@ class F1Hylaa:
         time_init = [(0.0, 0.0), (1.0, 1.0)]
         for s in range(len(init_box)):
             init_box[s] = ( 
-                initialState[s] - uncertainty[s],
-                initialState[s] + uncertainty[s]
+                initialState[s] - self.uncertainty[s],
+                initialState[s] + self.uncertainty[s]
             )
         init_box += time_init
         print(init_box)
@@ -120,16 +181,25 @@ class F1Hylaa:
         return init_list
 
     #generated modes IN PLACE on given ha, filling with given inputs
-    def generateModes(self, ha, stateInputs)
+    def make_automaton(self)
+        ha = HybridAutomaton()
+
         modeLabelIncrement = 0
         lastMode = None
-        for state, inputs in predictions:
-            #print(state)
+        prevState = self.initialState
+        prevInputs = self.predictions[0][1] #the first inputs (at t=0)
+        for state, inputs in self.predictions:
+            rospy.logdebug(state)
+            rospy.logdebug(inputs)
 
+            #get the dynamics linearized around this state/input set
+            e0d0 = [prevState[2], prevInputs[1]]
             dynamics = model.getTimeAugmentMatrices(state, inputs)
+            prevState = state
+            prevInputs = inputs
 
             modeName = 'm{}'.format(modeLabelIncrement)
-            mode = ha.new_mode()
+            mode = ha.new_mode(modeName)
             self.modeList.push_back(modeName)
 
             a_matrix = dynamics['A']
@@ -146,10 +216,10 @@ class F1Hylaa:
                 [0, 0, 0, 1, 0]
             ]
 
+            #TODO add configurable ciritical time variance
             invariant_rhs = [
-                criticalTime
+                criticalTime + 1e-4
             ]
-
             mode.set_invariant(invariant_mat, invariant_rhs)
 
             if lastMode:        
@@ -160,6 +230,8 @@ class F1Hylaa:
 
             lastMode = mode
             modeLabelIncrement += 1
+
+            return ha
 
 
     def runModel(self):
