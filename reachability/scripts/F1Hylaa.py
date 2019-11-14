@@ -27,7 +27,7 @@ class F1Hylaa:
         self.core = None        #core object for running hylaa with settings
         self.predictions = None #predictions from MPC
         self.dt = None          #dt from MPC metdata
-        self.mpc_horizon = None #horizon from MPC metadata
+        self.mpc_horizon = None #simulation horizon from MPC metadata
 
         #TODO automatic or otherwise validated variability
         self.state_uncertainty = [
@@ -63,7 +63,12 @@ class F1Hylaa:
     def storePredictions(self, data):
         if not self.running_model:
             self.predictions = data
-            if self.current_metadata
+            if self.current_metadata:
+                self.running_model = True
+                self.initialize_hylaa()
+                self.run_hylaa()
+                self.current_metadata = False
+                self.running_model = False
 
     def storeMetadata(self, data):
         if not self.running_model:
@@ -79,7 +84,7 @@ class F1Hylaa:
                 exit(1)
 
 
-    def initializeModel(self, params):
+    def initialize_hylaa(self, params):
         self.modeList = []
         ha = self.make_automaton(ha, zip(trajectory, inputs))
         settings = self.getSettings(params["dt"], params["total"])
@@ -234,7 +239,7 @@ class F1Hylaa:
             return ha
 
 
-    def runModel(self):
+    def run_hylaa(self):
         result = self.core.run(self.initialBox)
         reachset = result.plot_data.get_verts_list(self.modeList[-1])
 
