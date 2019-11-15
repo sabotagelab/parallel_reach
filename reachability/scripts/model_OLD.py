@@ -109,7 +109,6 @@ C = [
 ]
 def getMatrices(state, inputs):
     current = list(zip(stateVars + inputVars + constantSym, state + inputs + constants))
-    print(current)
     return {
         "A" : usingDynamics[0].subs(current).evalf(),
         "B" : usingDynamics[1].subs(current).evalf(),

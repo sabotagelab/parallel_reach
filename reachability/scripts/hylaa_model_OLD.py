@@ -46,9 +46,6 @@ def make_automaton(dt, total, initialState, inputFunc, headless):
     prevState = initialState
     prevInputs = inputFunc(0)
     for state, inputs in predictions:
-        #print(state)
-        print(state)
-        print(inputs)
         e0d0 = [prevState[2], prevInputs[1]]
         dynamics = model.getTimeAugmentMatrices(state, inputs + e0d0)
         prevState = state
