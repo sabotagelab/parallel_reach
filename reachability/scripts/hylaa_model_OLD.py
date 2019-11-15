@@ -177,9 +177,9 @@ def make_settings(dt, total, predictions, headless, lin_predictions=None):
     ytplot.x_label = "Time"
     ytplot.y_label = "Yaw"
 
-    yawcenters = [(state[3], state[2]) for state, _ in predictions]
-    yawpatches = [ellipse(center, dt/4 * 2, 3.14/32) for center in yawcenters]
-    yawcircles = collections.patchcollection(yawpatches, facecolors='red', edgecolors='black', zorder=1000)
+    yawCenters = [(state[3], state[2]) for state, _ in predictions]
+    yawPatches = [Ellipse(center, dt/4 * 2, 3.14/32) for center in yawCenters]
+    yawCircles = collections.PatchCollection(yawPatches, facecolors='red', edgecolors='black', zorder=1000)
     
     lin_yawCircles = None
     if lin_predictions != None:

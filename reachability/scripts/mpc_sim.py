@@ -3,6 +3,8 @@
 import rospy
 from osuf1_common import MPC_metadata, MPC_trajectory, MPC_prediction
 import std_msgs.msg
+from geometry_msgs import Pose
+from tf.transformation import euler_from_quaternion
 
 #local imports
 from nl_dynamics import F1Dynamics
@@ -28,17 +30,20 @@ class MPC_Sim:
         self.simulation_period = 100 #ms between publish events
         self.prediction_pub_topic = rospy.get_param("mpc_prediction_topic", "mpc_prediction")
         self.meta_pub_topic = rospy.get_param("mpc_metadata_topic", "mpc_metadata")
+        self.position_topic = rospy.get_param("localization_topic", "pf_pose")
 
         self.prediction_pub = rospy.Publisher(self.prediction_pub_topic, MPC_trajectory, queue_size=1)
         self.meta_pub = rospy.Publisher(self.meta_pub_topic, MPC_metadata, queue_size=1)
+        self.position_sub = rospy.Subscriber(self.position_topic, Pose, self.parseState)
         
         self.currentState = [0, 0, 0]
         self.inputFunc = lambda t : [ 6, -1 * math.cos(2*t)/4]
 
     def start(self):
-        current_ms = lambda: int(round(time.time() * 1000))
+        rate = rospy.rate(1000/self.simulation_period)
         while not rospy.is_shutdown():
-            frameStart_ms = current_ms()
+            rospy.spinOnce()
+
             results = self.simulate()
 
             header = std_msgs.msg.Header()
@@ -57,12 +62,17 @@ class MPC_Sim:
             trajectory.trajectory = MPC_trajectory([MPC_prediction(pred[0], pred[1]) for pred in results])
             self.prediction_pub.Publish(trajectory)
 
-            #compute time to simulate and publish
             # wait remainder to attain desired 'simulation_period'
-            frameEnd_ms = current_ms()
-            frametime = frameEnd_ms - frameStart_ms
-            if frametime > 0:
-                time.sleep(frametime * .001)
+            rate.sleep()
+
+    def parseState(self, data):
+        qt = data.orientation
+        _, _, yaw = euler_from_quaternion([qt.x, qt.y, qt.z, qt.w])
+        self.initalState = [
+            data.position.x,
+            data.position.y,
+            yaw
+        ]
 
     def simulate(self):
         sim = simulator.ModelSimulator(self.dt, self.totalTime, 
