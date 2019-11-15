@@ -10,7 +10,7 @@ from hylaa.stateset import StateSet
 from hylaa import lputil
 
 #local imports
-import model
+import kinematics_model as model_gen 
 from dynamics import F1Dynamics
 import simulator
 
@@ -21,6 +21,9 @@ from osuf1_common import StampedFloat2d, MPC_metadata
 #wrapper to run hylaa repeatedly with different inputs
 class F1Hylaa:
     def __init__(self):
+
+        rospy.init_node("hylaa_node")
+
         self.ha = None          #hybrid automaton
         self.modeList = None    #store list of all modes so we can retrieve correct reachsets
         self.initialBox = None  #we need to store the initial stateset
@@ -28,20 +31,23 @@ class F1Hylaa:
         self.predictions = None #predictions from MPC
         self.dt = None          #dt from MPC metdata
         self.mpc_horizon = None #simulation horizon from MPC metadata
+        self.model = model_gen.getModel()
 
         #TODO automatic or otherwise validated variability
         self.state_uncertainty = [
-            rospy.get_param("px"),
-            rospy.get_param("py"),
-            rospy.get_param("psi"),
+            rospy.get_param("px", 0),
+            rospy.get_param("py", 0),
+            rospy.get_param("psi", 0),
         ]
 
         self.input_uncertainty = [
-            rospy.get_param("velocity"),
-            rospy.get_param("steer")
+            rospy.get_param("velocity", 0),
+            rospy.get_param("steer", 0),
+            0,  #e0
+            0   #d0
         ]
 
-        #custom interval or begin immediately
+        #custom interval or 0=maximum speed
         self.reachability_interval = rospy.get_param("interval", 0)
 
         #custom horizon or utilize all computed MPC steps
@@ -60,13 +66,17 @@ class F1Hylaa:
         self.running_model = False 
         self.current_metadata = False
 
+    def start(self):
+        rospy.spin()
+
     def storePredictions(self, data):
         if not self.running_model:
             self.predictions = data
             if self.current_metadata:
                 self.running_model = True
                 self.initialize_hylaa()
-                self.run_hylaa()
+                reach = self.run_hylaa()
+                self.reach_pub.Publish("Data")
                 self.current_metadata = False
                 self.running_model = False
 
@@ -87,7 +97,11 @@ class F1Hylaa:
     def initialize_hylaa(self, params):
         self.modeList = []
         ha = self.make_automaton(ha, zip(trajectory, inputs))
-        settings = self.getSettings(params["dt"], params["total"])
+        ttime = self.reachability_horizon
+        if ttime == 0:
+            ttime = self.mpc_horizon
+
+        settings = self.getSettings(self.dt, ttime)
         self.initialBox = self.boundState(trajectory[0])
         self.core = Core(ha, settings)
 
@@ -97,7 +111,7 @@ class F1Hylaa:
 
         # see hylaa.settings for a list of reachability settings
         settings = HylaaSettings(dt, total) # step size = 0.1, time bound 20.0
-        settings.plot.filename = rospy.get_param("display_filename", "f1_kinematics.png")
+        settings.plot.filename = rospy.get_param("display_filename", "f1_kinematics.png") #TODO put images in distinct folder and label with frame times
         settings.optimize_tt_transitions = True
 
         #wwe want to store the reach set cuz that is the whole point of this
@@ -199,7 +213,7 @@ class F1Hylaa:
 
             #get the dynamics linearized around this state/input set
             e0d0 = [prevState[2], prevInputs[1]]
-            dynamics = model.getTimeAugmentMatrices(state, inputs)
+            dynamics = self.model.getTimeAugmentMatrices(state, inputs)
             prevState = state
             prevInputs = inputs
 
@@ -242,5 +256,6 @@ class F1Hylaa:
     def run_hylaa(self):
         result = self.core.run(self.initialBox)
         reachset = result.plot_data.get_verts_list(self.modeList[-1])
+        rospy.loginfo("Hylaa reachability computation finished.") #TODO add time to output
 
-        return reachset
+        return reachset #TODO export reach sets from all modes

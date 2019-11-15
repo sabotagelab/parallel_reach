@@ -21,8 +21,8 @@ from hylaa.stateset import StateSet
 from hylaa import lputil
 
 #local imports
-import model_OLD
-from dynamics import F1Dynamics
+import model_OLD as model
+from nl_dynamics import F1Dynamics
 from lin_dynamics import F1Dynamics_Linear
 import simulator
 

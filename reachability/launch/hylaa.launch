@@ -5,7 +5,7 @@
     <arg name="mpc_sim" value=0>
 
     <!-- ****** HYLAA Reachability Node ****** -->
-    <node name="F1Hylaa" pkg="reachability" type="reachability_node" output="screen">
+    <node name="hylaa_node" pkg="reachability" type="reachability_node" output="screen">
         <rosparam file="$(arg hylaa_config)" command="load">
     </node>
 

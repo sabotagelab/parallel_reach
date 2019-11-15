@@ -4,20 +4,30 @@ import rospy
 #model representing the linearized dynamics 
 # and bounds of a system 
 # for use with hylaa
+
+# WHY
+# ++
+#abstracting this makes it easier to test different dynamics models 
+# through rospy settings integration
+# --
+# makes it slightly more difficult to add additional dynamics fields or matrices
+#  for use in reachability algorithm
+
+
 class Model:
-    def __init__(self, symbols, constants A_jac, B_jac, input_bounds=None):
+    def __init__(self, symbols, constants, A_jac, B_jac, input_bounds=None):
         self.symbols = symbols
         self.constants = constants
         self.A = A_jac
         self.B = B_jac
 
-        self.input_bounds = input_bounds
+        self.bounds_mat, self.bounds_rhs = input_bounds
         if not input_bounds:
             input_bounds = self.standardBounds
 
 
     #augment dynamics with row/col for time + time accumulation
-    def augmentDynamics(self)
+    def augmentDynamics(self):
         a = self.A
         arow = lambda : a.shape[0]
         acol = lambda : a.shape[1]

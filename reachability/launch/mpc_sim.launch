@@ -2,6 +2,7 @@
 
 <launch>
     <!-- ****** MPC Simulation Node ****** -->
-    <node name="MPC_Sim" pkg="reachability" type="MPC_Kinematic_node" output="screen">
+    <node name="mpc_sim" pkg="reachability" type="MPC_Kinematic_node" output="screen">
         <rosparam file="$(find reachability)/config/mpc_sim.yaml" command="load">
+    </node>
 </launch>

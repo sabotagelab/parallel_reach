@@ -42,8 +42,8 @@ add_message_files(
   DIRECTORY msg
   FILES
   MPC_metadata.msg
-  Float1d.msg
-  StampedFloat2d.msg
+  MPC_prediction.msg
+  MPC_trajectory.msg
 )
 
 
