@@ -1,2 +1,2 @@
 Header header
-Float32[][] data
+Float1d[] data

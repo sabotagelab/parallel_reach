@@ -41,8 +41,9 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   DIRECTORY msg
   FILES
-  Inputs.msg
-  ReachableStates.msg
+  MPC_metadata.msg
+  Float1d.msg
+  StampedFloat2d.msg
 )
 
 

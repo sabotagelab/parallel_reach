@@ -2,7 +2,7 @@
 <package format="2">
   <name>osuf1_common</name>
   <version>0.0.0</version>
-  <description>Common packages for osu f1/10 racing platform<description>
+  <description>Common packages for osu f1/10 racing platform</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
