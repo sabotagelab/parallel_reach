@@ -1,5 +1,4 @@
-import sympy
-import rospy
+from sympy import sin, cos, tan, Matrix, symbols, pprint
 
 #model representing the linearized dynamics 
 # and bounds of a system 
@@ -15,16 +14,29 @@ import rospy
 
 
 class Model:
-    def __init__(self, symbols, constants, A_jac, B_jac, input_bounds=None):
+    def __init__(self, symbols, constants, A_jac, B_jac, bounds_rhs):
         self.symbols = symbols
         self.constants = constants
         self.A = A_jac
         self.B = B_jac
 
-        self.bounds_mat, self.bounds_rhs = input_bounds
-        if not input_bounds:
-            input_bounds = self.standardBounds
+        self.bounds_rhs = bounds_rhs
+        self.bounds_mat = self.standardBounds()
+        self.input_uncertainty = [0] * self.B.shape[1]
+        
+        self.augmentDynamics()
 
+    def standardBounds(self):
+        return [
+            [1, 0, 0, 0],[-1, 0, 0, 0],
+            [0, 1, 0, 0],[0, -1, 0 , 0],
+            [0, 0, 1, 0], [0, 0, -1, 0],
+            [0, 0, 0, 1], [0, 0, 0, -1]
+        ]
+
+    def setInputUncertainty(self, input_uncertainty):
+        assert(len(input_uncertainty) == len(self.input_uncertainty))
+        self.input_uncertainty = input_uncertainty
 
     #augment dynamics with row/col for time + time accumulation
     def augmentDynamics(self):
@@ -49,12 +61,12 @@ class Model:
         self.B = b
     
     def linearized_dynamics(self, state, inputs):
-        current = list(zip(self.variables, state+inputs+self.constants))
+        current = list(zip(self.symbols, state+inputs+self.constants+self.input_uncertainty))
         return {
             "A" : self.A.subs(current).evalf(),
             "B" : self.B.subs(current).evalf(),
-            "bounds_mat" : self.bounds_mat.subs(current).evalf(),
-            "bounds_rhs" : self.bounds_rhs.subs(current).evalf()
+            "bounds_mat" : self.bounds_mat,
+            "bounds_rhs" : self.bounds_rhs.subs(current).evalf(),
             "current" : current
         }
 

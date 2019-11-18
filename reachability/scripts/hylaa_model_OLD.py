@@ -134,7 +134,7 @@ def make_settings(dt, total, predictions, headless, lin_predictions=None):
     # see hylaa.settings for a list of reachability settings
     settings = HylaaSettings(dt, total) # step size = 0.1, time bound 20.0
     settings.plot.filename = "f1_kinematics_sim0.png"
-    settings.plot.plot_mode = PlotSettings.PLOT_IMAGE
+    settings.plot.plot_mode = PlotSettings.PLOT_NONE
     settings.stdout = HylaaSettings.STDOUT_VERBOSE
     settings.optimize_tt_transitions = True
     settings.plot.store_plot_result = True

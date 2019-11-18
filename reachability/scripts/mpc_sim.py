@@ -22,10 +22,13 @@ class MPC_Sim:
         
         self.nlDynamics = F1Dynamics()
         self.stepFunc = partial(self.nlDynamics.frontStep, self.nlDynamics)
-
-
         self.dt = rospy.get_param("dt", .1)
         self.totalTime = rospy.get_param("total_time", 2)
+
+        self.currentState = [0, 0, 0]
+        self.inputFunc = lambda t : [ 6, -1 * math.cos(2*t)/4]
+
+        self.simulator = simulator.ModelSimulator(self.dt, self.totalTime, self.currentState, self.stepFunc, self.inputFunc, True)
 
         self.simulation_period = 100 #ms between publish events
         self.prediction_pub_topic = rospy.get_param("mpc_prediction_topic", "mpc_prediction")
@@ -36,8 +39,6 @@ class MPC_Sim:
         self.meta_pub = rospy.Publisher(self.meta_pub_topic, MPC_metadata, queue_size=1)
         self.position_sub = rospy.Subscriber(self.position_topic, Pose, self.parseState)
         
-        self.currentState = [0, 0, 0]
-        self.inputFunc = lambda t : [ 6, -1 * math.cos(2*t)/4]
 
     def start(self):
         rate = rospy.rate(1000/self.simulation_period)
