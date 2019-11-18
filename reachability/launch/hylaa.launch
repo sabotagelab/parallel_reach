@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 
 <launch>
-    <arg name="hylaa_config" value="$(find reachability)/config/hylaa.yaml">
-    <arg name="mpc_sim" value=0>
+    <arg name="hylaa_config" value="$(find reachability)/config/hylaa.yaml"/>
+    <arg name="mpc_sim" default="false"/>
 
     <!-- ****** HYLAA Reachability Node ****** -->
-    <node name="hylaa_node" pkg="reachability" type="reachability_node" output="screen">
-        <rosparam file="$(arg hylaa_config)" command="load">
+    <node name="hylaa_node" pkg="reachability" type="hylaa_node.py" output="screen">
+        <rosparam file="$(arg hylaa_config)" command="load"/>
     </node>
 
     <!-- conditionally starts nonlinear simulator instead of mpc -->
     <group if="$(arg mpc_sim)">
-        <include file="$(find reachability)/launch/mpc_sim.launch">
+        <include file="$(find reachability)/launch/mpc_sim.launch"/>
     </group>
 </launch>

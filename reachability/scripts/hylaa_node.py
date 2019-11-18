@@ -1,14 +1,14 @@
+#!/usr/bin/python3.6
 # library imports
 from functools import partial
-import subprocess
-import xmlrpc.client
 
 #local imports
 from F1Hylaa import F1Hylaa
 
 #ROS imports
 import rospy
-from osuf1_common import MPC_Prediction, MPC_metadata, Reach
+from std_msgs.msg import String
+from osuf1_common.msg import MPC_trajectory, MPC_metadata, MPC_prediction
 
 class HYLAA_node:
     def __init__(self):
@@ -45,7 +45,7 @@ class HYLAA_node:
         #custom horizon or utilize all computed MPC steps
         self.reachability_horizon = rospy.get_param("horizon", 0)
         self.hylaa_verbosity = rospy.get_param("output_verbosity", "VERBOSE").upper() #TODO integrate with roslogger 
-        self.graph_predictions = rospy.getparam("graph_predictions", False) #wether predicted sim results should be overlayed on reach set graph (if displayed)
+        self.graph_predictions = rospy.get_param("graph_predictions", False) #wether predicted sim results should be overlayed on reach set graph (if displayed)
         self.displayType = rospy.get_param("display_type", "NONE").upper()
         self.output = rospy.get_param("display_filename", "f1_kinematics.png") #TODO put images in distinct folder and label with frame times
 
@@ -53,23 +53,8 @@ class HYLAA_node:
         #---------------------------------------------------------
         #                   HYLAA Calling Vars
         #---------------------------------------------------------
-        #hylaa_caller = {
-
-            #"server_port" : 7890,
-            #"server_host" : 'localhost',
-            #"physical_core" : 1
-        #}
-        #subprocess.call("python ./hylaa_server.py {} {}".format(
-            #hylaa_caller["host"],
-            #hylaa_caller["port"]
-        #))
-        #self.hylaa_server = xmlrpc.client.ServerProxy(
-            #"{}:{}".format(
-                #hylaa_caller["server_host"],
-                #hylaa_caller["server_port"]
-            #)
-        #)
         self.hylaa = F1Hylaa()
+        self.hylaa.set_model_params(self.state_uncertainty, self.input_uncertainty)
 
         #custom interval in ms or 0=maximum speed
         self.reachability_interval = rospy.get_param("interval", 0)
@@ -85,9 +70,9 @@ class HYLAA_node:
         self.metadata_topic = rospy.get_param("mpc_metadata_topic", "mpc_metadata")
         self.reach_pub_topic = "hylaa_reach" #topic where reach sets are published
 
-        self.prediction_sub = rospy.Subscriber(self.prediction_topic, MPC_Prediction, self.storePredictions)
+        self.prediction_sub = rospy.Subscriber(self.prediction_topic, MPC_trajectory, self.storePredictions)
         self.metadata_sub = rospy.Subscriber(self.metadata_topic, MPC_metadata, self.storeMetadata)
-        self.reach_pub = rospy.Publisher(self.reach_pub_topic, Reach, queue_size=1)
+        self.reach_pub = rospy.Publisher(self.reach_pub_topic, String, queue_size=1)
         #self.reach_viz_pub = rospy.Publisher(self.reach_pub_topic+'_viz') #TODO implement vizualizations
 
 
@@ -97,17 +82,21 @@ class HYLAA_node:
     def start(self):
 
         hz = 1/self.reachability_interval if self.reachability_interval else 0
-        rate = rospy.Rate(hz)
+        if hz:
+            rate = rospy.Rate(hz)
         while not rospy.is_shutdown(): 
             if self.current_metadata and self.current_trajectory:
                 reach = self.hylaa.run_hylaa(self.predictions)
-                self.reach_pub.Publish("Data")
+                self.reach_pub.publish("HYLAA")
                 self.current_metadata = self.current_trajectory = False
+            else:
+                rospy.loginfo_throttle(15, "Waiting for updated mpc data")
             if hz:
                 rate.sleep()
 
     def storePredictions(self, data):
-        self.predictions = data
+        self.predictions = [[list(p.state),list( p.inputs)] for p in data.trajectory]
+        print(self.predictions)
         self.current_trajectory = True
 
     def storeMetadata(self, data):

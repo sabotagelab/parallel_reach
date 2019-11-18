@@ -1,10 +1,11 @@
-
+#!/usr/bin/python
 #ROS imports
+
 import rospy
-from osuf1_common import MPC_metadata, MPC_trajectory, MPC_prediction
+from osuf1_common.msg import MPC_metadata, MPC_trajectory, MPC_prediction
 import std_msgs.msg
-from geometry_msgs import Pose
-from tf.transformation import euler_from_quaternion
+from geometry_msgs.msg import PoseStamped
+from tf.transformations import euler_from_quaternion
 
 #local imports
 from nl_dynamics import F1Dynamics
@@ -37,14 +38,12 @@ class MPC_Sim:
 
         self.prediction_pub = rospy.Publisher(self.prediction_pub_topic, MPC_trajectory, queue_size=1)
         self.meta_pub = rospy.Publisher(self.meta_pub_topic, MPC_metadata, queue_size=1)
-        self.position_sub = rospy.Subscriber(self.position_topic, Pose, self.parseState)
+        self.position_sub = rospy.Subscriber(self.position_topic, PoseStamped, self.parseState)
         
 
     def start(self):
-        rate = rospy.rate(1000/self.simulation_period)
+        rate = rospy.Rate(1000/self.simulation_period)
         while not rospy.is_shutdown():
-            rospy.spinOnce()
-
             results = self.simulate()
 
             header = std_msgs.msg.Header()
@@ -55,23 +54,24 @@ class MPC_Sim:
             meta.header = header
             meta.dt = self.dt
             meta.horizon = self.totalTime
-            self.meta_pub.Publish(meta)
+            self.meta_pub.publish(meta)
 
             #simulation results message
             trajectory = MPC_trajectory()
             trajectory.header = header
-            trajectory.trajectory = MPC_trajectory([MPC_prediction(pred[0], pred[1]) for pred in results])
-            self.prediction_pub.Publish(trajectory)
+            trajectory.trajectory = [MPC_prediction(pred[0], pred[1]) for pred in results]
+            self.prediction_pub.publish(trajectory)
+            rospy.loginfo("Published trajectory")
 
             # wait remainder to attain desired 'simulation_period'
             rate.sleep()
 
     def parseState(self, data):
-        qt = data.orientation
+        qt = data.pose.orientation
         _, _, yaw = euler_from_quaternion([qt.x, qt.y, qt.z, qt.w])
         self.initalState = [
-            data.position.x,
-            data.position.y,
+            data.pose.position.x,
+            data.pose.position.y,
             yaw
         ]
 
@@ -80,3 +80,7 @@ class MPC_Sim:
             self.currentState, self.stepFunc, self.inputFunc, True)
         predictions = sim.simulate()
         return predictions
+
+if __name__ == "__main__":
+    sim = MPC_Sim()
+    sim.start()
