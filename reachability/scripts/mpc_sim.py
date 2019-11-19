@@ -24,12 +24,12 @@ class MPC_Sim:
         self.nlDynamics = F1Dynamics()
         self.stepFunc = partial(self.nlDynamics.frontStep, self.nlDynamics)
         self.dt = rospy.get_param("dt", .1)
-        self.totalTime = rospy.get_param("total_time", 2)
+        self.totalTime = rospy.get_param("total_time", 1)
 
         self.currentState = [0, 0, 0]
-        self.inputFunc = lambda t : [ 6, -1 * math.cos(2*t)/4]
+        self.inputFunc = lambda et, t : [ 4, -1 * math.cos(2*t+et)/4]
 
-        self.simulator = simulator.ModelSimulator(self.dt, self.totalTime, self.currentState, self.stepFunc, self.inputFunc, True)
+#        self.simulator = simulator.ModelSimulator(self.dt, self.totalTime, self.currentState, self.stepFunc, self.inputFunc, True)
 
         self.simulation_period = 100 #ms between publish events
         self.prediction_pub_topic = rospy.get_param("mpc_prediction_topic", "mpc_prediction")
@@ -39,12 +39,16 @@ class MPC_Sim:
         self.prediction_pub = rospy.Publisher(self.prediction_pub_topic, MPC_trajectory, queue_size=1)
         self.meta_pub = rospy.Publisher(self.meta_pub_topic, MPC_metadata, queue_size=1)
         self.position_sub = rospy.Subscriber(self.position_topic, PoseStamped, self.parseState)
+
+	self.elapsedTime = 0
         
 
     def start(self):
         rate = rospy.Rate(1000/self.simulation_period)
+        time.sleep(2)
         while not rospy.is_shutdown():
             results = self.simulate()
+            self.currentState = results[0][0][:-1]
 
             header = std_msgs.msg.Header()
             header.stamp = rospy.Time.now()
@@ -69,15 +73,16 @@ class MPC_Sim:
     def parseState(self, data):
         qt = data.pose.orientation
         _, _, yaw = euler_from_quaternion([qt.x, qt.y, qt.z, qt.w])
-        self.initalState = [
+        self.currentState = [
             data.pose.position.x,
             data.pose.position.y,
             yaw
         ]
 
     def simulate(self):
+	etInputFunc = partial(self.inputFunc, self.elapsedTime)
         sim = simulator.ModelSimulator(self.dt, self.totalTime, 
-            self.currentState, self.stepFunc, self.inputFunc, True)
+            self.currentState, self.stepFunc, etInputFunc, True)
         predictions = sim.simulate()
         return predictions
 

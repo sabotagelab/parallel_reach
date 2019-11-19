@@ -97,7 +97,7 @@ class F1Hylaa:
         elif displayType == "VIDEO":
             settings.plot.plot_mode = PlotSettings.PLOT_VIDEO
         else: 
-            #rospy.logwarn("Invalid hylaa plot type specified, default=NONE used")
+            rospy.logwarn("Invalid hylaa plot type specified, default=NONE used")
             settings.plot.plot_mode = PlotSettings.PLOT_NONE
 
         if verbosity == "NONE":
@@ -105,7 +105,7 @@ class F1Hylaa:
         elif verbosity == "VERBOSE":
             settings.stdout = HylaaSettings.STDOUT_VERBOSE
         else:
-            #rospy.logwarn("WARNING: Invalid hylaa output verbosity specified, default=VERBOSE used")
+            rospy.logwarn("WARNING: Invalid hylaa output verbosity specified, default=VERBOSE used")
             settings.stdout = HylaaSettings.STDOUT_VERBOSE
         
         if displayType != "NONE":

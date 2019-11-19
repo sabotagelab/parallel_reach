@@ -2,6 +2,8 @@ mpc_prediction_topic: mpc_prediction
 mpc_metadata_topic: mpc_metadata
 graph_predictions: True
 display_type: IMAGE #NONE IMAGE VIDEO
+display_filename: hylaa_reach.png
+output_verbosity: NONE
 
 state_uncertainty:
   px: .1
