@@ -18,7 +18,7 @@ from nl_dynamics import F1Dynamics
 import simulator
 
 ##ROS imports
-#import rospy
+import rospy
 #from osuf1_common import StampedFloat2d, MPC_metadata
 
 #wrapper to run hylaa repeatedly with different inputs
@@ -39,11 +39,11 @@ class F1Hylaa:
         # ------------------ Per-run Configuration ----------------------
         self.ha = None
         self.predictions = None #predictions from MPC 3d array : [ dt[ state[x,y,psi], inputs[d,v] ] ]
-        self.stateList = []
+        self.modeList = []
         self.initialState = None
 
 
-    def set_model_params(self, state_uncertainty, input_uncertainty, dynamics_module="kinematics_model"):
+    def set_model_params(self, state_uncertainty, input_uncertainty, dynamics_module="kinematics_model_new"):
         model_gen = importlib.import_module(dynamics_module)
         self.modeList = []
         self.state_uncertainty = state_uncertainty
@@ -56,7 +56,7 @@ class F1Hylaa:
     def run_hylaa(self, predictions):
         self.ha = None
         self.predictions = None
-        self.stateList = []
+        self.modeList = []
         self.initialState = None
 
         self.ha = HybridAutomaton()
@@ -97,6 +97,7 @@ class F1Hylaa:
         else: 
             rospy.logwarn("Invalid hylaa plot type specified, default=NONE used")
             settings.plot.plot_mode = PlotSettings.PLOT_NONE
+        rospy.loginfo("Using HYLAA setting: plot_mode = {}".format(displayType))
 
         if verbosity == "NONE":
             settings.stdout = HylaaSettings.STDOUT_NONE
@@ -105,6 +106,7 @@ class F1Hylaa:
         else:
             rospy.logwarn("WARNING: Invalid hylaa output verbosity specified, default=VERBOSE used")
             settings.stdout = HylaaSettings.STDOUT_VERBOSE
+        rospy.loginfo("Using HYLAA setting: stdout = {}".format(verbosity))
         
         if displayType != "NONE":
             settings.plot.xdim_dir = [0, 6]

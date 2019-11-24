@@ -73,7 +73,6 @@ class Model:
     
     def linearized_dynamics(self, state, inputs, dt):
         current = list(zip(self.symbols, state+inputs+self.constants+[dt]+self.input_uncertainty))
-        print(current)
         return {
             "A" : self.A.subs(current).evalf(),
             "B" : self.B.subs(current).evalf(),

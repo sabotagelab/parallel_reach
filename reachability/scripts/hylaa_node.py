@@ -35,10 +35,8 @@ class HYLAA_node:
         ]
 
         self.input_uncertainty = [
-            rospy.get_param("velocity", 0),
-            rospy.get_param("steer", 0),
-            0,  #e0
-            0   #d0
+            rospy.get_param("/hylaa_node/input_uncertainty/velocity", 0),
+            rospy.get_param("/hylaa_node/input_uncertainty/delta", 0)
         ]
 
 
@@ -47,14 +45,14 @@ class HYLAA_node:
         self.hylaa_verbosity = rospy.get_param("/hylaa_node/output_verbosity", "VERBOSE").upper() #TODO integrate with roslogger 
         self.graph_predictions = rospy.get_param("/hylaa_node/graph_predictions", False) #wether predicted sim results should be overlayed on reach set graph (if displayed)
         self.displayType = rospy.get_param("/hylaa_node/display_type", "NONE").upper()
-        self.output = rospy.get_param("/hylaa_node/display_filename", "f1_kinematics.png") #TODO put images in distinct folder and label with frame times
+        self.output = rospy.get_param("/hylaa_node/display_filename", "hylaa_reach.png") #TODO put images in distinct folder and label with frame times
 
 
         #---------------------------------------------------------
         #                   HYLAA Calling Vars
         #---------------------------------------------------------
         self.hylaa = F1Hylaa()
-        self.hylaa.set_model_params(self.state_uncertainty, self.input_uncertainty)
+        self.hylaa.set_model_params(self.state_uncertainty, self.input_uncertainty, "kinematics_model_new")
 
         #custom interval in ms or 0=maximum speed
         self.reachability_interval = rospy.get_param("/hylaa_node/interval", 0)
@@ -89,12 +87,10 @@ class HYLAA_node:
         while not rospy.is_shutdown(): 
             if self.current_metadata and self.current_trajectory:
                 rospy.loginfo("STARTING HYLAA !!!!!!")
-                rospy.loginfo("STARTING HYLAA !!!!!!")
-                rospy.loginfo("STARTING HYLAA !!!!!!")
-                rospy.loginfo("STARTING HYLAA !!!!!!")
                 self.current_metadata = self.current_trajectory = False
                 reach = self.hylaa.run_hylaa(self.predictions)
-                self.reach_pub.publish("HYLAA")
+                print(reach)
+                self.reach_pub.publish("HYLAA, {} reach sets computed".format(len(reach)))
             else:
                 rospy.loginfo_throttle(15, "Waiting for updated mpc data")
             if hz:
