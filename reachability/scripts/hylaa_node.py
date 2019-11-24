@@ -91,8 +91,6 @@ class HYLAA_node:
         #self.reach_viz_pub = rospy.Publisher(self.reach_pub_topic+'_viz') #TODO implement vizualizations
 
 
-    def run_hylaa(self):
-        rospy.loginfo("Hylaa reachability computation finished.") #TODO add time to output
 
     def start(self):
 

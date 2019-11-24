@@ -67,11 +67,9 @@ class F1Hylaa:
         initialBox = self.make_init(self.predictions[0][0])
         core = Core(self.ha, self.settings)
         result = core.run(initialBox)
-        reachset = result.plot_data.get_verts_list(self.modeList[-1])
+        reachsets = [result.plot_data.get_verts_list(mode) for mode in self.modeList]
 
-
-        #return [(float(x), float(y)) for x, y in reachset] #TODO export reach sets from all modes
-        return reachset
+        return reachsets
 
     def make_settings(self, dt, total, displayType, verbosity, fileName="hylaa_reach.png"):
         self.dt = dt
@@ -109,7 +107,7 @@ class F1Hylaa:
             settings.stdout = HylaaSettings.STDOUT_VERBOSE
         
         if displayType != "NONE":
-            settings.plot.xdim_dir = [0, 3]
+            settings.plot.xdim_dir = [0, 6]
             settings.plot.ydim_dir = [1, 2]
             settings.plot.label = [LabelSettings(), LabelSettings()]
 
@@ -139,9 +137,9 @@ class F1Hylaa:
             nl_Patches = [Ellipse(center, .2, .2) for center in nl_Centers]
             nl_Circles = collections.PatchCollection(nl_Patches, facecolors='red', edgecolors='black', zorder=1000)    
 
-            nl_yaw_centers = [(state[3], state[2]) for state, _ in self.predictions]
-            nl_yaw_patches = [Ellipse(center, self.dt/4 * 2, 3.14/32) for center in nl_yaw_centers]
-            nl_yaw_circles = collections.PatchCollection(nl_yaw_patches, facecolors='red', edgecolors='black', zorder=1000)
+            nl_yaw_centers = [(state[-1], state[2]) for state, _ in self.predictions]
+            nl_yaw_patches = [Ellipse(center, self.dt/8 , 3.14/32) for center in nl_yaw_centers]
+            nl_yaw_circles = collections.PatchCollection(nl_yaw_patches, facecolors='red', edgecolors='black', zorder=-1)
         
             self.settings.plot.extra_collections = [[nl_Circles],[nl_yaw_circles]]
 
@@ -151,17 +149,21 @@ class F1Hylaa:
         mode = self.ha.modes['m0']
 
         dims = mode.a_csr.shape[0]
-        init_box = [(0, 0)] * (dims-2)
-
-        #initial state = state uncertainty + time uncertainty(0)
-        #we assume the uncertainty is symettrical for x, y, yaw
+        without_time = dims-2
+        pure_state = without_time // 2
+        init_box = [(0, 0)] * (pure_state)
+        lin_box = [(1, 1)] * (pure_state)
         time_init = [(0.0, 0.0), (1.0, 1.0)]
+
+        #initial state = state uncertainty + linear var uncertainty + time uncertainty(0)
+        #we assume the uncertainty is symettrical for x, y, yaw
         for s in range(len(init_box)):
             init_box[s] = ( 
                 initialState[s] - self.state_uncertainty[s],
                 initialState[s] + self.state_uncertainty[s]
             )
-        init_box += time_init
+        init_box += lin_box + time_init
+        print(init_box)
         init_lpi = lputil.from_box(init_box, mode)
         
         init_list = [StateSet(init_lpi, mode)]
@@ -173,15 +175,10 @@ class F1Hylaa:
 
         modeLabelIncrement = 0
         lastMode = None
-        prevState = self.predictions[0][0]
-        prevInputs = self.predictions[0][1] #the first inputs (at t=0)
         for state, inputs in self.predictions:
 
             #get the dynamics linearized around this state/input set
-            e0d0 = [prevState[2], prevInputs[1]]
-            dynamics = self.model.linearized_dynamics(state[:-1], inputs+e0d0)
-            prevState = state
-            prevInputs = inputs
+            dynamics = self.model.linearized_dynamics(state[:-1], inputs, self.dt)
 
             modeName = 'm{}'.format(modeLabelIncrement)
             mode = self.ha.new_mode(modeName)
@@ -197,9 +194,7 @@ class F1Hylaa:
 
             criticalTime = state[-1]# + 1e-4 #using time offset frome rendevous example
 
-            invariant_mat = [
-                [0, 0, 0, 1, 0]
-            ]
+            invariant_mat = dynamics["invariant_mat"]
 
             #TODO add configurable ciritical time variance
             invariant_rhs = [
@@ -209,7 +204,7 @@ class F1Hylaa:
 
             if lastMode:        
                 t = self.ha.new_transition(lastMode, mode)
-                guard_mat = [ [0.0, 0.0, 0.0, -1.0, 0.0] ]
+                guard_mat = dynamics["guard_mat"]
                 guard_rhs = [ -criticalTime + 1e-4] #time from last state is bound
                 t.set_guard(guard_mat, guard_rhs)
 

@@ -1,4 +1,4 @@
-from sympy import sin, cos, tan, Matrix, symbols, pprint
+from sympy import sin, cos, tan, Matrix, BlockMatrix, eye, zeros, pprint
 
 #model representing the linearized dynamics 
 # and bounds of a system 
@@ -20,19 +20,30 @@ class Model:
         self.A = A_jac
         self.B = B_jac
 
-        self.bounds_rhs = bounds_rhs
-        self.bounds_mat = self.standardBounds()
-        self.input_uncertainty = [0] * self.B.shape[1]
-        
+        #augment A, B for time triggered transitions
         self.augmentDynamics()
 
+        self.bounds_rhs = bounds_rhs
+        self.bounds_mat = self.standardBounds()
+        self.invariant_mat = self.standardTimeInvariant()
+        self.guard_mat = self.standardGuard()
+        self.input_uncertainty = [0] * self.B.shape[1]
+        
+
     def standardBounds(self):
-        return [
-            [1, 0, 0, 0],[-1, 0, 0, 0],
-            [0, 1, 0, 0],[0, -1, 0 , 0],
-            [0, 0, 1, 0], [0, 0, -1, 0],
-            [0, 0, 0, 1], [0, 0, 0, -1]
-        ]
+        a = [eye(self.B.shape[1]), -1 * eye(self.B.shape[1])]
+        a = [ai.tolist() for ai in a]
+        m = [a[p%2][p//2] for p in range(self.B.shape[1]*2)]
+        return Matrix(m)
+
+    def standardTimeInvariant(self):
+        inv = zeros(1, self.A.shape[0])
+        inv[self.A.shape[0] - 2] = 1
+        return inv
+    
+    def standardGuard(self):
+        guard =  self.invariant_mat * -1
+        return guard
 
     def setInputUncertainty(self, input_uncertainty):
         assert(len(input_uncertainty) == len(self.input_uncertainty))
@@ -60,13 +71,16 @@ class Model:
         b = b.row_insert(brow(), Matrix([[0] * bcol()])) #time accum
         self.B = b
     
-    def linearized_dynamics(self, state, inputs):
-        current = list(zip(self.symbols, state+inputs+self.constants+self.input_uncertainty))
+    def linearized_dynamics(self, state, inputs, dt):
+        current = list(zip(self.symbols, state+inputs+self.constants+[dt]+self.input_uncertainty))
+        print(current)
         return {
             "A" : self.A.subs(current).evalf(),
             "B" : self.B.subs(current).evalf(),
             "bounds_mat" : self.bounds_mat,
             "bounds_rhs" : self.bounds_rhs.subs(current).evalf(),
+            "invariant_mat" : self.invariant_mat,
+            "guard_mat" : self.guard_mat,
             "current" : current
         }
 
