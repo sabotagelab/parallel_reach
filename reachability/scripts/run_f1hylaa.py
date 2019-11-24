@@ -1,3 +1,6 @@
+#barebones testing script to run hylaa without ROS
+# also used by profiler
+
 from F1Hylaa import F1Hylaa
 #local imports
 from nl_dynamics import F1Dynamics

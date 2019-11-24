@@ -40,7 +40,7 @@ class MPC_Sim:
         self.meta_pub = rospy.Publisher(self.meta_pub_topic, MPC_metadata, queue_size=1)
         self.position_sub = rospy.Subscriber(self.position_topic, PoseStamped, self.parseState)
 
-	self.elapsedTime = 0
+        self.elapsedTime = 0
         
 
     def start(self):
@@ -80,7 +80,7 @@ class MPC_Sim:
         ]
 
     def simulate(self):
-	etInputFunc = partial(self.inputFunc, self.elapsedTime)
+        etInputFunc = partial(self.inputFunc, self.elapsedTime)
         sim = simulator.ModelSimulator(self.dt, self.totalTime, 
             self.currentState, self.stepFunc, etInputFunc, True)
         predictions = sim.simulate()

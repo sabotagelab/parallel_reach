@@ -1,60 +1,85 @@
 from model import Model
-from sympy import sin, cos, tan, Matrix, symbols
+from sympy import sin, cos, tan, Matrix, symbols, MatrixSymbol, BlockMatrix, eye, diag, zeros, pprint, init_printing
 
 def getModel():
-    # ---------- STATE (X) -----------
+    # ---------- STATE (S) -----------
     #variables
-    x, y, p = symbols('x y p')
-    stateVars = [x, y, p]
+    x, y, p = symbols('x y  p')
+    S_k = [x, y, p]
 
 
-    # ---------- INPUT (U) -----------
+    # ---------- INPUTS (U) -----------
     #variables
-    v, d, e0, d0 = symbols('v d e0 d0')
-    inputVars = [v, d, e0, d0]
+    v, d = symbols('v d')
+    U_k = Matrix([v, d])
 
-    #bounds
-    vs, ds, e0s, d0s = symbols('vs ds e0s d0s')
-    boundVars = [vs, ds, e0s, d0s]
+    # ---------- STATE LINEARIZATION (Sbar)  -----------
+    xb, yb, pb = symbols('xb yb pb')
+    Sbar = Matrix([xb, yb, pb])
+
+    # ---------- INPUT LINEARIZATION (Ubar)  -----------
+    vb, db = symbols('vb db')
+    Ubar = Matrix([vb, db])
+
+    # ---------- BOUNDS -----------
+    vs, ds = symbols('vs ds')
+    boundVars = Matrix([vs, ds])
     bounds_rhs = Matrix([
-        v + vs, -(v - vs),
-        d + ds, -(d - ds),
-        e0, -e0,
-        d0, -d0
+        vb + vs, -(vb - vs),
+        db + ds, -(db - ds)
     ])
 
     # ---------- CONSTANTS -----------
     #variables
-    L = symbols('L')
+    L, dt = symbols('L dt')
     L0 = .32
     constantVals = [L0]
-    constantSym = [L]
+    constantSym = Matrix([L, dt])
 
-    nl_equations = Matrix([
-        v * cos(p),
-        v * sin(p),
-        (v/L) * sin(d)
+    # F(Sbar, UBar)
+    F = Matrix([
+        vb * cos(pb + db),
+        vb * sin(pb + db),
+        (vb/L) * sin(db)
     ])
 
+    #find partials
+    dFdS = F.jacobian(Sbar)
+    dFdU = F.jacobian(Ubar)
+
+    #construct constant matrix
+    C = F - (dFdS * Sbar) - (dFdU * Ubar)
+
+    #define final state/inputs
+    S = S_k + [1] * C.shape[0]
+    U = U_k
+
+    #make pieces of A-matrix and combine (state dynamics)
+    M1 = dFdS  #+ eye(Sbar.shape[0])
+    M2 = diag(*C)
+    M3 = zeros(Sbar.shape[0])
+    M4 = zeros(C.shape[0])
+    
+    A_mat = Matrix(BlockMatrix([
+        [M1, M2],
+        [M3, M4]
+    ]))
+
+    #Assemble B-matrix (input dynamics)
+    B_mat =  Matrix( [
+        dFdU,
+        zeros(C.shape[0], U.shape[0])
+    ])
+
+    init_printing()
+    #pprint(F)
+    #pprint(dFdU * Ubar)
+    #pprint(F - dFdU * Ubar)
+    #pprint(dFdS * Sbar)
+    #pprint(C)
+    pprint(A_mat)
+    pprint(B_mat)
 
 
-    #TODO cleaner manual jacobian changes using substitution
-    #   half-working commented in model_OLD.py
-
-    #substitutions for generating proper linearizations after evaluation
-    A_jacobian = nl_equations.jacobian(stateVars)
-    B_jacobian = nl_equations.jacobian(inputVars)
-
-    matidx = lambda shape, r, c : shape[1] * r + c
-    idx_A = lambda r, c : matidx(A_jacobian.shape, r, c)
-    idx_B = lambda r, c : matidx(B_jacobian.shape, r, c)
-
-
-    B_jacobian[idx_B(0,2)] = -1 * A_jacobian[idx_A(0,2)] #e0 for x
-    B_jacobian[idx_B(1,2)] = -1 * A_jacobian[idx_A(1,2)] #e0 for y
-    B_jacobian[idx_B(0,3)] = -1 * B_jacobian[idx_B(0,1)] #d0 for x
-    B_jacobian[idx_B(1,3)] = -1 * B_jacobian[idx_B(1,1)] #d0 for y
-    B_jacobian[idx_B(2,3)] = -1 * B_jacobian[idx_B(2,1)] #d0 for e
-
-    all_vars = stateVars + inputVars + constantSym + boundVars
-    return Model(all_vars, constantVals, A_jacobian, B_jacobian, bounds_rhs)
+    all_vars = list(Sbar) + list(Ubar) + list(constantSym) + list(boundVars)
+    return Model(all_vars, constantVals, A_mat, B_mat, bounds_rhs)
