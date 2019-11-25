@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<launch>
+    <!-- ****** MPC Simulation Node ****** -->
+    <node name="hylaa_viz" pkg="reachability" type="hylaa_viz_node.py" output="screen">
+        <rosparam file="$(find reachability)/config/hylaa_viz.yaml" command="load"/>
+    </node>
+</launch>

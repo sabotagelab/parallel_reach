@@ -1,0 +1,3 @@
+inputs_topic : "mpc_inputs"
+trajectory_topic : "mpc_trajectory"
+metadata_topic : "mpc_metadata"

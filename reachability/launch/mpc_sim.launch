@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<launch>
+    <!-- ****** MPC Simulation Node ****** -->
+    <node name="mpc_sim" pkg="reachability" type="mpc_sim.py" output="screen">
+        <rosparam file="$(find reachability)/config/mpc_sim.yaml" command="load"/>
+    </node>
+</launch>

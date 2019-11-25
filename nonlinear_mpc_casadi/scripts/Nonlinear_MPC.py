@@ -11,7 +11,9 @@ import rospy
 from geometry_msgs.msg import Pose, PoseStamped, Point, Quaternion,Vector3
 from ackermann_msgs.msg import AckermannDriveStamped
 from nav_msgs.msg import Path, Odometry
+
 from std_msgs.msg import Duration, Header,ColorRGBA
+
 from tf.transformations import quaternion_from_euler, euler_from_quaternion
 from visualization_msgs.msg import Marker,MarkerArray
 
@@ -319,7 +321,7 @@ class MPC:
         # Shift trajectory and control solution to initialize the next step
         self.X0 = vertcat(self.X0[1:, :], self.X0[self.X0.size1() - 1, :])
         self.u0 = vertcat(u[1:, :], u[u.size1() - 1, :])
-        return con_first, trajectory
+        return con_first, trajectory, u
 
     def heading(self, yaw):
         q = quaternion_from_euler(0, 0, yaw)
@@ -450,6 +452,7 @@ class MPCKinematicNode:
         self.goal_reached = False
         self.goal_received = False
 
+
         # Subscribers
         rospy.Subscriber(pose_topic, PoseStamped, self.pf_pose_callback, queue_size=1)
         rospy.Subscriber(goal_topic, PoseStamped, self.goalCB, queue_size=1)
@@ -486,7 +489,7 @@ class MPCKinematicNode:
                 tempPose.header = self.local_path.header
                 tempPose.pose.position.x = self.total_path.poses[i].pose.position.x
                 tempPose.pose.position.y = self.total_path.poses[i].pose.position.y
-                tempPose.pose.orientation.w = 1.0
+                tempPose.pose.orientation.w = self.heading.trajectory[i,2]
                 self.local_path.poses.append(tempPose)
 
     def find_nearest_index(self, car_pos):
@@ -719,6 +722,7 @@ class MPCKinematicNode:
             self.center_tangent_pub.publish(centerPose)
 
             # Solve MPC Problem
+
             mpc_time = time.time()
             first_control, trajectory = self.mpc.solve(current_state)
             mpc_compute_time = time.time() - mpc_time
@@ -766,7 +770,9 @@ class MPCKinematicNode:
             self.t_plot.append(self.current_time)
             self.v_plot.append(speed)
             self.steering_plot.append(np.rad2deg(steering))
+
             self.time_plot.append(mpc_compute_time * 1000)
+
         else:
             steering = 0.0
             speed = 0.0

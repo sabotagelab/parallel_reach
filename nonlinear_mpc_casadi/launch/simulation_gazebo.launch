@@ -7,7 +7,6 @@
           <arg name="z" default="0.0"/>
           <arg name="yaw" default="0.807"/>  <!--0.807,p 3.14-->
   	</include>
-
   	<!-- Run map server -->
 	<arg name="map_file" default="$(find nonlinear_mpc_casadi)/maps/kelley_third_floor.yaml"/> <!--map_trackporto.yaml-->
 	<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />

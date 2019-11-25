@@ -1,0 +1,17 @@
+mpc_prediction_topic: mpc_prediction
+mpc_metadata_topic: mpc_metadata
+reach_pub_topic: hylaa_reach
+graph_predictions: True
+display_type: NONE #NONE IMAGE VIDEO
+display_filename: /home/nvidia/hylaa.png
+output_verbosity: NONE
+
+state_uncertainty:
+  px: .1
+  py: .1
+  psi: .01
+
+input_uncertainty:
+  velocity: .1
+  delta: .01
+
