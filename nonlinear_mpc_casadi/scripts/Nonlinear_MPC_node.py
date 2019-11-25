@@ -15,6 +15,7 @@ from std_msgs.msg import Duration, Header
 from tf.transformations import quaternion_from_euler, euler_from_quaternion
 from visualization_msgs.msg import Marker, MarkerArray
 from Nonlinear_MPC import MPC
+from osuf1_common.msg import MPC_metadata, MPC_trajectory, MPC_prediction
 
 class MPCKinematicNode:
     def __init__(self):
@@ -72,6 +73,8 @@ class MPCKinematicNode:
         cmd_vel_topic = rospy.get_param('cmd_vel_topic_name', '/vesc/high_level/ackermann_cmd_mux/input/nav_0')
         odom_topic = rospy.get_param('odom_topic_name', '/vesc/odom')
         goal_topic = rospy.get_param('goal_topic_name', '/move_base_simple/goal')
+        prediction_pub_topic = rospy.get_param('mpc_prediction_topic', 'mpc_prediction')
+        meta_pub_topic = rospy.get_param('mpc_metadata_topic', 'mpc_metadata')
         self.car_frame = rospy.get_param('car_frame', 'base_link')
 
         # Path related variables
@@ -99,15 +102,18 @@ class MPCKinematicNode:
         self.ackermann_pub = rospy.Publisher(cmd_vel_topic, AckermannDriveStamped, queue_size=10)
         self.mpc_trajectory_pub = rospy.Publisher('/mpc_trajectory', Path, queue_size=10)
         self.mpc_reference_pub = rospy.Publisher('/mpc_reference', Path, queue_size=10)
-        self.mpc_coeffs_path_pub = rospy.Publisher('/mpc_coeffs_path', Path, queue_size=10)
-        self.center_path_pub = rospy.Publisher('/center_path', Path, queue_size=100)
-        self.right_path_pub = rospy.Publisher('/right_path', Path, queue_size=100)
-        self.left_path_pub = rospy.Publisher('/left_path', Path, queue_size=100)
-        self.center_tangent_pub = rospy.Publisher('/center_tangent', PoseStamped, queue_size=100)
+        self.center_path_pub = rospy.Publisher('/center_path', Path, queue_size=10)
+        self.right_path_pub = rospy.Publisher('/right_path', Path, queue_size=10)
+        self.left_path_pub = rospy.Publisher('/left_path', Path, queue_size=10)
+        self.center_tangent_pub = rospy.Publisher('/center_tangent', PoseStamped, queue_size=10)
+        self.path_boundary_pub = rospy.Publisher('/boundary_marker', MarkerArray, queue_size=10)
+        self.prediction_pub = rospy.Publisher(prediction_pub_topic, MPC_trajectory, queue_size=1)
+        self.meta_pub = rospy.Publisher(meta_pub_topic, MPC_metadata, queue_size=1)
+
 
         # MPC related initializations
         self.mpc = MPC()
-        self.mpc.boundary_pub = rospy.Publisher('/boundary_marker', MarkerArray, queue_size=100)
+        self.mpc.boundary_pub = self.path_boundary_pub
         self.initialize_MPC()
         self.current_pos_x, self.current_pos_y, self.current_yaw, self.current_s = 0.0, 0.0, 0.0, 0.0
         self.current_pose = None
@@ -305,6 +311,7 @@ class MPCKinematicNode:
             current_s = self.element_arc_lengths[nearest_index]
         return current_s, nearest_index
 
+
     def controlLoopCB(self, event):
         '''Control loop for car MPC'''
         if self.goal_received and not self.goal_reached:
@@ -340,9 +347,8 @@ class MPCKinematicNode:
 
             # Solve MPC Problem
             mpc_time = time.time()
-            first_control, trajectory, control_input_soln = self.mpc.solve(current_state)
+            first_control, trajectory, control_inputs = self.mpc.solve(current_state)
             mpc_compute_time = time.time() - mpc_time
-            rospy.loginfo("Control loop time mpc= %s:", mpc_compute_time)
 
             # MPC result (all described in car frame)
             speed = float(first_control[0])  # speed
@@ -367,14 +373,34 @@ class MPCKinematicNode:
                 tempPose.pose.position.y = trajectory[i, 1]
                 tempPose.pose.orientation = self.heading(trajectory[i, 2])
                 mpc_traj.poses.append(tempPose)
-
-            # publish the mpc trajectory
             self.mpc_trajectory_pub.publish(mpc_traj)
+
+            # publish the mpc related metadata to hylaa node
+            #metadata message
+            meta = MPC_metadata()
+            meta.header = self.create_header('map')
+            meta.dt = self.param['dT']
+            meta.horizon = self.param['N']*self.param['dT']
+            self.meta_pub.publish(meta)
+
+            #publish mpc prediction results message
+            mpc_prediction_results = []
+            for i in range(control_inputs.shape[0]):
+                mpc_prediction_states = [trajectory[i, 0], trajectory[i, 1], trajectory[i, 2]]
+                mpc_prediction_inputs = [control_inputs[i, 0], control_inputs[i, 1]]
+                mpc_prediction_results.append((mpc_prediction_states, mpc_prediction_inputs))
+
+            trajectory = MPC_trajectory()
+            trajectory.header = meta.header
+            trajectory.trajectory = [MPC_prediction(pred[0], pred[1]) for pred in mpc_prediction_results]
+            self.prediction_pub.publish(trajectory)
+
             total_time = time.time() - control_loop_start_time
             if self.DEBUG_MODE:
                 rospy.loginfo("DEBUG")
                 rospy.loginfo("psi: %s ", psi)
                 rospy.loginfo("V: %s", v)
+                rospy.loginfo("Control loop time mpc= %s:", mpc_compute_time)
                 rospy.loginfo("Control loop time=: %s", total_time)
 
             self.current_time += 1.0 / self.CONTROLLER_FREQ

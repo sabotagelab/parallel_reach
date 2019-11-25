@@ -310,11 +310,12 @@ class MPC:
         # Get the first control
         con_first = u[0, :].T
         trajectory = self.X0.full()  # size is (N+1,n_states)
+        inputs = u.full()
         # full converts casadi data type to python data type(numpy array)
         # Shift trajectory and control solution to initialize the next step
         self.X0 = vertcat(self.X0[1:, :], self.X0[self.X0.size1() - 1, :])
         self.u0 = vertcat(u[1:, :], u[u.size1() - 1, :])
-        return con_first, trajectory, u
+        return con_first, trajectory, inputs
 
     def heading(self, yaw):
         q = quaternion_from_euler(0, 0, yaw)

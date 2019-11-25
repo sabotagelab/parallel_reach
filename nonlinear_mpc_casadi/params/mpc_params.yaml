@@ -33,7 +33,7 @@ delay_mode: True
 car_width: 0.3
 spline_poly_order: 3
 goal_threshold: 0.6 # unit: m
-controller_freq: 20
+controller_freq: 15
 path_folder_name: kelley
 inflation_factor: 0.25
 lag_time: 0.05
