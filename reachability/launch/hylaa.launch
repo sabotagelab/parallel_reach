@@ -6,7 +6,7 @@
     <arg name="viz" default="false"/>
 
     <!-- ****** HYLAA Reachability Node ****** -->
-    <node name="hylaa_node" pkg="reachability" type="hylaa_node.py" output="screen">
+    <node name="hylaa_node" pkg="reachability" type="hylaa_node.py" output="screen" launch-prefix="taskset -c 1">
         <rosparam file="$(arg hylaa_config)" command="load"/>
     </node>
 

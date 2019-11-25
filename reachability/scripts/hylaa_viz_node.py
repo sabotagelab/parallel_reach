@@ -76,7 +76,7 @@ class Hylaa_Viz_Node:
         triMarker.action = 0
         triMarker.pose = origin
         triMarker.color = ColorRGBA(1, 1, 1, 1)
-        triMarker.scale = Vector3(1, 1, )
+        triMarker.scale = Vector3(1, 1, 1)
         triMarker.points = [Point(p[0], p[1], 0) for tri in triPoints for p in tri]
 
         #expand color array to cover all verts for all tris in each set with same color
