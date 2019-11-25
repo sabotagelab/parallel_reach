@@ -19,7 +19,7 @@ class ModelSimulator():
     def __init__(self, dt, totalTime, initialState, stepFunc=None, inputFunc=None, headless=False):
         self.dt = dt
         self.totalTime = totalTime
-        assert(dt < totalTime, "dt >= total time - undefined configuration")
+        assert dt < totalTime, "dt >= total time - undefined configuration"
 
         self.stepFunc = stepFunc
         self.inputFunc = inputFunc
@@ -30,11 +30,11 @@ class ModelSimulator():
     def simulate(self, stepFunc=None, inputFunc=None):
         if stepFunc:
             self.stepFunc = stepFunc
-        assert(self.stepFunc != None , "Step Function must be specified")
+        assert self.stepFunc != None , "Step Function must be specified"
 
         if inputFunc:
             self.inputFunc = inputFunc 
-        assert(self.inputFunc != None , "Input Function must be specified")
+        assert self.inputFunc != None , "Input Function must be specified"
 
         time = 0
         steps = int(self.totalTime / self.dt)
@@ -54,7 +54,7 @@ class ModelSimulator():
 
             self.currentState = self.stepFunc(self.currentState, inputs, self.dt)
             self.stateList.append((
-                self.currentState + [time],
+                self.currentState,
                 inputs
             ))
             

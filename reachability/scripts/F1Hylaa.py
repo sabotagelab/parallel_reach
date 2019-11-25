@@ -139,7 +139,7 @@ class F1Hylaa:
             nl_Patches = [Ellipse(center, .2, .2) for center in nl_Centers]
             nl_Circles = collections.PatchCollection(nl_Patches, facecolors='red', edgecolors='black', zorder=1000)    
 
-            nl_yaw_centers = [(state[-1], state[2]) for state, _ in self.predictions]
+            nl_yaw_centers = [(self.dt*pidx, self.predictions[pidx][0][2]) for pidx in range(len(self.predictions))]
             nl_yaw_patches = [Ellipse(center, self.dt/8 , 3.14/32) for center in nl_yaw_centers]
             nl_yaw_circles = collections.PatchCollection(nl_yaw_patches, facecolors='red', edgecolors='black', zorder=-1)
         
@@ -175,14 +175,14 @@ class F1Hylaa:
     #generated modes IN PLACE on given ha, filling with given inputs
     def make_automaton(self):
 
-        modeLabelIncrement = 0
+        modeIncrement = 0
         lastMode = None
         for state, inputs in self.predictions:
 
             #get the dynamics linearized around this state/input set
-            dynamics = self.model.linearized_dynamics(state[:-1], inputs, self.dt)
+            dynamics = self.model.linearized_dynamics(state[:3], inputs, self.dt)
 
-            modeName = 'm{}'.format(modeLabelIncrement)
+            modeName = 'm{}'.format(modeIncrement)
             mode = self.ha.new_mode(modeName)
             self.modeList.append(modeName)
 
@@ -194,7 +194,7 @@ class F1Hylaa:
             bounds_rhs = dynamics["bounds_rhs"]
             mode.set_inputs(b_matrix, bounds_mat, bounds_rhs, allow_constants=True)
 
-            criticalTime = state[-1]# + 1e-4 #using time offset frome rendevous example
+            criticalTime = self.dt * modeIncrement # + 1e-4 #using time offset frome rendevous example
 
             invariant_mat = dynamics["invariant_mat"]
 
@@ -211,5 +211,5 @@ class F1Hylaa:
                 t.set_guard(guard_mat, guard_rhs)
 
             lastMode = mode
-            modeLabelIncrement += 1
+            modeIncrement += 1
 
