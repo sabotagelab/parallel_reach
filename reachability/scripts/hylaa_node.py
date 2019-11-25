@@ -23,7 +23,7 @@ class HYLAA_node:
         #                   HYLAA Params
         #---------------------------------------------------------
         self.predictions = None #predictions from MPC
-        self.reachability_horizon = rospy.get_param("horizon", 2.0) #horizon in seconds
+        self.reachability_horizon = rospy.get_param("/hylaa_node/horizon", 0)
         self.dt = None          #dt from MPC metdata
         self.mpc_horizon = None #simulation horizon from MPC metadata
 
@@ -41,7 +41,6 @@ class HYLAA_node:
 
 
         #custom horizon or utilize all computed MPC steps
-        self.reachability_horizon = rospy.get_param("/hylaa_node/horizon", 0)
         self.hylaa_verbosity = rospy.get_param("/hylaa_node/output_verbosity", "VERBOSE").upper() #TODO integrate with roslogger 
         self.graph_predictions = rospy.get_param("/hylaa_node/graph_predictions", False) #wether predicted sim results should be overlayed on reach set graph (if displayed)
         self.displayType = rospy.get_param("/hylaa_node/display_type", "NONE").upper()
@@ -124,7 +123,7 @@ class HYLAA_node:
                 ))
                 exit(1)
 
-            self.hylaa.make_settings(self.dt, self.mpc_horizon, self.displayType, self.hylaa_verbosity)
+            self.hylaa.make_settings(self.dt, self.reachability_horizon, self.displayType, self.hylaa_verbosity)
 
         self.current_metadata = True
 

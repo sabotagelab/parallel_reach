@@ -43,7 +43,7 @@ class ModelSimulator():
             print("Simulating {} steps with dt={}".format(steps, self.dt))
 
         #this will store all the generated states
-        self.stateList = [(self.currentState + [time], self.inputFunc(time))]
+        self.stateList = [(self.currentState, self.inputFunc(time))]
 
         if self.verbose:
             print("Initial state at time {}: \n\t{}".format(time, self.stateList[-1]))
