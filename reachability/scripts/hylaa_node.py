@@ -123,7 +123,11 @@ class HYLAA_node:
                 ))
                 exit(1)
 
-            self.hylaa.make_settings(self.dt, self.reachability_horizon, self.displayType, self.hylaa_verbosity)
+            horizon = self.reachability_horizon 
+            if horizon == 0:
+                horizon = self.mpc_horizon
+
+            self.hylaa.make_settings(self.dt, horizon, self.displayType, self.hylaa_verbosity)
 
         self.current_metadata = True
 
