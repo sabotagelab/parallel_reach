@@ -39,7 +39,7 @@ class F1Hylaa:
         # ------------------ Per-run Configuration ----------------------
         self.ha = None
         self.predictions = None #predictions from MPC 3d array : [ dt[ state[x,y,psi], inputs[d,v] ] ]
-        self.stateList = []
+        self.modeList = []
         self.initialState = None
 
 
@@ -56,7 +56,7 @@ class F1Hylaa:
     def run_hylaa(self, predictions):
         self.ha = None
         self.predictions = None
-        self.stateList = []
+        self.modeList = []
         self.initialState = None
 
         self.ha = HybridAutomaton()
@@ -67,7 +67,7 @@ class F1Hylaa:
         initialBox = self.make_init(self.predictions[0][0])
         core = Core(self.ha, self.settings)
         result = core.run(initialBox)
-        reachsets = [result.plot_data.get_verts_list(mode) for mode in self.modeList]
+        reachsets = [result.plot_data.get_verts_list(mode)[0] for mode in self.modeList]
 
         return reachsets
 
@@ -97,6 +97,7 @@ class F1Hylaa:
         else: 
             rospy.logwarn("Invalid hylaa plot type specified, default=NONE used")
             settings.plot.plot_mode = PlotSettings.PLOT_NONE
+        #rospy.loginfo("Using HYLAA setting: plot_mode = {}".format(displayType))
 
         if verbosity == "NONE":
             settings.stdout = HylaaSettings.STDOUT_NONE
@@ -105,6 +106,7 @@ class F1Hylaa:
         else:
             rospy.logwarn("WARNING: Invalid hylaa output verbosity specified, default=VERBOSE used")
             settings.stdout = HylaaSettings.STDOUT_VERBOSE
+        #rospy.loginfo("Using HYLAA setting: stdout = {}".format(verbosity))
         
         if displayType != "NONE":
             settings.plot.xdim_dir = [0, 6]

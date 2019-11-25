@@ -77,8 +77,8 @@ def getModel():
     #pprint(F - dFdU * Ubar)
     #pprint(dFdS * Sbar)
     #pprint(C)
-    pprint(A_mat)
-    pprint(B_mat)
+    #pprint(A_mat)
+    #pprint(B_mat)
 
 
     all_vars = list(Sbar) + list(Ubar) + list(constantSym) + list(boundVars)

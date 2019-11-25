@@ -1,8 +1,9 @@
 mpc_prediction_topic: mpc_prediction
 mpc_metadata_topic: mpc_metadata
+reach_pub_topic: hylaa_reach
 graph_predictions: True
 display_type: IMAGE #NONE IMAGE VIDEO
-display_filename: hylaa_reach.png
+display_filename: /home/nvidia/hylaa.png
 output_verbosity: NONE
 
 state_uncertainty:
@@ -12,5 +13,5 @@ state_uncertainty:
 
 input_uncertainty:
   velocity: .1
-  steer: .1
+  delta: .01
 

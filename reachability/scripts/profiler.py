@@ -1,15 +1,20 @@
-from hylaa_model_OLD import run_hylaa
 from matplotlib import pyplot as plt
 import numpy as np
+from nl_dynamics import F1Dynamics
+from functools import partial
+import math
+import time
+from timeit import Timer
+from run_f1hylaa import run_hylaa
 
 linear = lambda mini, maxi, frac : mini + (maxi - mini) * frac
 
 numDataTrials = 3
 
 #dt config
-dt_Min = .1
-dt_Max = .3
-dt_numSteps = 5
+dt_Min = .05
+dt_Max = .2
+dt_numSteps = 4
 dt_StepFunc = linear
 dt_Steps = [dt_StepFunc(dt_Min, dt_Max, step/(dt_numSteps-1)) for step in range(dt_numSteps)]
 print("DT steps are:")
@@ -17,8 +22,8 @@ print(dt_Steps)
 
 #total time config
 ttime_Min = .5
-ttime_Max = 2
-ttime_numSteps = 5
+ttime_Max = 1
+ttime_numSteps = 3
 ttime_StepFunc = linear
 ttime_Steps = [ttime_StepFunc(ttime_Min, ttime_Max, step/(ttime_numSteps-1)) for step in range(ttime_numSteps)]
 print("Total Time Steps are")
@@ -39,13 +44,15 @@ for totalTime in ttime_Steps:
     step_results = []
     for dt in dt_Steps:
         if totalTime / dt < maxSimSteps:
+            timer = Timer("""run_hylaa(totalTime, dt, [0, 0, 0], "NONE")""")
             print("\033[0;32;40m Running model with : ttime={}, dt={}\033[0;37;40m".format(totalTime, dt))
             stamp = "{}{}".format(totalTime, dt).replace('.','d')
             runTimeTrials = []
             print("Trials completed... \n", end='')
             for t in range(numDataTrials):
                 print("{}".format(t+1), end=' ')
-                runTimeTrials.append(run_hylaa(totalTime, dt, True, stamp))
+                runTimeTrials.append(timer.timeit(1))
+
             runTime = np.mean(runTimeTrials)
             result = (totalTime, dt, runTime)
             printResult(result)

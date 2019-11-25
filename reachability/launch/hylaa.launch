@@ -3,6 +3,7 @@
 <launch>
     <arg name="hylaa_config" value="$(find reachability)/config/hylaa.yaml"/>
     <arg name="mpc_sim" default="false"/>
+    <arg name="viz" default="false"/>
 
     <!-- ****** HYLAA Reachability Node ****** -->
     <node name="hylaa_node" pkg="reachability" type="hylaa_node.py" output="screen">
@@ -12,5 +13,8 @@
     <!-- conditionally starts nonlinear simulator instead of mpc -->
     <group if="$(arg mpc_sim)">
         <include file="$(find reachability)/launch/mpc_sim.launch"/>
+    </group>
+    <group if="$(arg viz)">
+        <include file="$(find reachability)/launch/viz.launch"/>
     </group>
 </launch>

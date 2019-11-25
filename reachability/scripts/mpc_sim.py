@@ -3,7 +3,7 @@
 
 import rospy
 from osuf1_common.msg import MPC_metadata, MPC_trajectory, MPC_prediction
-import std_msgs.msg
+from std_msgs.msg import Header
 from geometry_msgs.msg import PoseStamped
 from tf.transformations import euler_from_quaternion
 
@@ -48,9 +48,9 @@ class MPC_Sim:
         time.sleep(2)
         while not rospy.is_shutdown():
             results = self.simulate()
-            self.currentState = results[0][0][:-1]
+            self.currentState = results[-1][0][:-1]
 
-            header = std_msgs.msg.Header()
+            header = Header()
             header.stamp = rospy.Time.now()
 
             #metadata message
