@@ -52,7 +52,7 @@ class HYLAA_node:
         #                   HYLAA Calling Vars
         #---------------------------------------------------------
         self.hylaa = F1Hylaa()
-        self.hylaa.set_model_params(self.state_uncertainty, self.input_uncertainty, "kinematics_model_new")
+        self.hylaa.set_model_params(self.state_uncertainty, self.input_uncertainty, "kinematics_model")
 
         #custom interval in ms or 0=maximum speed
         self.reachability_interval = rospy.get_param("/hylaa_node/interval", 0)
@@ -95,11 +95,11 @@ class HYLAA_node:
                 reachMessage.header = Header()
                 reachMessage.header.stamp = rospy.Time.now()
                 reachMessage.header.frame_id = self.MPC_frame_id
-                reachMessage.sets = ReachSets([
+                reachMessage.sets = [
                     NPointSet(
                         [NPoint(p) for p in rs]
                     ) for rs in reach 
-                ])
+                ]
 
                 self.reach_pub.publish(reachMessage)
             else:

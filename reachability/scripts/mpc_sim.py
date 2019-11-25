@@ -52,6 +52,7 @@ class MPC_Sim:
 
             header = Header()
             header.stamp = rospy.Time.now()
+            header.frame_id = "map"
 
             #metadata message
             meta = MPC_metadata()

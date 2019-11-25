@@ -44,6 +44,9 @@ add_message_files(
   MPC_metadata.msg
   MPC_prediction.msg
   MPC_trajectory.msg
+  NPoint.msg
+  NPointSet.msg
+  ReachSets.msg
 )
 
 
