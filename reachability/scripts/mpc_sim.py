@@ -23,8 +23,8 @@ class MPC_Sim:
         
         self.nlDynamics = F1Dynamics()
         self.stepFunc = partial(self.nlDynamics.frontStep, self.nlDynamics)
-        self.dt = rospy.get_param("/mpc_sim_node/dt", .1)
-        self.totalTime = rospy.get_param("/mpc_sim_node/total_time", 1)
+        self.dt = rospy.get_param("/mpc_sim/dt", .1)
+        self.totalTime = rospy.get_param("/mpc_sim/total_time", 1)
 
         self.currentState = [0, 0, 0]
         self.inputFunc = lambda et, t : [ 4, -1 * math.cos(2*t+et)/4]
@@ -48,7 +48,7 @@ class MPC_Sim:
         time.sleep(2)
         while not rospy.is_shutdown():
             results = self.simulate()
-            self.currentState = results[-1][0][:-1]
+            self.currentState = results[-1][0]
 
             header = Header()
             header.stamp = rospy.Time.now()
