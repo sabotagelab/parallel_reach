@@ -4,8 +4,8 @@ from scipy.io import loadmat
 import importlib
 
 #hylaa imports
-from hylaa.hybrid_automaton import HybridAutomaton
-from hylaa.settings import HylaaSettings, PlotSettings, LabelSettings
+from hylaa.hybrid_automaton import HybridAutomaton 
+from hylaa.settings import HylaaSettings, PlotSettings, LabelSettings 
 from hylaa.core import Core
 from hylaa.stateset import StateSet
 from hylaa import lputil
@@ -18,7 +18,7 @@ from nl_dynamics import F1Dynamics
 import simulator
 
 ##ROS imports
-#import rospy
+import rospy
 #from osuf1_common import StampedFloat2d, MPC_metadata
 
 #wrapper to run hylaa repeatedly with different inputs
@@ -72,6 +72,7 @@ class F1Hylaa:
         return reachsets
 
     def make_settings(self, dt, total, displayType, verbosity, fileName="hylaa_reach.png"):
+        rospy.loginfo("SETTINGS CREATED WITH dt={}, total={}".format(dt, total))
         self.dt = dt
         self.ttime = total
 
@@ -177,7 +178,7 @@ class F1Hylaa:
 
         modeIncrement = 0
         lastMode = None
-        for state, inputs in self.predictions:
+        for state, inputs in self.predictions[:int(self.ttime/self.dt)]:
 
             #get the dynamics linearized around this state/input set
             dynamics = self.model.linearized_dynamics(state[:3], inputs, self.dt)

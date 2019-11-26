@@ -30,6 +30,7 @@ d_p_bound: 2.0
 # Parameters for control loop
 debug_mode: True
 delay_mode: True
+throttle_mode: True
 car_width: 0.3
 spline_poly_order: 3
 goal_threshold: 0.6 # unit: m

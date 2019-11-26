@@ -68,6 +68,7 @@ class MPCKinematicNode:
 
         self.DEBUG_MODE = rospy.get_param('debug_mode', True)
         self.DELAY_MODE = rospy.get_param('delay_mode', True)
+        self.THROTTLE_MODE = rospy.get_param('throttle_mode',True)
         # Topic name related parameters
         pose_topic = rospy.get_param('localized_pose_topic_name', '/pf/viz/inferred_pose')
         cmd_vel_topic = rospy.get_param('cmd_vel_topic_name', '/vesc/high_level/ackermann_cmd_mux/input/nav_0')
@@ -87,6 +88,8 @@ class MPCKinematicNode:
         self.left_lut_x, self.left_lut_y = None, None
         self.element_arc_lengths = None
         self.element_arc_lengths_orig = None
+
+
         # Plot related variables
         self.current_time = 0
         self.t_plot = []
@@ -96,12 +99,11 @@ class MPCKinematicNode:
         self.time_plot = []
 
         # Minimum distance search related variables
-        self.ARC_LENGTH_MIN_DIST_TOL = 0.02 #minimum distance between current pose and point on path to calculate arc length travelled without projection
+        self.ARC_LENGTH_MIN_DIST_TOL = rospy.get_param('arc_length_min_dist_tol',0.05) #minimum distance between current pose and point on path to calculate arc length travelled without projection
 
         # Publishers
         self.ackermann_pub = rospy.Publisher(cmd_vel_topic, AckermannDriveStamped, queue_size=10)
         self.mpc_trajectory_pub = rospy.Publisher('/mpc_trajectory', Path, queue_size=10)
-        self.mpc_reference_pub = rospy.Publisher('/mpc_reference', Path, queue_size=10)
         self.center_path_pub = rospy.Publisher('/center_path', Path, queue_size=10)
         self.right_path_pub = rospy.Publisher('/right_path', Path, queue_size=10)
         self.left_path_pub = rospy.Publisher('/left_path', Path, queue_size=10)
@@ -309,6 +311,10 @@ class MPCKinematicNode:
             current_s = self.element_arc_lengths[nearest_index_actual] + projection
         else:
             current_s = self.element_arc_lengths[nearest_index]
+
+        ###temporary fix##
+        if nearest_index==0:
+            current_s=0.0
         return current_s, nearest_index
 
 
@@ -328,7 +334,7 @@ class MPCKinematicNode:
             L = self.mpc.L
 
             current_s, near_idx = self.find_current_arc_length(car_pos)
-
+            print "pre",current_s,near_idx
             if self.DELAY_MODE:
                 dt_lag = self.LAG_TIME
                 px = px + v * np.cos(psi) * dt_lag
@@ -354,8 +360,19 @@ class MPCKinematicNode:
             speed = float(first_control[0])  # speed
             steering = float(first_control[1])  # radian
             self.projected_vel = float(first_control[2])
+
+            #throttle calculation
+            throttle = 0.03*(speed - v)/ self.param['dT']
+
+            if throttle>1:
+                throttle=1
+            elif throttle<-1:
+                throttle=-1
+            if speed ==0:
+                throttle=0
+
             if not self.mpc.WARM_START:
-                speed, steering = 0, 0
+                speed, steering,throttle = 0, 0, 0
                 self.mpc.WARM_START = True
             if (speed >= self.param['v_max']):
                 speed = self.param['v_max']
@@ -386,7 +403,7 @@ class MPCKinematicNode:
             #publish mpc prediction results message
             mpc_prediction_results = []
             for i in range(control_inputs.shape[0]):
-                mpc_prediction_states = [trajectory[i, 0], trajectory[i, 1], trajectory[i, 2]]
+                mpc_prediction_states = [trajectory[i, 0], trajectory[i, 1], trajectory[i, 2],0.1]
                 mpc_prediction_inputs = [control_inputs[i, 0], control_inputs[i, 1]]
                 mpc_prediction_results.append((mpc_prediction_states, mpc_prediction_inputs))
 
@@ -400,6 +417,7 @@ class MPCKinematicNode:
                 rospy.loginfo("DEBUG")
                 rospy.loginfo("psi: %s ", psi)
                 rospy.loginfo("V: %s", v)
+                rospy.loginfo("Throttle: %s", throttle)
                 rospy.loginfo("Control loop time mpc= %s:", mpc_compute_time)
                 rospy.loginfo("Control loop time=: %s", total_time)
 
@@ -412,6 +430,7 @@ class MPCKinematicNode:
         else:
             steering = 0.0
             speed = 0.0
+            throttle=0.0
 
         # publish cmd
         ackermann_cmd = AckermannDriveStamped()
@@ -419,7 +438,8 @@ class MPCKinematicNode:
         ackermann_cmd.drive.steering_angle = steering
         self.steering_angle = steering
         ackermann_cmd.drive.speed = speed
-        # ackermann_cmd.drive.acceleration = throttle
+        if self.THROTTLE_MODE:
+            ackermann_cmd.drive.acceleration = throttle
         self.ackermann_pub.publish(ackermann_cmd)
 
     def plot_data(self):
