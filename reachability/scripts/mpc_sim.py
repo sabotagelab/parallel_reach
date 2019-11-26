@@ -23,8 +23,8 @@ class MPC_Sim:
         
         self.nlDynamics = F1Dynamics()
         self.stepFunc = partial(self.nlDynamics.frontStep, self.nlDynamics)
-        self.dt = rospy.get_param("dt", .1)
-        self.totalTime = rospy.get_param("total_time", 1)
+        self.dt = rospy.get_param("/mpc_sim_node/dt", .1)
+        self.totalTime = rospy.get_param("/mpc_sim_node/total_time", 1)
 
         self.currentState = [0, 0, 0]
         self.inputFunc = lambda et, t : [ 4, -1 * math.cos(2*t+et)/4]
@@ -32,9 +32,9 @@ class MPC_Sim:
 #        self.simulator = simulator.ModelSimulator(self.dt, self.totalTime, self.currentState, self.stepFunc, self.inputFunc, True)
 
         self.simulation_period = 100 #ms between publish events
-        self.prediction_pub_topic = rospy.get_param("mpc_prediction_topic", "mpc_prediction")
-        self.meta_pub_topic = rospy.get_param("mpc_metadata_topic", "mpc_metadata")
-        self.position_topic = rospy.get_param("localization_topic", "pf_pose")
+        self.prediction_pub_topic = rospy.get_param("/hylaa_node/mpc_prediction_topic", "mpc_prediction")
+        self.meta_pub_topic = rospy.get_param("/hylaa_node/mpc_metadata_topic", "mpc_metadata")
+        self.position_topic = rospy.get_param("/hylaa_node/localization_topic", "pf_pose")
 
         self.prediction_pub = rospy.Publisher(self.prediction_pub_topic, MPC_trajectory, queue_size=1)
         self.meta_pub = rospy.Publisher(self.meta_pub_topic, MPC_metadata, queue_size=1)

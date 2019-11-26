@@ -177,7 +177,7 @@ class F1Hylaa:
 
         modeIncrement = 0
         lastMode = None
-        for state, inputs in self.predictions:
+        for state, inputs in self.predictions[:int(self.ttime/self.dt)]:
 
             #get the dynamics linearized around this state/input set
             dynamics = self.model.linearized_dynamics(state[:3], inputs, self.dt)
