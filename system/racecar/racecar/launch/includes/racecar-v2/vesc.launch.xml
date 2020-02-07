@@ -1,6 +1,7 @@
 <!-- -*- mode: XML -*- -->
 <launch>
   <arg name="racecar_version" />
+  <arg name="car_name" default="car1_30m"/>
 
   <arg name="vesc_config" default="$(find racecar)/config/$(arg racecar_version)/vesc.yaml" />
   <rosparam file="$(arg vesc_config)" command="load" />
@@ -16,6 +17,11 @@
 
   <node pkg="vesc_driver" type="vesc_driver_node" name="vesc_driver" />
   <node pkg="vesc_ackermann" type="vesc_to_odom_node" name="vesc_to_odom" />
-  <node name="throttle_interpolator" pkg="ackermann_cmd_mux" type="throttle_interpolator.py" />
+  <node name="throttle_interpolator" pkg="ackermann_cmd_mux" type="throttle_interpolator.py" >
+    <param name="rpm_input_topic" value="commands/motor/unsmoothed_speed" />
+    <param name="rpm_output_topic" value="commands/motor/speed" />
+    <param name="servo_input_topic" value="commands/servo/unsmoothed_position" />
+    <param name="servo_output_topic" value="commands/servo/position" />
+  </node>
 
 </launch>

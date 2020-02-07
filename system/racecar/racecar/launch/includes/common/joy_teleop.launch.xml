@@ -1,6 +1,7 @@
 <!-- -*- mode: XML -*- -->
 <launch>
   <arg name="racecar_version" />
+  <arg name="car_name"/>
   <arg name="joy_teleop_config"
        default="$(find racecar)/config/$(arg racecar_version)/joy_teleop.yaml" />
 

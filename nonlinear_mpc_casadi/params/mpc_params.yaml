@@ -1,28 +1,28 @@
 # Parameter for MPC solver
-dT: 0.2 #unit: s
+dT: 0.25 #unit: s
 mpc_steps_N: 15
 vehicle_L: 0.325 # distance between the front of the vehicle and its center of gravity
 
-max_speed: 3.0 # unit: m/s
+max_speed: 2.0 # unit: m/s
 mpc_ref_cte: 0.0
 mpc_ref_epsi: 0.0
-mpc_ref_vel: 3.0
+mpc_ref_vel: 1.4
 
-mpc_w_cte: 700
-mpc_w_lag: 700
+mpc_w_cte: 1000
+mpc_w_lag: 600
 mpc_w_epsi: 0
-mpc_w_vel: 2.0
-mpc_w_p: 10.0
+mpc_w_vel: 3.0
+mpc_w_p: 5.0
 mpc_w_delta: 40
 mpc_w_accel: 10
-mpc_w_delta_d: 1500
+mpc_w_delta_d: 1400
 mpc_w_delta_p: 0
 
 mpc_max_steering: 0.523 # Maximal steering radian (~30 deg)
 mpc_max_throttle: 1.0 # Maximal throttle accel
 mpc_bound_value: 1.0e3 # Bound value for other variables
 
-p_max: 3.0
+p_max: 2.5
 d_v_bound: 2.0
 d_theta_bound: 0.5
 d_p_bound: 2.0

@@ -2,11 +2,12 @@
 <launch>
   <arg name="racecar_version" default="racecar-v2" />
   <arg name="run_camera" default="false"/>
-
+  <arg name="car_name" default="car1_30m"/>
 
   <include file="$(find racecar)/launch/includes/$(arg racecar_version)-teleop.launch.xml">
     <arg name="racecar_version" value="$(arg racecar_version)" />
     <arg name="run_camera" value="$(arg run_camera)" />
+    <arg name="car_name" value="$(arg car_name)"/>
   </include>
 
 </launch>
