@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-	<arg name="car_name" default="car2_5m"/>
+	<arg name="car_name" default="car1_30m"/>
 	<group ns="$(arg car_name)">
 	<include file="$(find racecar)/launch/teleop.launch">
         <arg name="car_name" value="$(arg car_name)"/>
@@ -43,6 +43,8 @@
 	<arg name="pf_odometry_pub_topic" default="pf/pose/odom"/>
     <arg name="initial_pose_topic" default="initialpose"/>
     <arg name="clicked_point_topic" default="clicked_point"/>
+    <arg name="base_link_name" default="/$(arg car_name)/base_link"/>
+
 	
 	<node pkg="particle_filter" type="particle_filter.py" name="Particle_filter" output="screen">
 		<param name="scan_topic" value="$(arg scan_topic)"/>
@@ -54,6 +56,8 @@
         <param name="pf_odometry_pub_topic" value="$(arg pf_odometry_pub_topic)"/>
         <param name="initial_pose_topic" value="$(arg initial_pose_topic)"/>
         <param name="clicked_point_topic" value="$(arg clicked_point_topic)"/>
+        <param name="base_link_name" value="$(arg base_link_name)"/>
+     
         
 		<!-- range data is downsampled by this factor -->
 		<param name="angle_step" value="18"/>

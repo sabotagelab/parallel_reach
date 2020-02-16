@@ -114,6 +114,10 @@ class ParticleFiler():
             self.odom_pub = rospy.Publisher(rospy.get_param("~pf_odometry_pub_topic", "/pf/pose/odom"), Odometry, queue_size = 1)
 
         # these topics are for coordinate space things
+        self.base_link_name = rospy.get_param("~base_link_name", "/base_link")
+        self.map_link_name = rospy.get_param("~map_link_name","/map")
+        print("base link name=",self.base_link_name)
+        print("odom topic name=",rospy.get_param("~pf_odometry_pub_topic", "/pf/pose/odom"))
         self.pub_tf = tf.TransformBroadcaster()
 
         # these topics are to receive data from the racecar
@@ -203,7 +207,7 @@ class ParticleFiler():
         map_laser_pos -= np.dot(tf.transformations.quaternion_matrix(tf.transformations.unit_vector(map_laser_rotation))[:3,:3], laser_base_link_offset).T
 
         # Publish transform
-        self.pub_tf.sendTransform(map_laser_pos, map_laser_rotation, stamp , "/base_link", "/map")
+        self.pub_tf.sendTransform(map_laser_pos, map_laser_rotation, stamp , self.base_link_name, "/map")
         
         return
 

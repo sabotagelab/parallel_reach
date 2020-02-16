@@ -26,6 +26,7 @@
   <!-- start imu and laser scanner -->
   <include file="$(find racecar)/launch/includes/common/sensors.launch.xml" >
     <arg name="racecar_version" value="$(arg racecar_version)" />	
+    <arg name="car_name" value="$(arg car_name)"/>
   </include>
 
   <!-- static transforms, e.g. base_link to imu -->
