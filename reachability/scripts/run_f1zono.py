@@ -46,28 +46,29 @@ if __name__ == "__main__":
     print("Initializing Simulation")
     initialState = [0, 0, 0]
     dt = .05
-    ttime = 1
+    ttime = .5
     zonos = run_quickzono(dt, ttime, initialState)
-    #reach = [[a.tolist() for a in z.verts()] for z in zonos]
-    #for x in reach:
-        #print(x) 
 
-    filename="f1_zonos_noquick.png"
-    plt.figure(figsize=(6, 6))
-        
-    xdim = 2
-    ydim = 5
-    zonos[0].plot(col='r-o', label='Init', xdim=xdim, ydim=ydim)
+    xdim = 0
+    ydim = 1
+    for x in zonos:
+        print(x) 
 
-    for i, z in enumerate(zonos[1:]):
-        print("Plotting")
-        label = 'Reach Set' if i == 0 else None
-        print(z)
-        z.plot(label=label, xdim=xdim, ydim=ydim)
+    plot = False
+    if plot:
+        filename="f1_zonos_noquick.png"
+        plt.figure(figsize=(6, 6))
+            
+        zonos[0].plot(col='r-o', label='Init', xdim=xdim, ydim=ydim)
 
-    plt.title('Quickzonoreach Output (run_f1zono.py)')
-    plt.legend()
-    plt.grid()
-    plt.savefig(filename)
+        for i, z in enumerate(zonos[1:]):
+            print("Plotting")
+            label = 'Reach Set' if i == 0 else None
+            z.plot(label=label, xdim=xdim, ydim=ydim)
+
+        plt.title('Quickzonoreach Output (run_f1zono.py)')
+        plt.legend()
+        plt.grid()
+        plt.savefig(filename)
 
 

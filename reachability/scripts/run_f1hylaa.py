@@ -47,6 +47,6 @@ if __name__ == "__main__":
     ttime = 1
     output = "IMAGE"
     reach = run_hylaa(dt, ttime, initialState, output)
-    #for rs in reach:
-        #print(rs)
+    for rs in reach:
+        print(rs)
 
