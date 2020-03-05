@@ -57,11 +57,15 @@ class F1QuickZono:
         return 1
     
     def run(self, predictions):
-        self.predictions = predictions
+        self.predictions = predictions[:self.num_steps]
 
         self.quick = False
+        self.a_mat_list = []
+        self.b_mat_list = []
+        self.input_box_list = []
         self.dt_list = [self.dt] * (self.num_steps)
         self.save_list = [True] * (self.num_steps+1)
+
 
         #profile.runctx('resultprof = self.run_zono(initialBox, core)', globals(), locals(), filename="profiler/prof/out_tmp.prof")
         #result = locals()['resultprof']

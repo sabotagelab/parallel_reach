@@ -20,7 +20,7 @@ class Hylaa_Viz_Node:
         rospy.init_node("hylaa_viz")
 
 
-        reach_sub_topic = rospy.get_param("/hylaa_node/reach_pub_topic", "reach_pub")
+        reach_sub_topic = rospy.get_param("/zono_node/reach_pub_topic", "reach_pub")
         self.reachPub = rospy.Subscriber(reach_sub_topic, ReachSets, self.makeViz) 
         sets_outline_topic = rospy.get_param("/hylaa_viz/outline_topic", "hylaa_viz_outline")
         sets_tris_topic = rospy.get_param("/hylaa_viz/tris_topic", "hylaa_viz_tris")
