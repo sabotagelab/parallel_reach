@@ -45,11 +45,12 @@ class MPC:
         self.center_lut_dx, self.center_lut_dy = None, None
         self.right_lut_x, self.right_lut_y = None, None
         self.left_lut_x, self.left_lut_y = None, None
+        self.vel_profile_lut = None
         self.element_arc_lengths = None
         self.arc_lengths_orig_l = None
         self.WARM_START = False
         self.INTEGRATION_MODE = "Euler"  # RK4 and RK3 method are the other two choices
-        self.p_initial = 2.75  # projected centerline vel can set to desired value for initial estimation
+        self.p_initial = 2.0  # projected centerline vel can set to desired value for initial estimation
         self.boundary_pub = None
 
     def setup_MPC(self):
@@ -120,13 +121,14 @@ class MPC:
         self.INTEGRATION_MODE = param['INTEGRATION_MODE']
         print self.param
 
-    def set_track_data(self, c_x, c_y, c_dx, c_dy, r_x, r_y, l_x, l_y, element_arc_lengths, original_arc_length_total):
+    def set_track_data(self, c_x, c_y, c_dx, c_dy, r_x, r_y, l_x, l_y,vel_p, element_arc_lengths, original_arc_length_total):
         self.center_lut_x, self.center_lut_y = c_x, c_y
         self.center_lut_dx, self.center_lut_dy = c_dx, c_dy
         self.right_lut_x, self.right_lut_y = r_x, r_y
         self.left_lut_x, self.left_lut_y = l_x, l_y
         self.element_arc_lengths = element_arc_lengths
         self.arc_lengths_orig_l = original_arc_length_total
+        self.vel_profile_lut = vel_p
 
     def compute_optimization_cost(self):
         st = self.X[:, 0]  # initial state
@@ -253,7 +255,7 @@ class MPC:
 
     def filter_estimate(self, initial_arc_pos):
         if (self.X0[0, 3] >= self.arc_lengths_orig_l) and (
-                initial_arc_pos >= self.arc_lengths_orig_l or initial_arc_pos <= 5):
+                (initial_arc_pos >= self.arc_lengths_orig_l) or (initial_arc_pos <= 5)):
             self.X0[:, 3] = self.X0[:, 3] - self.arc_lengths_orig_l
         if initial_arc_pos >= self.arc_lengths_orig_l:
             initial_arc_pos -= self.arc_lengths_orig_l
@@ -273,7 +275,10 @@ class MPC:
             rospy.loginfo("Warm start started")
             self.construct_warm_start_soln(initial_state)
             rospy.loginfo("Warm start accomplished")
+        # print "init1=", initial_state
         initial_state[3] = self.filter_estimate(initial_state[3])
+        # print "init2=",initial_state
+        # print self.X0
         p[0:self.n_states] = initial_state  # initial condition of the robot posture
         right_points, left_points = self.get_path_constraints_points(self.X0)
         self.publish_boundary_markers(right_points, left_points)
@@ -292,8 +297,10 @@ class MPC:
             # obstacle parameters
 
             # Control parameters
-            v_ref = self.param['ref_vel']
-            p_ref = self.param['p_max']
+            # v_ref = self.param['ref_vel']
+            # p_ref = self.param['p_max']
+            v_ref = self.vel_profile_lut(self.X0[k,3])
+            p_ref = self.vel_profile_lut(self.X0[k,3])
             theta_ref = 0
             p[
             self.n_states + 2 * self.N + 4 * self.N_OBST + self.n_controls * k:self.n_states + 2 * self.N + 4 * self.N_OBST + self.n_controls * (

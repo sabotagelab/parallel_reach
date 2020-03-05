@@ -17,23 +17,23 @@ class InterpolateThrottle:
         self.servo_input_topic   = rospy.get_param('~servo_input_topic', '/vesc/commands/servo/unsmoothed_position')
         self.servo_output_topic  = rospy.get_param('~servo_output_topic', '/vesc/commands/servo/position')
 
-        self.max_acceleration = rospy.get_param('/vesc/max_acceleration')
-        self.max_rpm = rospy.get_param('/vesc/vesc_driver/speed_max')
-        self.min_rpm = rospy.get_param('/vesc/vesc_driver/speed_min')
-        self.throttle_smoother_rate = rospy.get_param('/vesc/throttle_smoother_rate')
-        self.speed_to_erpm_gain = rospy.get_param('/vesc/speed_to_erpm_gain')
+        self.max_acceleration = rospy.get_param('/vesc/max_acceleration',2.5)
+        self.max_rpm = rospy.get_param('/vesc/vesc_driver/speed_max',65520)
+        self.min_rpm = rospy.get_param('/vesc/vesc_driver/speed_min',-65520)
+        self.throttle_smoother_rate = rospy.get_param('/vesc/throttle_smoother_rate',75)
+        self.speed_to_erpm_gain = rospy.get_param('/vesc/speed_to_erpm_gain',7700)
 
-        self.max_servo_speed = rospy.get_param('/vesc/max_servo_speed')
-        self.steering_angle_to_servo_gain = rospy.get_param('/vesc/steering_angle_to_servo_gain')
-        self.servo_smoother_rate = rospy.get_param('/vesc/servo_smoother_rate')
-        self.max_servo = rospy.get_param('/vesc/vesc_driver/servo_max')
-        self.min_servo = rospy.get_param('/vesc/vesc_driver/servo_min')
+        self.max_servo_speed = rospy.get_param('/vesc/max_servo_speed',3.2)
+        self.steering_angle_to_servo_gain = rospy.get_param('/vesc/steering_angle_to_servo_gain',-0.95)
+        self.servo_smoother_rate = rospy.get_param('/vesc/servo_smoother_rate',75)
+        self.max_servo = rospy.get_param('/vesc/vesc_driver/servo_max',0.85)
+        self.min_servo = rospy.get_param('/vesc/vesc_driver/servo_min',0.15)
 
         # Variables
         self.last_rpm = 0
         self.desired_rpm = self.last_rpm
         
-        self.last_servo = rospy.get_param('/vesc/steering_angle_to_servo_offset')
+        self.last_servo = rospy.get_param('/vesc/steering_angle_to_servo_offset',0.559)
         self.desired_servo_position = self.last_servo
 
         # Create topic subscribers and publishers

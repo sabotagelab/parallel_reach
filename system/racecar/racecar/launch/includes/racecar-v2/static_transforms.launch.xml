@@ -1,15 +1,21 @@
 <!-- -*- mode: XML -*- -->
 <launch>
+  <arg name="car_name" default="car1_30m"/>
 
   <node pkg="tf" type="static_transform_publisher" name="base_link_to_imu" 
-        args="0.245 0.0 0.117 0.7071067811865475 0.7071067811865475 0.0 0.0 /base_link /base_imu_link 20" />
+        args="0.245 0.0 0.117 0.7071067811865475 0.7071067811865475 0.0 0.0 /$(arg car_name)/base_link /$(arg car_name)/base_imu_link 20" >
+     <param name="tf_prefix" type="string" value="$(arg car_name)"/>
+  </node>
 
   <node pkg="tf" type="static_transform_publisher" name="base_link_to_laser" 
-        args="0.285 0.0 0.127 0.0 0.0 0.0 1.0 /base_link /laser 20" />
+        args="0.285 0.0 0.127 0.0 0.0 0.0 1.0 /$(arg car_name)/base_link /$(arg car_name)/laser 20" >
+     <param name="tf_prefix" type="string" value="$(arg car_name)"/>
+  </node>
 
   <node pkg="tf" type="static_transform_publisher" name="base_link_to_base_footprint" 
-        args="0.0 0.0 0.0 0.0 0.0 0.0 1.0 /base_link /base_footprint 20" />
-
+        args="0.0 0.0 0.0 0.0 0.0 0.0 1.0 /$(arg car_name)/base_link /$(arg car_name)/base_footprint 20" >
+     <param name="tf_prefix" type="string" value="$(arg car_name)"/>
+  </node>
   <!-- todo: zed camera -->
   <!-- todo: structure sensor -->
 

@@ -6,6 +6,7 @@ import csv
 import os
 import time
 import numpy as np
+import copy
 
 import rospy
 from geometry_msgs.msg import Pose, PoseStamped, Quaternion
@@ -60,33 +61,39 @@ class MPCKinematicNode:
         self.CENTER_DERIVATIVE_FILENAME = os.path.join(dirname, path_folder_name + '/center_spline_derivatives.csv')
         self.RIGHT_TRACK_FILENAME = os.path.join(dirname, path_folder_name + '/right_waypoints.csv')
         self.LEFT_TRACK_FILENAME = os.path.join(dirname, path_folder_name + '/left_waypoints.csv')
+        self.VEL_PROFILE_FILENAME = os.path.join(dirname, path_folder_name + '/velocity_profile.csv')
         self.CONTROLLER_FREQ = rospy.get_param('controller_freq', 20)
         self.GOAL_THRESHOLD = rospy.get_param('goal_threshold', 0.75)
         self.CAR_WIDTH = rospy.get_param('car_width', 0.30)
-        self.INFLATION_FACTOR = rospy.get_param('inflation_factor', 0.75)
+        self.INFLATION_FACTOR = rospy.get_param('inflation_factor', 0.9)
         self.LAG_TIME = rospy.get_param('lag_time', 0.1)  # 100ms
 
         self.DEBUG_MODE = rospy.get_param('debug_mode', True)
         self.DELAY_MODE = rospy.get_param('delay_mode', True)
+        self.THROTTLE_MODE = rospy.get_param('throttle_mode',True)
         # Topic name related parameters
-        pose_topic = rospy.get_param('localized_pose_topic_name', '/pf/viz/inferred_pose')
-        cmd_vel_topic = rospy.get_param('cmd_vel_topic_name', '/vesc/high_level/ackermann_cmd_mux/input/nav_0')
-        odom_topic = rospy.get_param('odom_topic_name', '/vesc/odom')
+        pose_topic = rospy.get_param('localized_pose_topic_name', 'pf/viz/inferred_pose')
+        cmd_vel_topic = rospy.get_param('cmd_vel_topic_name', 'vesc/high_level/ackermann_cmd_mux/input/nav_0')
+        odom_topic = rospy.get_param('odom_topic_name', 'vesc/odom')
         goal_topic = rospy.get_param('goal_topic_name', '/move_base_simple/goal')
         prediction_pub_topic = rospy.get_param('mpc_prediction_topic', 'mpc_prediction')
         meta_pub_topic = rospy.get_param('mpc_metadata_topic', 'mpc_metadata')
         self.car_frame = rospy.get_param('car_frame', 'base_link')
 
+
         # Path related variables
         self.path_points = None
         self.center_lane = None
         self.center_point_angles = None
+        self.vel_profile_lut = None
         self.center_lut_x, self.center_lut_y = None, None
         self.center_lut_dx, self.center_lut_dy = None, None
         self.right_lut_x, self.right_lut_y = None, None
         self.left_lut_x, self.left_lut_y = None, None
         self.element_arc_lengths = None
         self.element_arc_lengths_orig = None
+
+
         # Plot related variables
         self.current_time = 0
         self.t_plot = []
@@ -96,17 +103,16 @@ class MPCKinematicNode:
         self.time_plot = []
 
         # Minimum distance search related variables
-        self.ARC_LENGTH_MIN_DIST_TOL = 0.02 #minimum distance between current pose and point on path to calculate arc length travelled without projection
+        self.ARC_LENGTH_MIN_DIST_TOL = rospy.get_param('arc_length_min_dist_tol',0.05) #minimum distance between current pose and point on path to calculate arc length travelled without projection
 
         # Publishers
         self.ackermann_pub = rospy.Publisher(cmd_vel_topic, AckermannDriveStamped, queue_size=10)
-        self.mpc_trajectory_pub = rospy.Publisher('/mpc_trajectory', Path, queue_size=10)
-        self.mpc_reference_pub = rospy.Publisher('/mpc_reference', Path, queue_size=10)
-        self.center_path_pub = rospy.Publisher('/center_path', Path, queue_size=10)
-        self.right_path_pub = rospy.Publisher('/right_path', Path, queue_size=10)
-        self.left_path_pub = rospy.Publisher('/left_path', Path, queue_size=10)
-        self.center_tangent_pub = rospy.Publisher('/center_tangent', PoseStamped, queue_size=10)
-        self.path_boundary_pub = rospy.Publisher('/boundary_marker', MarkerArray, queue_size=10)
+        self.mpc_trajectory_pub = rospy.Publisher('mpc_trajectory', Path, queue_size=10)
+        self.center_path_pub = rospy.Publisher('center_path', Path, queue_size=10)
+        self.right_path_pub = rospy.Publisher('right_path', Path, queue_size=10)
+        self.left_path_pub = rospy.Publisher('left_path', Path, queue_size=10)
+        self.center_tangent_pub = rospy.Publisher('center_tangent', PoseStamped, queue_size=10)
+        self.path_boundary_pub = rospy.Publisher('boundary_marker', MarkerArray, queue_size=10)
         self.prediction_pub = rospy.Publisher(prediction_pub_topic, MPC_trajectory, queue_size=1)
         self.meta_pub = rospy.Publisher(meta_pub_topic, MPC_metadata, queue_size=1)
 
@@ -137,7 +143,7 @@ class MPCKinematicNode:
         self.param['s_max'] = self.element_arc_lengths[-1]
         self.mpc.set_initial_params(self.param)
         self.mpc.set_track_data(self.center_lut_x, self.center_lut_y, self.center_lut_dx, self.center_lut_dy,
-                                self.right_lut_x, self.right_lut_y, self.left_lut_x, self.left_lut_y,
+                                self.right_lut_x, self.right_lut_y, self.left_lut_x, self.left_lut_y,self.vel_profile_lut,
                                 self.element_arc_lengths, self.element_arc_lengths_orig[-1])
         self.mpc.setup_MPC()
 
@@ -229,6 +235,12 @@ class MPCKinematicNode:
         lut_y = interpolant(label_y, 'bspline', [u], V_Y)
         return lut_x, lut_y
 
+    def get_1D_interpolation_casadi(self,label_x,pts,arc_lengths_arr):
+        u = arc_lengths_arr
+        V_X = pts[:, 1]
+        lut_x = interpolant(label_x, 'bspline', [u], V_X)
+        return lut_x
+
     def get_arc_lengths(self, waypoints):
         d = np.diff(waypoints, axis=0)
         consecutive_diff = np.sqrt(np.sum(np.power(d, 2), axis=1))
@@ -250,6 +262,7 @@ class MPCKinematicNode:
         center_derivative_data = self.read_waypoints_array_from_csv(self.CENTER_DERIVATIVE_FILENAME)
         right_lane = self.read_waypoints_array_from_csv(self.RIGHT_TRACK_FILENAME)
         left_lane = self.read_waypoints_array_from_csv(self.LEFT_TRACK_FILENAME)
+        vel_profile_data = self.read_waypoints_array_from_csv(self.VEL_PROFILE_FILENAME)
 
         right_lane = self.inflate_track_boundaries(center_lane, right_lane, self.CAR_WIDTH, self.INFLATION_FACTOR)
         left_lane = self.inflate_track_boundaries(center_lane, left_lane, self.CAR_WIDTH, self.INFLATION_FACTOR)
@@ -257,6 +270,7 @@ class MPCKinematicNode:
         self.center_lane = np.row_stack((center_lane, center_lane[1:int(center_lane.shape[0] / 2), :]))
         right_lane = np.row_stack((right_lane, right_lane[1:int(center_lane.shape[0] / 2), :]))
         left_lane = np.row_stack((left_lane, left_lane[1:int(center_lane.shape[0] / 2), :]))
+        vel_profile_data = np.row_stack((vel_profile_data, vel_profile_data[1:int(center_lane.shape[0] / 2), :]))
         center_derivative_data = np.row_stack(
             (center_derivative_data, center_derivative_data[1:int(center_lane.shape[0] / 2), :]))
         # print self.center_lane.shape,right_lane.shape,left_lane.shape,center_derivative_data
@@ -277,7 +291,9 @@ class MPCKinematicNode:
                                                                                self.element_arc_lengths)
         self.left_lut_x, self.left_lut_y = self.get_interpolated_path_casadi('lut_left_x', 'lut_left_y', left_lane,
                                                                              self.element_arc_lengths)
-        for i in range(10):
+        self.vel_profile_lut = self.get_1D_interpolation_casadi('lut_vel_profile',vel_profile_data,self.element_arc_lengths)
+
+        for i in range(5):
             self.publish_path(center_lane, self.center_path_pub)
             self.publish_path(right_lane, self.right_path_pub)
             self.publish_path(left_lane, self.left_path_pub)
@@ -309,26 +325,30 @@ class MPCKinematicNode:
             current_s = self.element_arc_lengths[nearest_index_actual] + projection
         else:
             current_s = self.element_arc_lengths[nearest_index]
+
+        ###temporary fix##
+        if nearest_index==0:
+            current_s=0.0
         return current_s, nearest_index
 
 
-    def controlLoopCB(self, event):
+    def controlLoopCB(self,event):
         '''Control loop for car MPC'''
         if self.goal_received and not self.goal_reached:
             control_loop_start_time = time.time()
             # Update system states: X=[x, y, psi]
-            px = self.current_pos_x
-            py = self.current_pos_y
-            car_pos = np.array([self.current_pos_x, self.current_pos_y])
-            psi = self.current_yaw
+            px = copy.deepcopy(self.current_pos_x)
+            py = copy.deepcopy(self.current_pos_y)
+            car_pos = np.array([px, py])
+            psi = copy.deepcopy(self.current_yaw)
 
             # Update system inputs: U=[speed(v), steering]
-            v = self.current_vel_odom
+            v = copy.deepcopy(self.current_vel_odom)
             steering = self.steering_angle  # radian
             L = self.mpc.L
 
             current_s, near_idx = self.find_current_arc_length(car_pos)
-
+            print "pre",current_s,near_idx
             if self.DELAY_MODE:
                 dt_lag = self.LAG_TIME
                 px = px + v * np.cos(psi) * dt_lag
@@ -353,9 +373,20 @@ class MPCKinematicNode:
             # MPC result (all described in car frame)
             speed = float(first_control[0])  # speed
             steering = float(first_control[1])  # radian
-            self.projected_vel = float(first_control[2])
+            self.projected_vel = speed
+
+            #throttle calculation
+            throttle = 0.03*(speed - v)/ self.param['dT']
+
+            if throttle>1:
+                throttle=1
+            elif throttle<-1:
+                throttle=-1
+            if speed ==0:
+                throttle=0
+
             if not self.mpc.WARM_START:
-                speed, steering = 0, 0
+                speed, steering,throttle = 0, 0, 0
                 self.mpc.WARM_START = True
             if (speed >= self.param['v_max']):
                 speed = self.param['v_max']
@@ -386,7 +417,7 @@ class MPCKinematicNode:
             #publish mpc prediction results message
             mpc_prediction_results = []
             for i in range(control_inputs.shape[0]):
-                mpc_prediction_states = [trajectory[i, 0], trajectory[i, 1], trajectory[i, 2]]
+                mpc_prediction_states = [trajectory[i, 0], trajectory[i, 1], trajectory[i, 2],0.1]
                 mpc_prediction_inputs = [control_inputs[i, 0], control_inputs[i, 1]]
                 mpc_prediction_results.append((mpc_prediction_states, mpc_prediction_inputs))
 
@@ -400,6 +431,7 @@ class MPCKinematicNode:
                 rospy.loginfo("DEBUG")
                 rospy.loginfo("psi: %s ", psi)
                 rospy.loginfo("V: %s", v)
+                rospy.loginfo("Throttle: %s", throttle)
                 rospy.loginfo("Control loop time mpc= %s:", mpc_compute_time)
                 rospy.loginfo("Control loop time=: %s", total_time)
 
@@ -412,6 +444,7 @@ class MPCKinematicNode:
         else:
             steering = 0.0
             speed = 0.0
+            throttle=0.0
 
         # publish cmd
         ackermann_cmd = AckermannDriveStamped()
@@ -419,7 +452,8 @@ class MPCKinematicNode:
         ackermann_cmd.drive.steering_angle = steering
         self.steering_angle = steering
         ackermann_cmd.drive.speed = speed
-        # ackermann_cmd.drive.acceleration = throttle
+        if self.THROTTLE_MODE:
+            ackermann_cmd.drive.acceleration = throttle
         self.ackermann_pub.publish(ackermann_cmd)
 
     def plot_data(self):
@@ -428,10 +462,12 @@ class MPCKinematicNode:
         plt.step(self.t_plot, self.v_plot, 'k', linewidth=1.5)
         # plt.ylim(-0.2, 0.8)
         plt.ylabel('v m/s')
+        plt.xlabel('time(s)')
         plt.subplot(412)
         plt.step(self.t_plot, self.steering_plot, 'r', linewidth=1.5)
         # plt.ylim(-0.5, 1.0)
         plt.ylabel('steering angle(degrees)')
+        plt.xlabel('time(s)')
         # plt.subplot(413)
         # plt.step(self.t_plot, self.cte_plot, 'g', linewidth=1.5)
         # # plt.ylim(-0.5, 1.0)
@@ -440,6 +476,7 @@ class MPCKinematicNode:
         plt.step(self.t_plot, self.time_plot, 'b', linewidth=1.5)
         plt.ylim(0.0, 100)
         plt.ylabel('mpc_compute_time in ms')
+        plt.xlabel('time(s)')
         plt.show()
 
         self.t_plot = []
@@ -452,4 +489,6 @@ class MPCKinematicNode:
 
 if __name__ == '__main__':
     mpc_node = MPCKinematicNode()
+    # while not rospy.is_shutdown():
+    #     mpc_node.controlLoopCB()
     rospy.spin()
