@@ -12,7 +12,7 @@ from matplotlib import pyplot as plt
 from nl_dynamics import F1Dynamics
 import simulator
 
-from zonoreach.zono import get_zonotope_reachset
+from quickzonoreach.zono import get_zonotope_reachset
 
 ##ROS imports
 #import rospy
@@ -59,7 +59,7 @@ class F1QuickZono:
     def run(self, predictions):
         self.predictions = predictions
 
-        self.quick = True
+        self.quick = False
         self.dt_list = [self.dt] * (self.num_steps)
         self.save_list = [True] * (self.num_steps+1)
 
@@ -68,7 +68,8 @@ class F1QuickZono:
         self.make_dynamics()
         self.make_init(self.predictions[0][0])
         zonos = self.run_zono()
-        return zonos
+        reach = [[a.tolist() for a in z.verts(0, 1)] for z in zonos]
+        return reach
         #reach = [[a.tolist() for a in z.verts()] for z in zonos]
         #return reachsets
 
@@ -130,7 +131,6 @@ class F1QuickZono:
             self.b_mat_list.append(dynamics['B'])
             
             input_box = self.make_input_box(inputs)
-            print(input_box)
             self.input_box_list.append(input_box)
 
             step += 1
