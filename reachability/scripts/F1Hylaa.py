@@ -20,6 +20,8 @@ import simulator
 ##ROS imports
 import rospy
 #from osuf1_common import StampedFloat2d, MPC_metadata
+#from profilehooks import profile
+import cProfile as profile
 
 #wrapper to run hylaa repeatedly with different inputs
 class F1Hylaa:
@@ -66,10 +68,16 @@ class F1Hylaa:
 
         initialBox = self.make_init(self.predictions[0][0])
         core = Core(self.ha, self.settings)
-        result = core.run(initialBox)
+        profile.runctx('resultprof = self.run_hylaa_profile(initialBox, core)', globals(), locals(), filename="profiler/prof/out_tmp.prof")
+        result = locals()['resultprof']
+        #result = core.run(initialBox)
         reachsets = [result.plot_data.get_verts_list(mode)[0] for mode in self.modeList]
 
         return reachsets
+
+
+    def run_hylaa_profile(self, initialBox, core):
+        return core.run(initialBox)
 
     def make_settings(self, dt, total, displayType, verbosity, fileName="hylaa_reach.png"):
         rospy.loginfo("SETTINGS CREATED WITH dt={}, total={}".format(dt, total))
@@ -84,7 +92,7 @@ class F1Hylaa:
         settings.plot.filename = fileName
 
         #wwe want to store the reach set cuz that is the whole point of this
-        settings.plot.store_plot_result = True 
+        settings.plot.store_plot_result = True
 
         settings.plot.plot_mode = PlotSettings.PLOT_IMAGE
         settings.stdout = HylaaSettings.STDOUT_VERBOSE
@@ -152,10 +160,10 @@ class F1Hylaa:
         mode = self.ha.modes['m0']
 
         dims = mode.a_csr.shape[0]
-        without_time = dims-2
-        pure_state = without_time // 2
-        init_box = [(0, 0)] * (pure_state)
-        lin_box = [(1, 1)] * (pure_state)
+        without_time_dim = dims-2
+        pure_state_dim = without_time_dim // 2
+        init_box = [(0, 0)] * (pure_state_dim)
+        lin_box = [(1, 1)] * (pure_state_dim)
         time_init = [(0.0, 0.0), (1.0, 1.0)]
 
         #initial state = state uncertainty + linear var uncertainty + time uncertainty(0)
@@ -166,7 +174,7 @@ class F1Hylaa:
                 initialState[s] + self.state_uncertainty[s]
             )
         init_box += lin_box + time_init
-        print(init_box)
+        #print(init_box)
         init_lpi = lputil.from_box(init_box, mode)
         
         init_list = [StateSet(init_lpi, mode)]
@@ -195,20 +203,21 @@ class F1Hylaa:
             bounds_rhs = dynamics["bounds_rhs"]
             mode.set_inputs(b_matrix, bounds_mat, bounds_rhs, allow_constants=True)
 
-            criticalTime = self.dt * modeIncrement # + 1e-4 #using time offset frome rendevous example
+            offsetTime = 1e-4
+            criticalTime = self.dt * modeIncrement #using time offset frome rendevous example
 
             invariant_mat = dynamics["invariant_mat"]
 
             #TODO add configurable ciritical time variance
             invariant_rhs = [
-                criticalTime + 1e-4
+                criticalTime + offsetTime
             ]
             mode.set_invariant(invariant_mat, invariant_rhs)
 
             if lastMode:        
                 t = self.ha.new_transition(lastMode, mode)
                 guard_mat = dynamics["guard_mat"]
-                guard_rhs = [ -criticalTime + 1e-4] #time from last state is bound
+                guard_rhs = [ -criticalTime + offsetTime ] #time from last state is bound
                 t.set_guard(guard_mat, guard_rhs)
 
             lastMode = mode

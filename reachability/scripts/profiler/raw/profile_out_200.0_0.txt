@@ -1,0 +1,478 @@
+Wed Jan 29 11:40:03 2020    profiler/prof/out_tmp.prof
+
+         130776 function calls (130686 primitive calls) in 0.358 seconds
+
+   Ordered by: internal time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+      420    0.059    0.000    0.059    0.000 {built-in method swiglpk._swiglpk.glp_simplex}
+       10    0.058    0.006    0.193    0.019 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\kamenev.py:134(_v_h_rep_given_init_simplex)
+       54    0.021    0.000    0.021    0.000 {built-in method nt.open}
+      407    0.012    0.000    0.021    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpinstance.py:486(set_minimize_direction)
+       10    0.012    0.001    0.234    0.023 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpplot.py:38(get_verts)
+     8031    0.011    0.000    0.011    0.000 {built-in method numpy.core.multiarray.array}
+      563    0.007    0.000    0.027    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:128(check_format)
+      420    0.006    0.000    0.010    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpinstance.py:659(_process_simplex_result)
+     1222    0.006    0.000    0.013    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:119(get_index_dtype)
+      978    0.006    0.000    0.006    0.000 {method 'reduce' of 'numpy.ufunc' objects}
+      280    0.005    0.000    0.094    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpplot.py:126(supp_point_nd)
+      593    0.005    0.000    0.010    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:1058(prune)
+  550/530    0.005    0.000    0.046    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:25(__init__)
+      420    0.005    0.000    0.099    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpinstance.py:540(minimize)
+     1820    0.004    0.000    0.010    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\timerutil.py:103(tic)
+      920    0.004    0.000    0.004    0.000 {built-in method numpy.core.multiarray.zeros}
+     1820    0.004    0.000    0.008    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\timerutil.py:134(toc)
+     1222    0.004    0.000    0.004    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\getlimits.py:507(__init__)
+      175    0.003    0.000    0.009    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numeric.py:2522(within_tol)
+     1820    0.003    0.000    0.004    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\timerutil.py:71(toc)
+     2028    0.003    0.000    0.004    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\swiglpk\swiglpk.py:51(_swig_setattr_nondynamic)
+      420    0.003    0.000    0.007    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\swiglpk\swiglpk.py:283(__init__)
+     6182    0.003    0.000    0.003    0.000 {built-in method swiglpk._swiglpk.glp_set_obj_coef}
+     1820    0.002    0.000    0.003    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\timerutil.py:60(tic)
+    11625    0.002    0.000    0.002    0.000 {built-in method builtins.len}
+     4905    0.002    0.000    0.007    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numeric.py:463(asarray)
+     2685    0.002    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:100(getnnz)
+      726    0.002    0.000    0.005    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numeric.py:2667(seterr)
+      726    0.002    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numeric.py:2767(geterr)
+     1819    0.002    0.000    0.002    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\timerutil.py:27(get_child)
+     5340    0.002    0.000    0.002    0.000 {built-in method builtins.isinstance}
+     2645    0.002    0.000    0.004    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:213(nnz)
+      175    0.002    0.000    0.016    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numeric.py:2463(isclose)
+      575    0.002    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:78(set_shape)
+      428    0.002    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\swiglpk\swiglpk.py:74(_swig_getattr)
+      897    0.002    0.000    0.002    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\util.py:19(__setattr__)
+     7498    0.002    0.000    0.002    0.000 {method 'append' of 'list' objects}
+      384    0.002    0.000    0.002    0.000 {built-in method numpy.core.multiarray.empty}
+      164    0.001    0.000    0.003    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\arrayprint.py:668(__call__)
+       10    0.001    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:409(_fragment_3_1)
+     2028    0.001    0.000    0.006    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\swiglpk\swiglpk.py:70(_swig_setattr)
+      525    0.001    0.000    0.005    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\fromnumeric.py:1973(all)
+     3640    0.001    0.000    0.001    0.000 {built-in method time.perf_counter}
+      500    0.001    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:200(isshape)
+     1465    0.001    0.000    0.001    0.000 {built-in method builtins.hasattr}
+     1680    0.001    0.000    0.006    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\swiglpk\swiglpk.py:206(<lambda>)
+      546    0.001    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numeric.py:2135(isscalar)
+      281    0.001    0.000    0.001    0.000 {built-in method numpy.core.multiarray.dot}
+     2367    0.001    0.000    0.001    0.000 {built-in method swiglpk._swiglpk.glp_get_col_prim}
+       40    0.001    0.000    0.001    0.000 {method 'solve' of 'SuperLU' objects}
+     1186    0.001    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\_lib\_util.py:128(_prune_array)
+      894    0.001    0.000    0.001    0.000 {built-in method builtins.max}
+       80    0.001    0.000    0.001    0.000 {built-in method scipy.sparse._sparsetools.get_csr_submatrix}
+        5    0.001    0.000    0.028    0.006 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\dsolve\linsolve.py:83(spsolve)
+       80    0.001    0.000    0.008    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\csr.py:390(_get_row_slice)
+       20    0.001    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\linalg\linalg.py:1284(svd)
+       54    0.001    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\ntpath.py:471(normpath)
+     1222    0.001    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\getlimits.py:532(max)
+     2888    0.001    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:101(get_shape)
+      583    0.001    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:91(to_native)
+      432    0.001    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\random.py:222(_randbelow)
+      162    0.001    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\ntpath.py:121(splitdrive)
+      120    0.001    0.000    0.003    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:265(_unpack_index)
+       12    0.001    0.000    0.003    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpinstance.py:371(set_constraints_csr)
+      420    0.001    0.000    0.001    0.000 {built-in method swiglpk._swiglpk.new_glp_smcp}
+     1820    0.001    0.000    0.001    0.000 {method 'pop' of 'list' objects}
+       40    0.001    0.000    0.006    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\csc.py:137(tocsr)
+      175    0.001    0.000    0.019    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numeric.py:2397(allclose)
+  404/379    0.001    0.000    0.004    0.000 {built-in method builtins.abs}
+      280    0.001    0.000    0.001    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpplot.py:139(<listcomp>)
+     1918    0.001    0.000    0.001    0.000 {method 'get' of 'dict' objects}
+        5    0.001    0.000    0.001    0.000 {built-in method scipy.sparse.linalg.dsolve._superlu.gstrf}
+       24    0.001    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\arrayprint.py:617(fillFormat)
+      570    0.001    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:71(__init__)
+      165    0.001    0.000    0.015    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:413(__mul__)
+       54    0.001    0.000    0.028    0.001 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\tempfile.py:249(_mkstemp_inner)
+      525    0.001    0.000    0.003    0.000 {method 'all' of 'numpy.ndarray' objects}
+       30    0.001    0.000    0.007    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:1090(_binopt)
+       90    0.001    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\linalg\linalg.py:2014(norm)
+     1015    0.001    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:1202(isspmatrix)
+      432    0.001    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\random.py:252(choice)
+      726    0.001    0.000    0.001    0.000 {built-in method numpy.core.umath.seterrobj}
+      578    0.001    0.000    0.001    0.000 <frozen importlib._bootstrap>:402(parent)
+      175    0.001    0.000    0.001    0.000 {built-in method numpy.core.multiarray.result_type}
+      583    0.001    0.000    0.001    0.000 {method 'newbyteorder' of 'numpy.dtype' objects}
+       70    0.001    0.000    0.008    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\data.py:117(_mul_scalar)
+       10    0.001    0.000    0.003    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:190(_expm_multiply_simple_core)
+      100    0.001    0.000    0.010    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:1078(_with_data)
+      570    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\data.py:22(__init__)
+       20    0.000    0.000    0.005    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:477(_mul_sparse_matrix)
+      363    0.000    0.000    0.003    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numeric.py:3069(__exit__)
+      120    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:331(_check_boolean)
+      363    0.000    0.000    0.003    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numeric.py:3064(__enter__)
+      340    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpinstance.py:922(_allocated)
+      180    0.000    0.000    0.000    0.000 {method 'astype' of 'numpy.ndarray' objects}
+       69    0.000    0.000    0.007    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:940(toarray)
+      420    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\swiglpk\swiglpk.py:208(<lambda>)
+      363    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numeric.py:3060(__init__)
+      606    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numeric.py:534(asanyarray)
+     1015    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\csc.py:224(_swap)
+      420    0.000    0.000    0.000    0.000 {built-in method swiglpk._swiglpk.glp_init_smcp}
+      582    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap>:989(_handle_fromlist)
+       40    0.000    0.000    0.016    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\csc.py:160(__getitem__)
+      467    0.000    0.000    0.001    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpinstance.py:885(get_num_cols)
+      525    0.000    0.000    0.003    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\_methods.py:40(_all)
+       54    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\ntpath.py:74(join)
+       75    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:451(_mul_vector)
+      371    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:183(isscalarlike)
+      210    0.000    0.000    0.015    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:633(__getattr__)
+     1452    0.000    0.000    0.000    0.000 {built-in method numpy.core.umath.geterrobj}
+       33    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\lib\function_base.py:1843(diff)
+    44/24    0.000    0.000    0.004    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\arrayprint.py:535(_formatArray)
+      182    0.000    0.000    0.001    0.000 {built-in method swiglpk._swiglpk.as_intArray}
+        4    0.000    0.000    0.005    0.001 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lputil.py:680(add_reset_variables)
+      274    0.000    0.000    0.000    0.000 {built-in method builtins.getattr}
+      200    0.000    0.000    0.000    0.000 {method 'copy' of 'numpy.ndarray' objects}
+       10    0.000    0.000    0.234    0.023 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\stateset.py:151(verts)
+        4    0.000    0.000    0.012    0.003 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lputil.py:843(get_box_center)
+      160    0.000    0.000    0.007    0.000 {method 'format' of 'str' objects}
+      158    0.000    0.000    0.001    0.000 {built-in method swiglpk._swiglpk.as_doubleArray}
+      420    0.000    0.000    0.000    0.000 {built-in method swiglpk._swiglpk.glp_smcp_meth_set}
+       10    0.000    0.000    0.011    0.001 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpplot.py:169(bbox_widths)
+        8    0.000    0.000    0.001    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpinstance.py:91(_create_bm_indices)
+        5    0.000    0.000    0.067    0.013 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\time_elapse_expm.py:37(init_matrices)
+      360    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:343(onenorm)
+       80    0.000    0.000    0.010    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\csr.py:236(__getitem__)
+        5    0.000    0.000    0.002    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lputil.py:218(add_input_effects_matrix)
+       45    0.000    0.000    0.004    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\csc.py:111(transpose)
+      420    0.000    0.000    0.000    0.000 {built-in method swiglpk._swiglpk.glp_smcp_tm_lim_set}
+      420    0.000    0.000    0.000    0.000 {built-in method swiglpk._swiglpk.glp_get_status}
+      420    0.000    0.000    0.000    0.000 {built-in method swiglpk._swiglpk.glp_smcp_msg_lev_set}
+       10    0.000    0.000    0.014    0.001 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:137(_expm_multiply_simple)
+       40    0.000    0.000    0.004    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\csr.py:131(transpose)
+      723    0.000    0.000    0.000    0.000 {method 'getrandbits' of '_random.Random' objects}
+        5    0.000    0.000    0.006    0.001 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\hybrid_automaton.py:617(get_tt_vars)
+      531    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\data.py:25(_get_dtype)
+       54    0.000    0.000    0.003    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\tempfile.py:157(__next__)
+       64    0.000    0.000    0.000    0.000 {built-in method numpy.core.multiarray.copyto}
+       69    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.csr_todense}
+       54    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\tempfile.py:160(<listcomp>)
+       10    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\csr.py:171(tocsc)
+      120    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:293(_check_ellipsis)
+      182    0.000    0.000    0.001    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpinstance.py:914(as_int_array)
+       20    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\coo.py:219(_check)
+       45    0.000    0.000    0.000    0.000 {built-in method numpy.core.multiarray.concatenate}
+      148    0.000    0.000    0.000    0.000 {built-in method swiglpk._swiglpk.glp_set_mat_row}
+      578    0.000    0.000    0.000    0.000 {method 'rpartition' of 'str' objects}
+       65    0.000    0.000    0.003    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\csr.py:356(__iter__)
+      158    0.000    0.000    0.001    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpinstance.py:906(as_double_array)
+       10    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpplot.py:158(<listcomp>)
+       15    0.000    0.000    0.010    0.001 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\core.py:163(intersect_invariant)
+       15    0.000    0.000    0.005    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lputil.py:303(check_intersection)
+       20    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:570(sum)
+       10    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:391(_compute_p_max)
+       90    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:15(_exact_inf_norm)
+    20/15    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\coo.py:125(__init__)
+       54    0.000    0.000    0.029    0.001 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\tempfile.py:305(mkstemp)
+      115    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:20(upcast)
+    60/40    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\matrixlib\defmatrix.py:258(__array_finalize__)
+        5    0.000    0.000    0.001    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lputil.py:189(set_basis_matrix)
+      133    0.000    0.000    0.001    0.000 {method 'max' of 'numpy.ndarray' objects}
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpinstance.py:761(get_dense_constraints)
+       54    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\ntpath.py:538(abspath)
+      196    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:188(isintlike)
+      164    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\arrayprint.py:527(_extendLine)
+       54    0.000    0.000    0.000    0.000 {built-in method nt._getfullpathname}
+      324    0.000    0.000    0.000    0.000 {built-in method nt.fspath}
+       40    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.csc_tocsr}
+       10    0.000    0.000    0.012    0.001 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\kamenev.py:70(_find_init_simplex)
+       54    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\tempfile.py:118(_sanitize_params)
+        4    0.000    0.000    0.002    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lputil.py:334(add_init_constraint)
+      900    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\csr.py:231(_swap)
+      216    0.000    0.000    0.000    0.000 {method 'replace' of 'str' objects}
+       17    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpinstance.py:339(add_rows_less_equal)
+       70    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:117(_set_self)
+      187    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\_methods.py:25(_amax)
+       10    0.000    0.000    0.205    0.021 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\kamenev.py:120(get_verts)
+       19    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\construct.py:220(eye)
+      108    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpinstance.py:406(<listcomp>)
+       40    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.csc_matvec}
+       20    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.csc_plus_csc}
+        5    0.000    0.000    0.032    0.006 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:676(_solve_P_Q)
+      108    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numeric.py:586(ascontiguousarray)
+       69    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:1119(_process_toarray_args)
+        5    0.000    0.000    0.074    0.015 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\stateset.py:102(step)
+      159    0.000    0.000    0.000    0.000 {method 'ravel' of 'numpy.ndarray' objects}
+       54    0.000    0.000    0.000    0.000 {method 'split' of 'str' objects}
+       10    0.000    0.000    0.007    0.001 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\kamenev.py:40(_find_two_points)
+       20    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:599(_minor_reduce)
+       20    0.000    0.000    0.002    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\kamenev.py:16(_get_orthonormal_rank)
+        5    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpinstance.py:430(set_constraints_csc)
+      363    0.000    0.000    0.000    0.000 {method 'pop' of 'dict' objects}
+      125    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\aggdag.py:41(get_cur_state)
+       54    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\tempfile.py:146(rng)
+       10    0.000    0.000    0.106    0.011 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\core.py:212(do_step_continuous_post)
+       38    0.000    0.000    0.000    0.000 {built-in method numpy.core.multiarray.arange}
+       95    0.000    0.000    0.007    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:309(dot)
+       24    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\arrayprint.py:299(_get_format_function)
+       30    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:973(__get_has_canonical_format)
+        4    0.000    0.000    0.000    0.000 {built-in method swiglpk._swiglpk.glp_copy_prob}
+       54    0.000    0.000    0.003    0.000 {built-in method builtins.next}
+       10    0.000    0.000    0.235    0.023 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\plotutil.py:658(plot_current_state)
+       20    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.csc_matmat_pass2}
+        4    0.000    0.000    0.007    0.002 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\hybrid_automaton.py:647(check_and_relax_time_triggered)
+      556    0.000    0.000    0.000    0.000 {method 'rstrip' of 'str' objects}
+       51    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\core.py:81(is_finished)
+       54    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\tempfile.py:97(_infer_return_type)
+      420    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\swiglpk\swiglpk.py:290(<lambda>)
+      110    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\_methods.py:28(_amin)
+       85    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:1033(__set_sorted)
+       60    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numeric.py:859(flatnonzero)
+       15    0.000    0.000    0.109    0.007 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\core.py:294(do_step_reach)
+       40    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\coo.py:193(getnnz)
+        5    0.000    0.000    0.049    0.010 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:605(_expm)
+        9    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpinstance.py:292(add_cols)
+      108    0.000    0.000    0.000    0.000 {method 'join' of 'str' objects}
+      108    0.000    0.000    0.000    0.000 {method 'startswith' of 'str' objects}
+       35    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.csr_matvec}
+       55    0.000    0.000    0.007    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:501(__rmul__)
+      432    0.000    0.000    0.000    0.000 {method 'bit_length' of 'int' objects}
+       10    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:111(_onenorm)
+       24    0.000    0.000    0.006    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\arrayprint.py:343(_array2string)
+      162    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\swiglpk\swiglpk.py:1722(<lambda>)
+        5    0.000    0.000    0.006    0.001 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:499(pade3)
+       20    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.csc_matmat_pass1}
+       64    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numeric.py:150(ones)
+      186    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\swiglpk\swiglpk.py:1687(<lambda>)
+      150    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:227(isdense)
+        5    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\coo.py:268(tocsc)
+        4    0.000    0.000    0.004    0.001 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\hybrid_automaton.py:415(get_guard_intersection)
+       19    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\hybrid_automaton.py:19(__init__)
+        5    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:78(_onenorm_matrix_power_nnm)
+        5    0.000    0.000    0.003    0.001 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\core.py:250(do_step_pop)
+       60    0.000    0.000    0.000    0.000 {method 'nonzero' of 'numpy.ndarray' objects}
+       10    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:516(diagonal)
+       20    0.000    0.000    0.006    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:141(_smart_matrix_product)
+       10    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:23(_exact_1_norm)
+      104    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\aggdag.py:526(get_cur_state)
+        5    0.000    0.000    0.003    0.001 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\time_elapse_expm.py:19(__init__)
+       15    0.000    0.000    0.003    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\hybrid_automaton.py:60(negate)
+       24    0.000    0.000    0.006    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\arrayprint.py:381(wrapper)
+       30    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.csr_has_canonical_format}
+        1    0.000    0.000    0.344    0.344 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\plotutil.py:963(run_to_completion)
+       10    0.000    0.000    0.014    0.001 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:48(expm_multiply)
+        5    0.000    0.000    0.070    0.014 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\time_elapse.py:25(get_basis_matrix)
+       20    0.000    0.000    0.000    0.000 {built-in method builtins.round}
+       20    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\matrixlib\defmatrix.py:391(sum)
+       24    0.000    0.000    0.006    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\arrayprint.py:399(array2string)
+        4    0.000    0.000    0.001    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\stateset.py:27(__init__)
+      286    0.000    0.000    0.000    0.000 {built-in method builtins.issubclass}
+        1    0.000    0.000    0.001    0.001 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\hybrid_automaton.py:518(do_guard_strengthening)
+        5    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:927(tocoo)
+       20    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\linalg\linalg.py:139(_commonType)
+       10    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\core.py:200(print_current_step_time)
+        5    0.000    0.000    0.024    0.005 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\core.py:129(check_guards)
+       78    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\_methods.py:37(_any)
+       70    0.000    0.000    0.003    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:269(asformat)
+       75    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:54(upcast_char)
+      224    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\swiglpk\swiglpk.py:1701(__getitem__)
+       20    0.000    0.000    0.005    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:365(__add__)
+        4    0.000    0.000    0.020    0.005 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\aggdag.py:100(make_op_transition)
+        5    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:812(_ell)
+        5    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\extract.py:45(tril)
+       24    0.000    0.000    0.000    0.000 {method 'compress' of 'numpy.ndarray' objects}
+       30    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:994(__set_has_canonical_format)
+        5    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpinstance.py:416(set_constraints_swigvec_rows)
+       20    0.000    0.000    0.000    0.000 {method 'reduceat' of 'numpy.ufunc' objects}
+       54    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\ma\core.py:6192(isMaskedArray)
+       15    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lputil.py:318(<listcomp>)
+       61    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\timerutil.py:16(__init__)
+       25    0.000    0.000    0.003    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\data.py:37(__abs__)
+      224    0.000    0.000    0.000    0.000 {built-in method swiglpk._swiglpk.intArray___getitem__}
+       24    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\arrayprint.py:702(_digits)
+       20    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\matrixlib\defmatrix.py:32(asmatrix)
+      115    0.000    0.000    0.000    0.000 {built-in method builtins.hash}
+       20    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\matrixlib\defmatrix.py:212(__new__)
+       10    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\result.py:60(add_state)
+       24    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\arrayprint.py:649(<listcomp>)
+        5    0.000    0.000    0.067    0.013 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\time_elapse_expm.py:71(assign_basis_matrix)
+       35    0.000    0.000    0.000    0.000 {method 'reshape' of 'numpy.ndarray' objects}
+       10    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpinstance.py:465(<listcomp>)
+        5    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\aggdag.py:180(pop_waiting_list)
+       10    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.csc_minus_csc}
+      128    0.000    0.000    0.000    0.000 {built-in method swiglpk._swiglpk.glp_set_row_bnds}
+       10    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.csr_tocsc}
+       54    0.000    0.000    0.000    0.000 {method 'lstrip' of 'str' objects}
+        8    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpinstance.py:359(add_rows_equal_zero)
+       80    0.000    0.000    0.000    0.000 {method 'indices' of 'slice' objects}
+       10    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:39(_ident_like)
+       24    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\arrayprint.py:256(_get_formatdict)
+       13    0.000    0.000    0.003    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpinstance.py:480(is_feasible)
+       56    0.000    0.000    0.000    0.000 {method 'min' of 'numpy.ndarray' objects}
+        5    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\dsolve\linsolve.py:227(splu)
+       10    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.csc_diagonal}
+        1    0.000    0.000    0.358    0.358 {built-in method builtins.exec}
+        5    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\aggdag.py:280(__init__)
+       24    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\arrayprint.py:603(__init__)
+       20    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numerictypes.py:728(issubdtype)
+       25    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\data.py:32(_deduped_data)
+       57    0.000    0.000    0.000    0.000 {method 'tolist' of 'numpy.ndarray' objects}
+        5    0.000    0.000    0.049    0.010 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:557(expm)
+       54    0.000    0.000    0.000    0.000 {built-in method nt.getpid}
+      106    0.000    0.000    0.000    0.000 {built-in method swiglpk._swiglpk.glp_set_col_bnds}
+       20    0.000    0.000    0.000    0.000 {method 'view' of 'numpy.ndarray' objects}
+       20    0.000    0.000    0.005    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:341(_add_sparse)
+       24    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\fromnumeric.py:1886(any)
+       46    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpinstance.py:880(get_num_rows)
+       10    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:467(_condition_3_13)
+       32    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lputil.py:856(<listcomp>)
+       10    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:385(__sub__)
+        5    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\extract.py:167(_masked_coo)
+        8    0.000    0.000    0.001    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpinstance.py:71(set_reach_vars)
+       20    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\linalg\linalg.py:106(_makearray)
+        5    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.csr_sort_indices}
+       20    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:71(downcast_intp_index)
+       20    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:172(get_sum_dtype)
+       20    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpplot.py:177(<listcomp>)
+       16    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\fromnumeric.py:2584(ndim)
+       10    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:31(_trace)
+       54    0.000    0.000    0.000    0.000 {built-in method builtins.min}
+       24    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\fromnumeric.py:1380(ravel)
+        1    0.000    0.000    0.013    0.013 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\hybrid_automaton.py:575(detect_tt_transitions)
+       30    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:1002(sum_duplicates)
+       44    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\util.py:15(freeze_attrs)
+        5    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\aggdag.py:54(cur_state_left_invariant)
+       67    0.000    0.000    0.000    0.000 {built-in method swiglpk._swiglpk.glp_get_num_rows}
+       10    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\aggstrat.py:138(pop_score)
+       20    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\linalg\linalg.py:101(get_linalg_error_extobj)
+       24    0.000    0.000    0.006    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numeric.py:1905(array_str)
+        5    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:120(_ident_like)
+        5    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:130(_is_upper_triangular)
+        5    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:358(__init__)
+        5    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\data.py:46(__neg__)
+       40    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\linalg\linalg.py:124(_realType)
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\lib\twodim_base.py:139(eye)
+        5    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.coo_tocsr}
+       24    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\arrayprint.py:260(<lambda>)
+        4    0.000    0.000    0.001    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpinstance.py:58(clone)
+        5    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\aggstrat.py:94(pop_waiting_list)
+       30    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\_methods.py:31(_sum)
+       54    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\tempfile.py:289(gettempdir)
+      162    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\swiglpk\swiglpk.py:1734(<lambda>)
+       20    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpplot.py:178(<listcomp>)
+       10    0.000    0.000    0.000    0.000 {built-in method swiglpk._swiglpk.glp_set_mat_col}
+       20    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\linalg\linalg.py:223(_assertNoEmpty2d)
+        5    0.000    0.000    0.004    0.001 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:427(d4_tight)
+       10    0.000    0.000    0.000    0.000 {built-in method builtins.all}
+       32    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lputil.py:857(<listcomp>)
+       40    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\linalg\linalg.py:111(isComplexType)
+       10    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:1018(__get_sorted)
+      154    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\swiglpk\swiglpk.py:1699(<lambda>)
+       30    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:406(<genexpr>)
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lpinstance.py:35(__init__)
+       10    0.000    0.000    0.000    0.000 {built-in method numpy.core.multiarray.empty_like}
+        8    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\hybrid_automaton.py:430(<listcomp>)
+       10    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:1049(sort_indices)
+       25    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:392(A2)
+       32    0.000    0.000    0.000    0.000 {built-in method swiglpk._swiglpk.glp_get_mat_row}
+       37    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\core.py:75(print_debug)
+       54    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\tempfile.py:235(_get_candidate_names)
+       10    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:344(_sub_sparse)
+       10    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:315(__init__)
+        5    0.000    0.000    0.003    0.001 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:433(d6_tight)
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\swiglpk\swiglpk.py:1692(__init__)
+       19    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\core.py:69(print_verbose)
+       10    0.000    0.000    0.001    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\kamenev.py:35(_get_rank)
+       20    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\linalg\linalg.py:198(_assertRankAtLeast2)
+       24    0.000    0.000    0.000    0.000 {method 'any' of 'numpy.ndarray' objects}
+       20    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numerictypes.py:660(issubclass_)
+       50    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:130(<genexpr>)
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lputil.py:829(add_curtime_constraints)
+       10    0.000    0.000    0.003    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:399(A4)
+       21    0.000    0.000    0.000    0.000 {built-in method swiglpk._swiglpk.glp_add_rows}
+       15    0.000    0.000    0.109    0.007 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\core.py:286(do_step)
+      132    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sympy\core\basic.py:1960(_preorder_traversal)
+       24    0.000    0.000    0.000    0.000 {built-in method _functools.reduce}
+        1    0.000    0.000    0.358    0.358 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\core.py:388(run)
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\aggdag.py:90(add_invariant_op)
+        4    0.000    0.000    0.020    0.005 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\aggdag.py:130(add_transition_successor)
+        4    0.000    0.000    0.000    0.000 {built-in method swiglpk._swiglpk.glp_create_prob}
+        5    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:406(A6)
+        5    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\time_elapse.py:15(__init__)
+        8    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:95(getdtype)
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lputil.py:625(get_basis_matrix)
+        9    0.000    0.000    0.000    0.000 {built-in method __new__ of type object at 0x50EFBDC0}
+       12    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\hybrid_automaton.py:458(__str__)
+       10    0.000    0.000    0.000    0.000 {method 'sum' of 'numpy.ndarray' objects}
+       32    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\swiglpk\swiglpk.py:1736(__getitem__)
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\swiglpk\swiglpk.py:1727(__init__)
+        1    0.000    0.000    0.014    0.014 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\core.py:340(setup)
+       10    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:162(asfptype)
+        5    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.expandptr}
+        5    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\plotutil.py:397(pause)
+       20    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\linalg\linalg.py:219(_isEmpty2d)
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lputil.py:370(<listcomp>)
+        4    0.000    0.000    0.012    0.003 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\aggstrat.py:177(pretransition)
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numeric.py:2365(identity)
+        5    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.csr_has_sorted_indices}
+       13    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\core.py:63(print_normal)
+        1    0.000    0.000    0.014    0.014 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\core.py:325(setup_ha)
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lputil.py:369(<listcomp>)
+        5    0.000    0.000    0.000    0.000 {built-in method math.factorial}
+        9    0.000    0.000    0.000    0.000 {built-in method swiglpk._swiglpk.glp_add_cols}
+       40    0.000    0.000    0.000    0.000 {method '__array_wrap__' of 'numpy.ndarray' objects}
+        5    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lputil.py:239(<listcomp>)
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lputil.py:724(<listcomp>)
+        5    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\dsolve\linsolve.py:389(factorized)
+        5    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\aggdag.py:215(make_node)
+        5    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\stateset.py:329(apply_approx_model)
+       10    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\kamenev.py:49(<listcomp>)
+       15    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\csc.py:230(isspmatrix_csc)
+       32    0.000    0.000    0.000    0.000 {built-in method swiglpk._swiglpk.doubleArray___getitem__}
+       10    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\kamenev.py:61(<listcomp>)
+        5    0.000    0.000    0.000    0.000 {scipy.special._comb._comb_int}
+        5    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\special\basic.py:1764(comb)
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lputil.py:725(<listcomp>)
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lputil.py:728(<listcomp>)
+        5    0.000    0.000    0.004    0.001 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:451(d4_loose)
+        5    0.000    0.000    0.000    0.000 <string>:12(__new__)
+        5    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\deaggregation.py:20(__init__)
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lputil.py:384(<listcomp>)
+       24    0.000    0.000    0.000    0.000 {method 'discard' of 'set' objects}
+       20    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\matrixlib\defmatrix.py:357(_collapse)
+        5    0.000    0.000    0.003    0.001 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:463(d6_loose)
+        7    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\deaggregation.py:49(doing_replay)
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\hybrid_automaton.py:30(almost_equals)
+        5    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\aggdag.py:71(print_waiting_list)
+       24    0.000    0.000    0.000    0.000 {method 'add' of 'set' objects}
+        4    0.000    0.000    0.000    0.000 {built-in method swiglpk._swiglpk.new_intArray}
+       24    0.000    0.000    0.000    0.000 {built-in method _thread.get_ident}
+       10    0.000    0.000    0.000    0.000 {method 'items' of 'dict' objects}
+       20    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\arrayprint.py:45(product)
+       24    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\csr.py:163(tocsr)
+       12    0.000    0.000    0.000    0.000 {method 'copy' of 'list' objects}
+        4    0.000    0.000    0.000    0.000 {built-in method swiglpk._swiglpk.new_doubleArray}
+        5    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\aggstrat.py:210(get_deagg_node)
+        5    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\hybrid_automaton.py:247(init_time_elapse)
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\hybrid_automaton.py:555(<listcomp>)
+        5    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\plotutil.py:473(state_popped)
+        1    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\hybrid_automaton.py:493(check_transitions)
+        5    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\aggdag.py:201(<listcomp>)
+        5    0.000    0.000    0.000    0.000 {built-in method numpy.core.multiarray.promote_types}
+       24    0.000    0.000    0.000    0.000 {built-in method builtins.id}
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\construct.py:190(identity)
+        5    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\aggdag.py:289(<listcomp>)
+        2    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\timerutil.py:96(reset)
+        5    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\coo.py:532(isspmatrix_coo)
+        1    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\result.py:23(__init__)
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\hybrid_automaton.py:557(<listcomp>)
+        5    0.000    0.000    0.000    0.000 {method 'update' of 'dict' objects}
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\hybrid_automaton.py:556(<listcomp>)
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lputil.py:383(<listcomp>)
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\swiglpk\swiglpk.py:1689(<lambda>)
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\swiglpk\swiglpk.py:1724(<lambda>)
+        1    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\result.py:48(__init__)
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\hybrid_automaton.py:558(<listcomp>)
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\hybrid_automaton.py:561(<listcomp>)
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\hybrid_automaton.py:562(<listcomp>)
+        1    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\aggdag.py:64(add_init_state)
+        1    0.000    0.000    0.358    0.358 <string>:1(<module>)
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\hybrid_automaton.py:102(is_error)
+        1    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\plotutil.py:542(create_plot)
+        1    0.000    0.000    0.344    0.344 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\core.py:380(run_to_completion)
+        1    0.000    0.000    0.358    0.358 C:\Users\Nathan\Desktop\Thesis\ppcm\reachability\scripts\F1Hylaa.py:79(run_hylaa_profile)
+        4    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\lputil.py:721(<listcomp>)
+        1    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\hylaa\hylaa\result.py:51(<listcomp>)
+        5    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\csc.py:129(tocsc)
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        2    0.000    0.000    0.000    0.000 {method 'values' of 'dict' objects}
+
+
