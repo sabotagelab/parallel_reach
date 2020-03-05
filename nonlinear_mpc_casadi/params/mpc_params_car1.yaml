@@ -1,5 +1,5 @@
 # Parameter for MPC solver
-dT: 0.2 #unit: s
+dT: 0.15 #unit: s
 mpc_steps_N: 15
 vehicle_L: 0.325 # distance between the front of the vehicle and its center of gravity
 
@@ -8,12 +8,12 @@ mpc_ref_cte: 0.0
 mpc_ref_epsi: 0.0
 mpc_ref_vel: 1.0
 
-mpc_w_cte: 180
-mpc_w_lag: 180
+mpc_w_cte: 150
+mpc_w_lag: 150
 mpc_w_epsi: 0
-mpc_w_vel: 5.0
+mpc_w_vel: 3.0
 mpc_w_p: 4.0
-mpc_w_delta: 4.0
+mpc_w_delta: 2.0
 mpc_w_accel: 6.0
 mpc_w_delta_d: 150
 mpc_w_delta_p: 0
@@ -38,8 +38,8 @@ spline_poly_order: 3
 goal_threshold: 0.3 # unit: m
 controller_freq: 15
 path_folder_name: lab_track
-inflation_factor: 0.2
-lag_time: 0.1
+inflation_factor: 0.1
+lag_time: 0.15
 ipopt_verbose: True
 
 #Frame names
