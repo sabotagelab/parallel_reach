@@ -59,7 +59,7 @@ class F1QuickZono:
     def run(self, predictions):
         self.predictions = predictions[:self.num_steps]
 
-        self.quick = False
+        self.quick = True
         self.a_mat_list = []
         self.b_mat_list = []
         self.input_box_list = []
@@ -106,7 +106,7 @@ class F1QuickZono:
             ])
 
 
-        init_box += lin_box + time_extra
+        init_box += lin_box
         self.init_box = init_box
 
         return init_box

@@ -45,14 +45,13 @@ for totalTime in ttime_Steps:
     step_results = []
     for dt in dt_Steps:
         if totalTime / dt < maxSimSteps:
-            timer = Timer("""run_quickzono(dt, totalTime, [0, 0, 0], True)""", globals=globals())
             print("\033[0;32;40m Running model with : ttime={}, dt={}\033[0;37;40m".format(totalTime, dt))
             stamp = "{}{}".format(totalTime, dt).replace('.','d')
             runTimeTrials = []
             print("Trials completed... \n", end='')
             for t in range(numDataTrials):
                 print("{}".format(t+1), end=' ')
-                runTimeTrials.append(timer.timeit(1))
+                runTimeTrials.append(run_quickzono(dt, totalTime, [0, 0, 0], True))
 
             with open('profiler/raw/profile_out_{}_{}.txt'.format(dt*1000,totalTime), 'w+') as stream:
                 p = pstats.Stats('profiler/prof/out_tmp.prof', stream=stream)
