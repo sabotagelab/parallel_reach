@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+
+  	<!-- Run map server -->
+	<arg name="map_file" default="$(find racetrack_generator)/maps/dearborn211_demo_track.yaml"/> <!--map_trackporto.yaml-->
+	<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+        <node pkg="racetrack_generator" name="remap_gazebo_pose_node" type="remap_gazebo_pose.py" output="screen" />
+  	<node pkg="racetrack_generator" name="sim_connector_node" type="sim_connector.py" output="screen"/>
+   
+
+  	<!--  ************** Visualisation **************  -->
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find racetrack_generator)/rviz/racetrack_rviz.rviz"/>
+
+
+</launch>
