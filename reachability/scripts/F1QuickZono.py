@@ -1,16 +1,11 @@
 # library imports
 from functools import partial
-from scipy.io import loadmat
 import importlib
 
 #hylaa imports
-from matplotlib.patches import Circle, Ellipse
-from matplotlib import collections
-from matplotlib import pyplot as plt
 
 #local imports
 from nl_dynamics import F1Dynamics
-import simulator
 
 from quickzonoreach.zono import get_zonotope_reachset
 
@@ -18,7 +13,6 @@ from quickzonoreach.zono import get_zonotope_reachset
 #import rospy
 #from osuf1_common import StampedFloat2d, MPC_metadata
 #from profilehooks import profile
-import cProfile as profile
 
 #wrapper to run hylaa repeatedly with different inputs
 class F1QuickZono:
@@ -63,8 +57,6 @@ class F1QuickZono:
         self.a_mat_list = []
         self.b_mat_list = []
         self.input_box_list = []
-        self.dt_list = [self.dt] * (self.num_steps)
-        self.save_list = [True] * (self.num_steps+1)
 
 
         #profile.runctx('resultprof = self.run_zono(initialBox, core)', globals(), locals(), filename="profiler/prof/out_tmp.prof")
@@ -72,10 +64,8 @@ class F1QuickZono:
         self.make_dynamics()
         self.make_init(self.predictions[0][0])
         zonos = self.run_zono()
-        reach = [[a.tolist() for a in z.verts(0, 1)] for z in zonos]
-        return zonos
-        #reach = [[a.tolist() for a in z.verts()] for z in zonos]
-        #return reachsets
+        reach = [[a.tolist() for a in z.verts()] for z in zonos]
+        return reach
 
 
     def run_zono(self):
@@ -88,6 +78,8 @@ class F1QuickZono:
         self.dt = dt
         self.ttime = total
         self.num_steps = int(self.ttime/self.dt)
+        self.dt_list = [self.dt] * (self.num_steps)
+        self.save_list = [True if x%3==0 else False for x in range(self.num_steps+1)]
 
 
     def make_init(self, initialState):

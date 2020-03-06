@@ -9,6 +9,7 @@ from F1QuickZono import F1QuickZono
 import rospy
 from std_msgs.msg import Header
 from osuf1_common.msg import MPC_trajectory, MPC_metadata, MPC_prediction, ReachSets, NPointSet, NPoint
+import time
 
 class ZONO_Node:
     def __init__(self):
@@ -51,7 +52,7 @@ class ZONO_Node:
         #                   HYLAA Calling Vars
         #---------------------------------------------------------
         self.QuickZono = F1QuickZono()
-        self.QuickZono.set_model_params(self.state_uncertainty, self.input_uncertainty, "kinematics_model")
+        self.QuickZono.set_model_params(self.state_uncertainty, self.input_uncertainty, "model_hardcode")
 
         #custom interval in ms or 0=maximum speed
         self.reachability_interval = rospy.get_param("/zono_node/interval", 0)
@@ -85,8 +86,11 @@ class ZONO_Node:
             if self.current_metadata and self.current_trajectory:
                 rospy.loginfo("STARTING QuickZono!!!!!!")
                 self.current_metadata = self.current_trajectory = False
+                start = time.perf_counter()
                 reach = self.QuickZono.run(self.predictions)
+                end = time.perf_counter()
                 rospy.loginfo("QuickZono reachability computation finished.") #TODO add time to output
+                rospy.loginfo("ITER TIME WAS {}".format(end-start))
 
                 #build message to publish reachset
                 reachMessage = ReachSets()
@@ -126,7 +130,7 @@ class ZONO_Node:
             if horizon == 0:
                 horizon = self.mpc_horizon
 
-            self.QuickZono.make_settings(self.dt, self.mpc_horizon)
+            self.QuickZono.make_settings(self.dt, horizon)
 
         self.current_metadata = True
 

@@ -14,8 +14,8 @@ import time
 import matplotlib.pyplot as plt
 import cProfile as profile
 
-from pycallgraph import PyCallGraph
-from pycallgraph.output import GraphvizOutput
+#from pycallgraph import PyCallGraph
+#from pycallgraph.output import GraphvizOutput
 from timeit import Timer
 
 state_uncertainty = [.1, .1, 0]
@@ -46,8 +46,8 @@ def run_quickzono(dt, ttime, initialState, do_profile=False):
         #profile.runctx('resultprof = fy.run(predictions)', globals(), locals(), filename="profiler/prof/out_tmp.prof")
         result = locals()['resultprof']
     else:
-        with PyCallGraph(output=GraphvizOutput()):
-            result = fy.run(predictions)
+        #with PyCallGraph(output=GraphvizOutput()):
+        result = fy.run(predictions)
     print("quickzono execution finished.")
     #print(result)
     #print("Stateset obj")
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     print("Initializing Simulation")
     initialState = [0, 0, 0]
     dt = .05
-    ttime = .5
+    ttime = 4
     zonos = run_quickzono(dt, ttime, initialState)
 
     xdim = 0
