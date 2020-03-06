@@ -1,6 +1,3 @@
-#barebones testing script to run hylaa without ROS
-# also used by profiler
-
 from F1QuickZonoTest import F1QuickZono
 #local imports
 from nl_dynamics import F1Dynamics
@@ -13,7 +10,6 @@ import time
 import xmlrpc.client
 
 import matplotlib.pyplot as plt
-import cProfile as profile
 
 state_uncertainty = [.1, .1, 0]
 input_uncertainty = [.1, 3.14/90] # .1m/s , 2deg
@@ -21,25 +17,21 @@ nlDynamics = F1Dynamics()
 stepFunc = partial(nlDynamics.frontStep, nlDynamics)
 inputFunc = lambda t : [ 1+4, -1 * math.cos(2)/4]
 headless = True
-fy = F1QuickZono() 
-fy.set_model_params(state_uncertainty, input_uncertainty, "kinematics_model")
 
-def run_quickzono(dt, ttime, initialState, do_profile=False):
+def run_quickzono(dt, ttime, initialState):
     sim = simulator.ModelSimulator(dt, ttime, initialState, stepFunc, inputFunc, headless)
 
     print("Simulating")
     predictions = sim.simulate()
     print("Simulation Finished, Initializing Reachability")
 
+    fy = F1QuickZono()
+
+    fy.set_model_params(state_uncertainty, input_uncertainty, "kinematics_model")
     fy.make_settings(dt, ttime)
 
-    result = []
     print("Running quickzono")
-    if do_profile:
-        profile.runctx('resultprof = fy.run(predictions)', globals(), locals(), filename="profiler/prof/out_tmp.prof")
-        result = locals()['resultprof']
-    else:
-        result = fy.run(predictions)
+    result = fy.run(predictions)
     print("quickzono execution finished.")
     #print(result)
     #print("Stateset obj")
@@ -56,8 +48,6 @@ if __name__ == "__main__":
 
     xdim = 0
     ydim = 1
-    for x in zonos:
-        print(x) 
 
     plot = True
     if plot:
@@ -75,5 +65,3 @@ if __name__ == "__main__":
         plt.legend()
         plt.grid()
         plt.savefig(filename)
-
-

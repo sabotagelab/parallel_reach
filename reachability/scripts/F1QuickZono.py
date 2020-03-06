@@ -73,7 +73,7 @@ class F1QuickZono:
         self.make_init(self.predictions[0][0])
         zonos = self.run_zono()
         reach = [[a.tolist() for a in z.verts(0, 1)] for z in zonos]
-        return reach
+        return zonos
         #reach = [[a.tolist() for a in z.verts()] for z in zonos]
         #return reachsets
 
@@ -93,22 +93,20 @@ class F1QuickZono:
     def make_init(self, initialState):
         'make the initial states'
 
-        dims = self.a_mat_list[0].rows
-        without_time_dim = dims-2
-        pure_state_dim = without_time_dim // 2
-        init_box = [[0, 0]] * (pure_state_dim)
-        lin_box = [[1, 1]] * (pure_state_dim)
-        time_init = [[0.0, 0.0], [1.0, 1.0]]
+        init_box = []
+        lin_box = [[1, 1]] * 3
+        time_extra = [[0, 0]] * 2
 
         #initial state = state uncertainty + linear var uncertainty + time uncertainty(0)
         #we assume the uncertainty is symettrical for x, y, yaw
-        for s in range(len(init_box)):
-            init_box[s] = [ 
-                initialState[s] - self.state_uncertainty[s],
-                initialState[s] + self.state_uncertainty[s]
-            ]
+        for i,s in zip(initialState, self.state_uncertainty):
+            init_box.append([ 
+                i - s,
+                i + s
+            ])
 
-        init_box += lin_box + time_init
+
+        init_box += lin_box + time_extra
         self.init_box = init_box
 
         return init_box
@@ -121,7 +119,7 @@ class F1QuickZono:
                 inputs[s] + self.input_uncertainty[s]
             )
         
-        return input_box
+        return input_box 
 
     def make_dynamics(self):
 

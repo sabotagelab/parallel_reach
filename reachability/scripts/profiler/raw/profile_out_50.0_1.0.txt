@@ -1,0 +1,365 @@
+Thu Mar  5 17:52:42 2020    profiler/prof/out_tmp.prof
+
+         222460 function calls (221635 primitive calls) in 0.647 seconds
+
+   Ordered by: cumulative time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.647    0.647 {built-in method builtins.exec}
+        1    0.000    0.000    0.647    0.647 <string>:1(<module>)
+        1    0.000    0.000    0.647    0.647 C:\Users\Nathan\Desktop\Thesis\ppcm\reachability\scripts\F1QuickZono.py:59(run)
+        1    0.000    0.000    0.475    0.475 C:\Users\Nathan\Desktop\Thesis\ppcm\reachability\scripts\F1QuickZono.py:75(<listcomp>)
+       21    0.000    0.000    0.475    0.023 C:\Users\Nathan\Desktop\Thesis\quickzonoreach\quickzonoreach\zono.py:202(verts)
+       21    0.020    0.001    0.474    0.023 C:\Users\Nathan\Desktop\Thesis\quickzonoreach\quickzonoreach\kamenev.py:112(get_verts)
+       21    0.137    0.007    0.434    0.021 C:\Users\Nathan\Desktop\Thesis\quickzonoreach\quickzonoreach\kamenev.py:144(_v_h_rep_given_init_simplex)
+     1801    0.008    0.000    0.242    0.000 C:\Users\Nathan\Desktop\Thesis\quickzonoreach\quickzonoreach\zono.py:210(max_func)
+     1801    0.218    0.000    0.225    0.000 C:\Users\Nathan\Desktop\Thesis\quickzonoreach\quickzonoreach\zono.py:160(maximize)
+        1    0.000    0.000    0.164    0.164 C:\Users\Nathan\Desktop\Thesis\ppcm\reachability\scripts\F1QuickZono.py:81(run_zono)
+        1    0.000    0.000    0.164    0.164 C:\Users\Nathan\Desktop\Thesis\quickzonoreach\quickzonoreach\zono.py:15(get_zonotope_reachset)
+        1    0.000    0.000    0.164    0.164 C:\Users\Nathan\Desktop\Thesis\quickzonoreach\quickzonoreach\zono.py:45(iterate_zonotope_reachset)
+       20    0.001    0.000    0.163    0.008 C:\Users\Nathan\Desktop\Thesis\quickzonoreach\quickzonoreach\util.py:59(to_discrete_time_mat)
+       20    0.000    0.000    0.106    0.005 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:557(expm)
+       20    0.000    0.000    0.106    0.005 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:605(_expm)
+1520/1400    0.008    0.000    0.086    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:25(__init__)
+       20    0.000    0.000    0.064    0.003 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:676(_solve_P_Q)
+      170    0.000    0.000    0.057    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\tempfile.py:305(mkstemp)
+      170    0.001    0.000    0.056    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\tempfile.py:249(_mkstemp_inner)
+       20    0.002    0.000    0.056    0.003 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\dsolve\linsolve.py:83(spsolve)
+     1520    0.012    0.000    0.048    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:128(check_format)
+      170    0.043    0.000    0.043    0.000 {built-in method nt.open}
+       40    0.000    0.000    0.038    0.001 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:48(expm_multiply)
+       40    0.001    0.000    0.037    0.001 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:137(_expm_multiply_simple)
+      600    0.001    0.000    0.031    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:413(__mul__)
+      120    0.001    0.000    0.030    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\csc.py:160(__getitem__)
+      720    0.001    0.000    0.028    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:633(__getattr__)
+     3420    0.011    0.000    0.024    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:119(get_index_dtype)
+    22336    0.023    0.000    0.023    0.000 {built-in method numpy.array}
+      340    0.001    0.000    0.020    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:1078(_with_data)
+     1640    0.008    0.000    0.018    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:1058(prune)
+5348/4843    0.007    0.000    0.018    0.000 {built-in method numpy.core._multiarray_umath.implement_array_function}
+      120    0.001    0.000    0.017    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:1090(_binopt)
+      380    0.000    0.000    0.016    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:309(dot)
+       20    0.000    0.000    0.015    0.001 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:499(pade3)
+      220    0.001    0.000    0.014    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\data.py:117(_mul_scalar)
+       80    0.000    0.000    0.013    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:141(_smart_matrix_product)
+       80    0.000    0.000    0.012    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:365(__add__)
+      120    0.000    0.000    0.012    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\csr.py:236(__getitem__)
+       21    0.000    0.000    0.012    0.001 C:\Users\Nathan\Desktop\Thesis\quickzonoreach\quickzonoreach\kamenev.py:66(_find_init_simplex)
+      140    0.001    0.000    0.012    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:940(toarray)
+    14163    0.004    0.000    0.012    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\_asarray.py:16(asarray)
+       80    0.001    0.000    0.012    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:477(_mul_sparse_matrix)
+       80    0.000    0.000    0.012    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:341(_add_sparse)
+      160    0.000    0.000    0.011    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:501(__rmul__)
+      120    0.001    0.000    0.011    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\csc.py:137(tocsr)
+       20    0.000    0.000    0.010    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:451(d4_loose)
+       20    0.000    0.000    0.010    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:427(d4_tight)
+      120    0.001    0.000    0.009    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\csr.py:390(_get_row_slice)
+     1453    0.009    0.000    0.009    0.000 {method 'reduce' of 'numpy.ufunc' objects}
+       40    0.001    0.000    0.009    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:190(_expm_multiply_simple_core)
+      140    0.001    0.000    0.008    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\csc.py:111(transpose)
+     3579    0.003    0.000    0.008    0.000 <__array_function__ internals>:2(dot)
+     7500    0.003    0.000    0.008    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:213(nnz)
+  120/100    0.001    0.000    0.008    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\coo.py:125(__init__)
+  248/148    0.000    0.000    0.008    0.000 {built-in method builtins.abs}
+      100    0.000    0.000    0.008    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\data.py:37(__abs__)
+        1    0.000    0.000    0.008    0.008 C:\Users\Nathan\Desktop\Thesis\ppcm\reachability\scripts\F1QuickZono.py:123(make_dynamics)
+       20    0.000    0.000    0.007    0.000 C:\Users\Nathan\Desktop\Thesis\ppcm\reachability\scripts\model_hardcode.py:26(linearized_dynamics)
+       21    0.000    0.000    0.007    0.000 C:\Users\Nathan\Desktop\Thesis\quickzonoreach\quickzonoreach\kamenev.py:35(_find_two_points)
+      120    0.000    0.000    0.007    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\csr.py:131(transpose)
+       20    0.000    0.000    0.007    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:463(d6_loose)
+       20    0.000    0.000    0.007    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:433(d6_tight)
+       40    0.000    0.000    0.007    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:399(A4)
+       40    0.000    0.000    0.007    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:111(_onenorm)
+      190    0.000    0.000    0.006    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sympy\core\decorators.py:84(__sympifyit_wrapper)
+     3420    0.006    0.000    0.006    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\getlimits.py:497(__init__)
+      280    0.000    0.000    0.006    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:269(asformat)
+       40    0.000    0.000    0.006    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:23(_exact_1_norm)
+       40    0.000    0.000    0.006    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:385(__sub__)
+       60    0.001    0.000    0.006    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\coo.py:268(tocsc)
+       80    0.001    0.000    0.006    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:570(sum)
+       40    0.000    0.000    0.006    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:344(_sub_sparse)
+       40    0.004    0.000    0.006    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:409(_fragment_3_1)
+      170    0.000    0.000    0.006    0.000 {built-in method builtins.next}
+      360    0.001    0.000    0.005    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:15(_exact_inf_norm)
+      170    0.001    0.000    0.005    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\tempfile.py:157(__next__)
+       20    0.000    0.000    0.005    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:812(_ell)
+    14148    0.004    0.000    0.005    0.000 {built-in method builtins.isinstance}
+      120    0.001    0.000    0.005    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\coo.py:219(_check)
+       60    0.000    0.000    0.005    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\construct.py:220(eye)
+      360    0.000    0.000    0.004    0.000 <__array_function__ internals>:2(norm)
+     7180    0.004    0.000    0.004    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:100(getnnz)
+     1640    0.002    0.000    0.004    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:91(to_native)
+      170    0.000    0.000    0.004    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\tempfile.py:160(<listcomp>)
+      170    0.000    0.000    0.004    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\ntpath.py:538(abspath)
+      240    0.001    0.000    0.004    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:265(_unpack_index)
+      730    0.000    0.000    0.004    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\_methods.py:28(_amax)
+      360    0.001    0.000    0.004    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\linalg\linalg.py:2316(norm)
+       20    0.000    0.000    0.004    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:130(_is_upper_triangular)
+       20    0.000    0.000    0.004    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\extract.py:45(tril)
+     1360    0.001    0.000    0.004    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\random.py:252(choice)
+      900    0.001    0.000    0.004    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:183(isscalarlike)
+     1660    0.003    0.000    0.004    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:78(set_shape)
+       20    0.000    0.000    0.003    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:406(A6)
+      100    0.000    0.000    0.003    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:392(A2)
+       20    0.000    0.000    0.003    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:78(_onenorm_matrix_power_nnm)
+      266    0.001    0.000    0.003    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sympy\core\sympify.py:78(sympify)
+       40    0.000    0.000    0.003    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:39(_ident_like)
+      170    0.001    0.000    0.003    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\ntpath.py:471(normpath)
+      560    0.000    0.000    0.003    0.000 {method 'max' of 'numpy.ndarray' objects}
+      340    0.000    0.000    0.003    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\_asarray.py:141(ascontiguousarray)
+      370    0.000    0.000    0.003    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\_methods.py:32(_amin)
+      900    0.001    0.000    0.003    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numeric.py:1786(isscalar)
+      300    0.001    0.000    0.003    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:451(_mul_vector)
+       80    0.000    0.000    0.003    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:599(_minor_reduce)
+      200    0.000    0.000    0.002    0.000 <__array_function__ internals>:2(flatnonzero)
+     4701    0.002    0.000    0.002    0.000 {built-in method builtins.max}
+    20922    0.002    0.000    0.002    0.000 {built-in method builtins.len}
+     1280    0.002    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:200(isshape)
+     2526    0.002    0.000    0.002    0.000 {method 'copy' of 'numpy.ndarray' objects}
+      152    0.001    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sympy\core\numbers.py:930(__new__)
+       43    0.000    0.000    0.002    0.000 C:\Users\Nathan\Desktop\Thesis\quickzonoreach\quickzonoreach\kamenev.py:11(_get_orthonormal_rank)
+     1280    0.002    0.000    0.002    0.000 {built-in method numpy.empty}
+     1360    0.002    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\random.py:222(_randbelow)
+      170    0.001    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\ntpath.py:74(join)
+       43    0.000    0.000    0.002    0.000 <__array_function__ internals>:2(svd)
+      200    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numeric.py:591(flatnonzero)
+       43    0.001    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\linalg\linalg.py:1458(svd)
+      510    0.002    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\ntpath.py:121(splitdrive)
+     1640    0.001    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\data.py:22(__init__)
+     1933    0.002    0.000    0.002    0.000 {built-in method builtins.hasattr}
+       21    0.000    0.000    0.002    0.000 <__array_function__ internals>:2(allclose)
+       21    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numeric.py:2091(allclose)
+     3280    0.002    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\_lib\_util.py:128(_prune_array)
+      320    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:188(isintlike)
+     1285    0.001    0.000    0.002    0.000 <frozen importlib._bootstrap>:989(_handle_fromlist)
+     2940    0.001    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:1202(isspmatrix)
+       20    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:927(tocoo)
+     3420    0.002    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\getlimits.py:521(max)
+       20    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:358(__init__)
+       21    0.000    0.000    0.002    0.000 <__array_function__ internals>:2(isclose)
+       20    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\matfuncs.py:120(_ident_like)
+     8440    0.002    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:101(get_shape)
+      240    0.001    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:331(_check_boolean)
+       21    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numeric.py:2167(isclose)
+      120    0.002    0.000    0.002    0.000 {method 'solve' of 'SuperLU' objects}
+       20    0.000    0.000    0.002    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\dsolve\linsolve.py:389(factorized)
+       20    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\dsolve\linsolve.py:227(splu)
+      120    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:1002(sum_duplicates)
+      170    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\_methods.py:44(_any)
+      200    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numeric.py:159(ones)
+      120    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:973(__get_has_canonical_format)
+      100    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\data.py:32(_deduped_data)
+       20    0.001    0.000    0.001    0.000 {built-in method scipy.sparse.linalg.dsolve._superlu.gstrf}
+       20    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\data.py:46(__neg__)
+      400    0.001    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\abc.py:178(__instancecheck__)
+      569    0.001    0.000    0.001    0.000 {method 'astype' of 'numpy.ndarray' objects}
+     1640    0.001    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:71(__init__)
+      120    0.001    0.000    0.001    0.000 {built-in method scipy.sparse._sparsetools.get_csr_submatrix}
+       38    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sympy\core\decorators.py:122(binary_op_wrapper)
+      320    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:117(_set_self)
+      120    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\_methods.py:36(_sum)
+       80    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\matrixlib\defmatrix.py:38(asmatrix)
+       80    0.000    0.000    0.001    0.000 <__array_function__ internals>:2(diff)
+       76    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sympy\core\numbers.py:1161(__mul__)
+     1000    0.001    0.000    0.001    0.000 <frozen importlib._bootstrap>:402(parent)
+     3900    0.001    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\csc.py:224(_swap)
+      580    0.001    0.000    0.001    0.000 {built-in method numpy.zeros}
+      285    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sympy\core\numbers.py:79(mpf_norm)
+       80    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\matrixlib\defmatrix.py:289(sum)
+       22    0.000    0.000    0.001    0.000 C:\Users\Nathan\Desktop\Thesis\quickzonoreach\quickzonoreach\kamenev.py:30(_get_rank)
+      171    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sympy\core\numbers.py:1064(_new)
+       76    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sympy\core\numbers.py:1147(__add__)
+     1479    0.001    0.000    0.001    0.000 {built-in method builtins.getattr}
+       80    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\matrixlib\defmatrix.py:117(__new__)
+      200    0.000    0.000    0.001    0.000 <__array_function__ internals>:2(ravel)
+       20    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\extract.py:167(_masked_coo)
+       40    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:31(_trace)
+       80    0.001    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\lib\function_base.py:1141(diff)
+       76    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sympy\core\cache.py:92(wrapper)
+     3604    0.001    0.000    0.001    0.000 {method 'transpose' of 'numpy.ndarray' objects}
+     1640    0.001    0.000    0.001    0.000 {method 'newbyteorder' of 'numpy.dtype' objects}
+     1440    0.001    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:343(onenorm)
+      200    0.000    0.000    0.001    0.000 <__array_function__ internals>:2(concatenate)
+      152    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\mpmath\libmp\libmpf.py:410(from_float)
+      200    0.000    0.000    0.001    0.000 <__array_function__ internals>:2(nonzero)
+      114    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sympy\core\numbers.py:586(__float__)
+      200    0.000    0.000    0.001    0.000 <__array_function__ internals>:2(copyto)
+       21    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numeric.py:2244(within_tol)
+      200    0.000    0.000    0.001    0.000 {method 'min' of 'numpy.ndarray' objects}
+       40    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:467(_condition_3_13)
+      170    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\tempfile.py:118(_sanitize_params)
+      200    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\fromnumeric.py:1693(ravel)
+      320    0.001    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\coo.py:193(getnnz)
+      420    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:20(upcast)
+     3579    0.001    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\multiarray.py:707(dot)
+       40    0.001    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:391(_compute_p_max)
+       63    0.000    0.000    0.001    0.000 <__array_function__ internals>:2(all)
+       40    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:516(diagonal)
+       19    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sympy\core\expr.py:143(__rsub__)
+      140    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:1119(_process_toarray_args)
+      800    0.001    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\_weakrefset.py:70(__contains__)
+      190    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\mpmath\libmp\libmpf.py:291(from_man_exp)
+     2355    0.001    0.000    0.001    0.000 {method 'getrandbits' of '_random.Random' objects}
+      200    0.000    0.000    0.001    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\fromnumeric.py:1804(nonzero)
+     1640    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\data.py:25(_get_dtype)
+       76    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sympy\core\numbers.py:1243(__eq__)
+       63    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\fromnumeric.py:2324(all)
+       80    0.000    0.000    0.000    0.000 {method 'view' of 'numpy.ndarray' objects}
+  240/160    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\matrixlib\defmatrix.py:169(__array_finalize__)
+      114    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sympy\core\numbers.py:1100(_as_mpf_val)
+       19    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sympy\core\expr.py:133(__radd__)
+     2476    0.000    0.000    0.000    0.000 {method 'append' of 'list' objects}
+      170    0.000    0.000    0.000    0.000 {built-in method nt._getfullpathname}
+       80    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:172(get_sum_dtype)
+       21    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\quickzonoreach\quickzonoreach\zono.py:35(custom_func)
+       63    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\fromnumeric.py:73(_wrapreduction)
+      170    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\tempfile.py:146(rng)
+      240    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:293(_check_ellipsis)
+     1020    0.000    0.000    0.000    0.000 {built-in method nt.fspath}
+      200    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\fromnumeric.py:55(_wrapfunc)
+      152    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sympy\core\numbers.py:1343(__hash__)
+       21    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\quickzonoreach\quickzonoreach\zono.py:155(clone)
+       22    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\quickzonoreach\quickzonoreach\zono.py:113(__init__)
+      160    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.csc_matvec}
+      479    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\mpmath\libmp\libmpf.py:153(_normalize)
+       80    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.csc_plus_csc}
+      240    0.000    0.000    0.000    0.000 {method 'nonzero' of 'numpy.ndarray' objects}
+      323    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sympy\core\basic.py:96(__new__)
+      460    0.000    0.000    0.000    0.000 {method 'ravel' of 'numpy.ndarray' objects}
+       80    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numerictypes.py:365(issubdtype)
+      362    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\_asarray.py:88(asanyarray)
+      170    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\tempfile.py:97(_infer_return_type)
+      140    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.csr_todense}
+       76    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\mpmath\libmp\libmpf.py:702(mpf_add)
+      120    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.csc_tocsr}
+       43    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\linalg\linalg.py:116(_makearray)
+       40    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:1049(sort_indices)
+       76    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sympy\core\sympify.py:391(_sympify)
+       42    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\_ufunc_config.py:39(seterr)
+      680    0.000    0.000    0.000    0.000 {method 'replace' of 'str' objects}
+      152    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\mpmath\libmp\libmpf.py:64(dps_to_prec)
+       80    0.000    0.000    0.000    0.000 {built-in method _warnings.warn}
+     1000    0.000    0.000    0.000    0.000 {method 'rpartition' of 'str' objects}
+       60    0.000    0.000    0.000    0.000 {built-in method math.sin}
+      152    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sympy\core\numbers.py:715(__hash__)
+      120    0.000    0.000    0.000    0.000 {built-in method numpy.arange}
+       40    0.000    0.000    0.000    0.000 {method 'sum' of 'numpy.ndarray' objects}
+       60    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.coo_tocsr}
+       80    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.csc_matmat_pass2}
+      806    0.000    0.000    0.000    0.000 {method 'get' of 'dict' objects}
+      120    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:994(__set_has_canonical_format)
+      400    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:227(isdense)
+       60    0.000    0.000    0.000    0.000 {built-in method math.cos}
+       80    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.csc_matmat_pass1}
+      300    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:54(upcast_char)
+      120    0.000    0.000    0.000    0.000 <__array_function__ internals>:2(empty_like)
+      170    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\ma\core.py:6293(isMaskedArray)
+      140    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.csr_matvec}
+     1360    0.000    0.000    0.000    0.000 {method 'bit_length' of 'int' objects}
+      148    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\mpmath\libmp\libmpf.py:208(_normalize1)
+       21    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\_ufunc_config.py:441(__enter__)
+      340    0.000    0.000    0.000    0.000 {method 'join' of 'str' objects}
+       76    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\mpmath\libmp\libmpf.py:884(python_mpf_mul)
+      170    0.000    0.000    0.000    0.000 {method 'split' of 'str' objects}
+      160    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numerictypes.py:293(issubclass_)
+      228    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\mpmath\libmp\libintmath.py:83(python_bitcount)
+      729    0.000    0.000    0.000    0.000 {built-in method builtins.issubclass}
+       40    0.000    0.000    0.000    0.000 <__array_function__ internals>:2(atleast_2d)
+      340    0.000    0.000    0.000    0.000 {method 'startswith' of 'str' objects}
+       43    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\linalg\linalg.py:144(_commonType)
+      921    0.000    0.000    0.000    0.000 {method 'tolist' of 'numpy.ndarray' objects}
+      168    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\quickzonoreach\quickzonoreach\util.py:20(__setattr__)
+      114    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\mpmath\libmp\libmpf.py:454(to_float)
+      120    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.csr_has_canonical_format}
+     1260    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\csr.py:231(_swap)
+       40    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:1018(__get_sorted)
+      152    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sympy\core\basic.py:121(__hash__)
+       38    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sympy\core\numbers.py:582(_as_mpf_op)
+      260    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\compressed.py:1033(__set_sorted)
+      496    0.000    0.000    0.000    0.000 {built-in method builtins.hash}
+       40    0.000    0.000    0.000    0.000 {built-in method builtins.all}
+       40    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\shape_base.py:83(atleast_2d)
+       21    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\_ufunc_config.py:446(__exit__)
+       40    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.csc_minus_csc}
+       42    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\_ufunc_config.py:139(geterr)
+       40    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.csc_diagonal}
+       19    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sympy\core\numbers.py:1144(__neg__)
+       80    0.000    0.000    0.000    0.000 {method 'reduceat' of 'numpy.ufunc' objects}
+      228    0.000    0.000    0.000    0.000 {built-in method _bisect.bisect}
+       38    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sympy\core\numbers.py:1918(_as_mpf_val)
+      170    0.000    0.000    0.000    0.000 {method 'lstrip' of 'str' objects}
+       22    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\quickzonoreach\quickzonoreach\zono.py:136(<listcomp>)
+        1    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\quickzonoreach\quickzonoreach\zono.py:82(zono_from_box)
+      170    0.000    0.000    0.000    0.000 {built-in method nt.getpid}
+       80    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\sputils.py:71(downcast_intp_index)
+      114    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sympy\core\numbers.py:1106(_as_mpf_op)
+      114    0.000    0.000    0.000    0.000 {built-in method math.ldexp}
+       38    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\mpmath\libmp\libmpf.py:330(from_int)
+      323    0.000    0.000    0.000    0.000 {built-in method __new__ of type object at 0x512ABDC0}
+      152    0.000    0.000    0.000    0.000 {built-in method builtins.round}
+       20    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.csr_sort_indices}
+       86    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\linalg\linalg.py:134(_realType)
+       21    0.000    0.000    0.000    0.000 <__array_function__ internals>:2(result_type)
+      140    0.000    0.000    0.000    0.000 {method 'reshape' of 'numpy.ndarray' objects}
+      170    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\tempfile.py:289(gettempdir)
+      120    0.000    0.000    0.000    0.000 {method 'indices' of 'slice' objects}
+      360    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\linalg\linalg.py:2312(_norm_dispatcher)
+      170    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\tempfile.py:235(_get_candidate_names)
+      120    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:406(<genexpr>)
+       43    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\linalg\linalg.py:111(get_linalg_error_extobj)
+      152    0.000    0.000    0.000    0.000 {built-in method math.frexp}
+       20    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\ppcm\reachability\scripts\F1QuickZono.py:113(make_input_box)
+       86    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\linalg\linalg.py:121(isComplexType)
+      200    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:130(<genexpr>)
+        1    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\quickzonoreach\quickzonoreach\zono.py:89(zono_from_compressed_init_box)
+      200    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\multiarray.py:1043(copyto)
+       40    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\base.py:162(asfptype)
+       21    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\_ufunc_config.py:437(__init__)
+      200    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numeric.py:587(_flatnonzero_dispatcher)
+      200    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\multiarray.py:145(concatenate)
+       80    0.000    0.000    0.000    0.000 {built-in method numpy.core._multiarray_umath.normalize_axis_index}
+       76    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\mpmath\libmp\libmpf.py:537(mpf_eq)
+       42    0.000    0.000    0.000    0.000 {built-in method numpy.seterrobj}
+        1    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\quickzonoreach\quickzonoreach\util.py:26(compress_init_box)
+      220    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\ppcm\reachability\scripts\model_hardcode.py:28(<genexpr>)
+      200    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\fromnumeric.py:1689(_ravel_dispatcher)
+       40    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\linalg\_expm_multiply.py:315(__init__)
+       60    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\csc.py:230(isspmatrix_csc)
+       63    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\fromnumeric.py:74(<dictcomp>)
+      200    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\fromnumeric.py:1800(_nonzero_dispatcher)
+       43    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\linalg\linalg.py:203(_assert_stacked_2d)
+       20    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.expandptr}
+       76    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sympy\core\numbers.py:1139(__nonzero__)
+       20    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\special\basic.py:1764(comb)
+       20    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.csr_has_sorted_indices}
+       80    0.000    0.000    0.000    0.000 {built-in method builtins.min}
+       22    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\quickzonoreach\quickzonoreach\util.py:16(freeze_attrs)
+      103    0.000    0.000    0.000    0.000 {method 'items' of 'dict' objects}
+      120    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\multiarray.py:77(empty_like)
+       20    0.000    0.000    0.000    0.000 {built-in method math.factorial}
+       84    0.000    0.000    0.000    0.000 {built-in method numpy.geterrobj}
+       20    0.000    0.000    0.000    0.000 {method 'update' of 'dict' objects}
+       76    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\sympy\core\numbers.py:1085(_hashable_content)
+       80    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\lib\function_base.py:1137(_diff_dispatcher)
+       86    0.000    0.000    0.000    0.000 {method '__array_wrap__' of 'numpy.ndarray' objects}
+       80    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\matrixlib\defmatrix.py:255(_collapse)
+       20    0.000    0.000    0.000    0.000 {scipy.special._comb._comb_int}
+       63    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\fromnumeric.py:2320(_all_dispatcher)
+       21    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\quickzonoreach\quickzonoreach\kamenev.py:57(<listcomp>)
+       21    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\quickzonoreach\quickzonoreach\kamenev.py:44(<listcomp>)
+       20    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\coo.py:532(isspmatrix_coo)
+       20    0.000    0.000    0.000    0.000 {built-in method numpy.promote_types}
+       43    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\linalg\linalg.py:1454(_svd_dispatcher)
+       19    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\mpmath\libmp\libmpf.py:663(mpf_neg)
+       21    0.000    0.000    0.000    0.000 {method 'pop' of 'dict' objects}
+       40    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\shape_base.py:79(_atleast_2d_dispatcher)
+       21    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numeric.py:2087(_allclose_dispatcher)
+       21    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\multiarray.py:635(result_type)
+        1    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\ppcm\reachability\scripts\F1QuickZono.py:93(make_init)
+       21    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\numpy\core\numeric.py:2163(_isclose_dispatcher)
+       20    0.000    0.000    0.000    0.000 C:\Users\Nathan\AppData\Local\Programs\Python\Python36-32\lib\site-packages\scipy\sparse\csc.py:129(tocsc)
+        2    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\quickzonoreach\quickzonoreach\util.py:51(<listcomp>)
+        2    0.000    0.000    0.000    0.000 C:\Users\Nathan\Desktop\Thesis\quickzonoreach\quickzonoreach\zono.py:99(<listcomp>)
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+
+

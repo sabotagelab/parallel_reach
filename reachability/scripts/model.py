@@ -21,7 +21,7 @@ class Model:
         self.B = B_jac
 
         #augment A, B for time triggered transitions
-        self.augmentDynamics()
+        self.augmentDynamics() #comment for quickzono
 
         self.bounds_rhs = bounds_rhs
         self.bounds_mat = self.standardBounds()
@@ -76,7 +76,7 @@ class Model:
         return {
             "A" : self.A.subs(current).evalf(),
             "B" : self.B.subs(current).evalf(),
-            "bounds_mat" : self.bounds_mat,
+            "bounds_mat" : self.bounds_mat, #commented for quickzono
             "bounds_rhs" : self.bounds_rhs.subs(current).evalf(),
             "invariant_mat" : self.invariant_mat,
             "guard_mat" : self.guard_mat,

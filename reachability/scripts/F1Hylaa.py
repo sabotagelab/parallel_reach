@@ -18,7 +18,7 @@ from nl_dynamics import F1Dynamics
 import simulator
 
 ##ROS imports
-import rospy
+#import rospy
 #from osuf1_common import StampedFloat2d, MPC_metadata
 #from profilehooks import profile
 import cProfile as profile
@@ -80,7 +80,7 @@ class F1Hylaa:
         return core.run(initialBox)
 
     def make_settings(self, dt, total, displayType, verbosity, fileName="hylaa_reach.png"):
-        rospy.loginfo("SETTINGS CREATED WITH dt={}, total={}".format(dt, total))
+        #rospy.loginfo("SETTINGS CREATED WITH dt={}, total={}".format(dt, total))
         self.dt = dt
         self.ttime = total
 
@@ -104,7 +104,7 @@ class F1Hylaa:
         elif displayType == "VIDEO":
             settings.plot.plot_mode = PlotSettings.PLOT_VIDEO
         else: 
-            rospy.logwarn("Invalid hylaa plot type specified, default=NONE used")
+            #rospy.logwarn("Invalid hylaa plot type specified, default=NONE used")
             settings.plot.plot_mode = PlotSettings.PLOT_NONE
         #rospy.loginfo("Using HYLAA setting: plot_mode = {}".format(displayType))
 
@@ -113,7 +113,7 @@ class F1Hylaa:
         elif verbosity == "VERBOSE":
             settings.stdout = HylaaSettings.STDOUT_VERBOSE
         else:
-            rospy.logwarn("WARNING: Invalid hylaa output verbosity specified, default=VERBOSE used")
+            #rospy.logwarn("WARNING: Invalid hylaa output verbosity specified, default=VERBOSE used")
             settings.stdout = HylaaSettings.STDOUT_VERBOSE
         #rospy.loginfo("Using HYLAA setting: stdout = {}".format(verbosity))
         
