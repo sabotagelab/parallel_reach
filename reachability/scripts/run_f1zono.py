@@ -1,3 +1,5 @@
+#!/home/dev/cuda-venv/bin/python3
+
 #barebones testing script to run hylaa without ROS
 # also used by profiler
 
@@ -17,6 +19,12 @@ import cProfile as profile
 #from pycallgraph import PyCallGraph
 #from pycallgraph.output import GraphvizOutput
 from timeit import Timer
+
+gen_callgraph = False
+if gen_callgraph:
+    from pycallgraph import PyCallGraph
+    from pycallgraph import Config
+    from pycallgraph.output import GraphvizOutput
 
 state_uncertainty = [.1, .1, 0]
 input_uncertainty = [.1, 3.14/90] # .1m/s , 2deg
@@ -59,8 +67,16 @@ if __name__ == "__main__":
     print("Initializing Simulation")
     initialState = [0, 0, 0]
     dt = .05
-    ttime = 4
-    zonos = run_quickzono(dt, ttime, initialState)
+    ttime = 1.4
+
+    if gen_callgraph:
+        config = Config(max_depth=10)
+        graphviz = GraphvizOutput(output_file="quickzono_callgraph.png")
+        with PyCallGraph(output=graphviz, config=config):
+            zonos = run_quickzono(dt, ttime, initialState)
+    else:
+        zonos = run_quickzono(dt, ttime, initialState)
+
 
     xdim = 0
     ydim = 1
