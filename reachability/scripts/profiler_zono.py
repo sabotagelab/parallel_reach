@@ -10,21 +10,21 @@ import pstats
 
 linear = lambda mini, maxi, frac : mini + (maxi - mini) * frac
 
-numDataTrials = 3
+numDataTrials = 4
 
 #dt config
-dt_Min = .05
-dt_Max = .05
-dt_numSteps = 1
+dt_Min = .01
+dt_Max = .15
+dt_numSteps = 5
 dt_StepFunc = linear
 dt_Steps = [dt_StepFunc(dt_Min, dt_Max, step/(dt_numSteps)) for step in range(dt_numSteps)]
 print("DT steps are:")
 print(dt_Steps)
 
 #total time config
-ttime_Min = 1
+ttime_Min = .5
 ttime_Max = 1
-ttime_numSteps = 1
+ttime_numSteps = 2
 ttime_StepFunc = linear
 ttime_Steps = [ttime_StepFunc(ttime_Min, ttime_Max, step/(ttime_numSteps)) for step in range(ttime_numSteps)]
 print("Total Time Steps are")
@@ -36,7 +36,7 @@ def printResult(r):
 
 results = []
 
-maxSimSteps = 30
+maxSimSteps = 50
 #testing on dt and total
 for totalTime in ttime_Steps:
     print("-----------------------------------")
@@ -53,9 +53,9 @@ for totalTime in ttime_Steps:
                 print("{}".format(t+1), end=' ')
                 runTimeTrials.append(run_quickzono(dt, totalTime, [0, 0, 0], True))
 
-            with open('profiler/raw/profile_out_{}_{}.txt'.format(dt*1000,totalTime), 'w+') as stream:
-                p = pstats.Stats('profiler/prof/out_tmp.prof', stream=stream)
-                p = p.sort_stats("cumtime").print_stats()
+            #with open('profiler/raw/profile_out_{}_{}.txt'.format(dt*1000,totalTime), 'w+') as stream:
+                #p = pstats.Stats('profiler/prof/out_tmp.prof', stream=stream)
+                #p = p.sort_stats("cumtime").print_stats()
             runTime = np.mean(runTimeTrials)
             result = (totalTime, dt, runTime)
             printResult(result)

@@ -1,20 +1,17 @@
 # library imports
 from functools import partial
 import importlib
-
-#hylaa imports
+#from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
+#import dill
+from multiprocessing import Pool
 
 #local imports
 from nl_dynamics import F1Dynamics
 
 from quickzonoreach.zono import get_zonotope_reachset
+from quickzonoreach.zono_projection import ZP_TYPE, get_ZP_instance
 
-##ROS imports
-#import rospy
-#from osuf1_common import StampedFloat2d, MPC_metadata
-#from profilehooks import profile
-
-#wrapper to run hylaa repeatedly with different inputs
+#wrapper to run quickzono repeatedly with different inputs
 class F1QuickZono:
     def __init__(self):
 
@@ -38,6 +35,9 @@ class F1QuickZono:
         self.input_box_list = []
         self.dt_list = []
         self.save_list = []
+
+
+        self.ZP = get_ZP_instance(ZP_TYPE.GPU_Hybrid)
 
 
     def set_model_params(self, state_uncertainty, input_uncertainty, dynamics_module="kinematics_model"):
@@ -64,7 +64,10 @@ class F1QuickZono:
         self.make_dynamics()
         self.make_init(self.predictions[0][0])
         zonos = self.run_zono()
-        reach = [[a.tolist() for a in z.verts()] for z in zonos]
+
+
+        #do projection for safety analysis in 2d
+        reach = self.ZP.verts(zonos)
         return reach
 
 

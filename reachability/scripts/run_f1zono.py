@@ -48,15 +48,14 @@ def run_quickzono(dt, ttime, initialState, do_profile=False):
     result = None
     print("Running quickzono")
     if do_profile:
-        print("RUNNING PROFILER")
         timer = Timer("""fy.run(predictions)""", globals=globals())
-        return timer.timeit(1)
+        result = timer.timeit(1)
         #profile.runctx('resultprof = fy.run(predictions)', globals(), locals(), filename="profiler/prof/out_tmp.prof")
-        result = locals()['resultprof']
+        #result = locals()['resultprof']
     else:
         #with PyCallGraph(output=GraphvizOutput()):
         result = fy.run(predictions)
-    print("quickzono execution finished.")
+    print("quickzono execution finished.\n")
     #print(result)
     #print("Stateset obj")
     #print(result[0][-3])
