@@ -24,12 +24,16 @@ class Model:
         self.input_uncertainty = input_uncertainty
 
     def linearized_dynamics(self, state, inputs, dt):
-        current = state+inputs+self.constants+[dt]+self.input_uncertainty
-        x, y, p, v, d, L, d0, dt, i1, i2 = (val for val in current)
-        sin_p_d = math.sin(p + d)
-        cos_p_d = math.cos(p + d)
-        sin_p_d = math.sin(p + d)
-        cos_p_d = math.cos(p + d)
+        #current = state+inputs+self.constants+[dt]+self.input_uncertainty
+        x, y, p = (val for val in state)
+        v, d,  = (val for val in inputs)
+        L, d0 = (val for val in self.constants)
+        # i1, i2 = input_uncertainty[1](val for val in self.input_uncertainty)
+        p_d = p + d
+        sin_p_d = math.sin(p_d)
+        cos_p_d = math.cos(p_d)
+        #sin_p_d = math.sin(p_d)
+        #cos_p_d = math.cos(p_d)
         sin_d = math.sin(d)
         cos_d = math.cos(d)
 

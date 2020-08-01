@@ -20,7 +20,7 @@ import cProfile as profile
 #from pycallgraph.output import GraphvizOutput
 from timeit import Timer
 
-gen_callgraph = False
+gen_callgraph = True
 if gen_callgraph:
     from pycallgraph import PyCallGraph
     from pycallgraph import Config
@@ -63,13 +63,20 @@ def run_quickzono(dt, ttime, initialState, do_profile=False):
 
 
 if __name__ == "__main__":
+    
+    try:
+        import multiprocessing
+        multiprocessing.set_start_method("spawn")
+        print("Threads now spawn not fork.")
+    except RuntimeError:
+        pass
     print("Initializing Simulation")
     initialState = [0, 0, 0]
     dt = .05
-    ttime = 1.4
+    ttime = 1.0
 
     if gen_callgraph:
-        config = Config(max_depth=10)
+        config = Config(max_depth=15)
         graphviz = GraphvizOutput(output_file="quickzono_callgraph.png")
         with PyCallGraph(output=graphviz, config=config):
             zonos = run_quickzono(dt, ttime, initialState)

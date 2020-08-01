@@ -82,7 +82,7 @@ class F1QuickZono:
         self.ttime = total
         self.num_steps = int(self.ttime/self.dt)
         self.dt_list = [self.dt] * (self.num_steps)
-        self.save_list = [True if x%3==0 else False for x in range(self.num_steps+1)]
+        self.save_list = [True if x%1==0 else False for x in range(self.num_steps+1)]
 
 
     def make_init(self, initialState):
