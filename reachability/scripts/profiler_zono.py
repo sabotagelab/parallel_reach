@@ -8,6 +8,9 @@ from timeit import Timer
 from run_f1zono import run_quickzono
 import pstats
 
+
+#TODO graph timing only for zono projections
+
 linear = lambda mini, maxi, frac : mini + (maxi - mini) * frac
 
 numDataTrials = 4
@@ -57,7 +60,7 @@ for totalTime in ttime_Steps:
                 #p = pstats.Stats('profiler/prof/out_tmp.prof', stream=stream)
                 #p = p.sort_stats("cumtime").print_stats()
             runTime = np.mean(runTimeTrials)
-            result = (totalTime, dt, runTime)
+            result = (totalTime, dt, runTime, int(totalTime / dt))
             printResult(result)
             step_results.append(result)
         else:
@@ -69,12 +72,12 @@ maxRuntimeRatio = 0
 xAxis_padding = .01
 yAxis_padding = .1
 for ttime_set in results:
-    ttime, dt, runtime = zip(*ttime_set)
+    ttime, dt, runtime, steps = zip(*ttime_set)
     maxRuntime = max(max(runtime), maxRuntime)
     maxRuntimeRatio = max(max([r/ttime[0] for r in runtime]), maxRuntimeRatio)
 
 for ttime_set in results:
-    ttime, dt, runtime = zip(*ttime_set)
+    ttime, dt, runtime,steps = zip(*ttime_set)
     print("\033[0;37;40m Plotting with ttime={}".format(ttime))
     plt.title("DT Series (T={})".format(ttime[0]))
     plt.ylabel("runtime avg ({} trials)".format(numDataTrials))
@@ -86,16 +89,16 @@ for ttime_set in results:
 
 #combined dt series vs time
 print("\033[0;37;40m Plotting combined".format(ttime))
-plt.title("Combined dt series by horizon time")
+plt.title("Combined step series by horizon time")
 plt.ylabel("runtime avg ({} trials)".format(numDataTrials))
-plt.xlabel("dt")
+plt.xlabel("steps")
 for ttime_set in results:
-    ttime, dt, runtime = zip(*ttime_set)
-    plt.plot(dt, runtime, marker='o', linestyle='dashed', label="T={}".format(ttime[0]))
+    ttime, dt, runtime, steps = zip(*ttime_set)
+    plt.plot(steps, runtime, marker='o', linestyle='dashed', label="T={}".format(ttime[0]))
 
 plt.axis([
-    dt_Min - xAxis_padding,
-    dt_Max + xAxis_padding, 
+    0,
+    maxSimSteps,
     0, 
     maxRuntime + yAxis_padding
 ])
@@ -110,7 +113,7 @@ plt.title("Combined dt series by runtime/horizon time")
 plt.ylabel("runtime avg / ttime")
 plt.xlabel("dt")
 for ttime_set in results:
-    ttime, dt, runtime = zip(*ttime_set)
+    ttime, dt, runtime,steps = zip(*ttime_set)
     plt.plot(dt, [r/ttime[0] for r in runtime], marker='o', markersize='5', linestyle='dashed', label="T={}".format(ttime[0]))
 
 plt.axis([

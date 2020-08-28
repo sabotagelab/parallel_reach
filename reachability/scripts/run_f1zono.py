@@ -1,9 +1,11 @@
 #!/home/dev/cuda-venv/bin/python3
 
-#barebones testing script to run hylaa without ROS
+#barebones testing script to run reachability without ROS
 # also used by profiler
 
 from F1QuickZono import F1QuickZono
+from quickzonoreach.zono_projection import ZP_TYPE
+
 #local imports
 from nl_dynamics import F1Dynamics
 import simulator
@@ -20,7 +22,7 @@ import cProfile as profile
 #from pycallgraph.output import GraphvizOutput
 from timeit import Timer
 
-gen_callgraph = True
+gen_callgraph = False
 if gen_callgraph:
     from pycallgraph import PyCallGraph
     from pycallgraph import Config
@@ -33,29 +35,41 @@ stepFunc = partial(nlDynamics.frontStep, nlDynamics)
 inputFunc = lambda t : [ 1+4, -1 * math.cos(2)/4]
 headless = True
 fy = F1QuickZono() 
-fy.set_model_params(state_uncertainty, input_uncertainty, "model_hardcode")
 
-def run_quickzono(dt, ttime, initialState, do_profile=False):
+#modal wrappers for profiler
+def run_quickzono_CPU(dt, ttime, initialState, profile=1):
+    return run_quickzono(dt, ttime, initialState, profile, ZP_TYPE.CPU)
+
+def run_quickzono_CPU_MP(dt, ttime, initialState, profile=1):
+    return run_quickzono(dt, ttime, initialState, profile, ZP_TYPE.CPU_MP)
+
+def run_quickzono_GPU_HYBRID(dt, ttime, initialState, profile=1):
+    return run_quickzono(dt, ttime, initialState, profile, ZP_TYPE.GPU_Hybrid)
+
+def run_quickzono(dt, ttime, initialState, do_profile=0, runtime_mode=ZP_TYPE.CPU):
+    fy.set_model_params(state_uncertainty, input_uncertainty, "model_hardcode", runtime_mode=runtime_mode)
     sim = simulator.ModelSimulator(dt, ttime, initialState, stepFunc, inputFunc, headless)
 
-    print("Simulating")
+    #print("Simulating")
     global predictions
     predictions = sim.simulate()
-    print("Simulation Finished, Initializing Reachability")
+    #print("Simulation Finished, Initializing Reachability")
 
     fy.make_settings(dt, ttime)
 
     result = None
-    print("Running quickzono")
-    if do_profile:
+    #print("Running quickzono")
+    if do_profile==1:
         timer = Timer("""fy.run(predictions)""", globals=globals())
         result = timer.timeit(1)
         #profile.runctx('resultprof = fy.run(predictions)', globals(), locals(), filename="profiler/prof/out_tmp.prof")
         #result = locals()['resultprof']
+    elif do_profile==2:
+        result = fy.run(predictions, profile=True)
     else:
         #with PyCallGraph(output=GraphvizOutput()):
         result = fy.run(predictions)
-    print("quickzono execution finished.\n")
+    #print("quickzono execution finished.\n")
     #print(result)
     #print("Stateset obj")
     #print(result[0][-3])

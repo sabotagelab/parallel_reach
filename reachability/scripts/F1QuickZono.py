@@ -37,20 +37,22 @@ class F1QuickZono:
         self.save_list = []
 
 
-        self.ZP = get_ZP_instance(ZP_TYPE.GPU_Hybrid)
+        self.ZP = None 
 
 
-    def set_model_params(self, state_uncertainty, input_uncertainty, dynamics_module="kinematics_model"):
+    def set_model_params(self, state_uncertainty, input_uncertainty, dynamics_module="kinematics_model", runtime_mode=ZP_TYPE.CPU):
         model_gen = importlib.import_module(dynamics_module)
         self.modeList = []
         self.state_uncertainty = state_uncertainty
         self.input_uncertainty = input_uncertainty
         self.model = model_gen.getModel()
         self.model.setInputUncertainty(input_uncertainty)
-
+        
+        
+        self.ZP = get_ZP_instance(runtime_mode)
         return 1
     
-    def run(self, predictions):
+    def run(self, predictions, profile=False):
         self.predictions = predictions[:self.num_steps]
 
         self.quick = True
@@ -67,9 +69,10 @@ class F1QuickZono:
 
 
         #do projection for safety analysis in 2d
-        reach = self.ZP.verts(zonos)
-        return reach
-
+        if profile:
+            return self.ZP.verts_timeit(zonos)
+        else:
+            return self.ZP.verts(zonos)
 
     def run_zono(self):
         zonotopes = get_zonotope_reachset(self.init_box, self.a_mat_list, self.b_mat_list, self.input_box_list, self.dt_list,

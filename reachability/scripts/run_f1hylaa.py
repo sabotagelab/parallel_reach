@@ -19,7 +19,10 @@ stepFunc = partial(nlDynamics.frontStep, nlDynamics)
 inputFunc = lambda t : [ 1+4, -1 * math.cos(2)/4]
 headless = True
 
-def run_hylaa(dt, ttime, initialState, output):
+def run_hylaa_profile(dt, ttime, initialState):
+    run_hylaa(dt, ttime, initialState, True, False)
+
+def run_hylaa(dt, ttime, initialState, do_profile=False, output=False):
     sim = simulator.ModelSimulator(dt, ttime, initialState, stepFunc, inputFunc, headless)
 
     print("Simulating")
@@ -32,7 +35,12 @@ def run_hylaa(dt, ttime, initialState, output):
     fy.make_settings(dt, ttime, output, "VERBOSE", "hylaa.png")
 
     print("Running HYLAA")
-    result = fy.run_hylaa(predictions)
+    result = None
+    if do_profile:
+        timer = Timer("""fy.run_hylaa(prediction)""", globals=globals())
+        result = timer.timeit(1)
+    else:
+        result = fy.run_hylaa(predictions)
     print("HYLAA execution finished.")
     #print(result)
     #print("Stateset obj")
