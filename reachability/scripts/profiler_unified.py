@@ -28,11 +28,13 @@ all_modes = [qz_cpu, qz_mp, qz_hybrid]
 all_modes_names = ["QZ-CPU", "QZ-MP", "QZ-HYBRID"]
 
 
-full_mode_results = [[] for _ in range(len(all_modes))]
-verts_mode_results = [[] for _ in range(len(all_modes))]
+full_mode_results_avg = [[] for _ in range(len(all_modes))]
+verts_mode_results_avg = [[] for _ in range(len(all_modes))]
+full_mode_results_std = [[] for _ in range(len(all_modes))]
+verts_mode_results_std = [[] for _ in range(len(all_modes))]
 
 
-trials_per_stepsmode = 5
+trials_per_stepsmode = 15
 full_maxtime = 0
 verts_maxtime = 0
 for steps in steps_list:
@@ -53,15 +55,17 @@ for steps in steps_list:
                 verts_maxtime = verts_time
             full_steps_results.append(full_time)
             verts_steps_results.append(verts_time)
-        full_mode_results[num].append(np.mean(full_steps_results))
-        verts_mode_results[num].append(np.mean(verts_steps_results))
+        full_mode_results_avg[num].append(np.mean(full_steps_results))
+        verts_mode_results_avg[num].append(np.mean(verts_steps_results))
+        full_mode_results_std[num].append(np.std(full_steps_results))
+        verts_mode_results_std[num].append(np.std(verts_steps_results))
 
 
 
 plt.title("Combined execution time by steps for runtime modes")
 plt.ylabel("Execution Time (s)")
 plt.xlabel("Steps")
-for results, name in zip(full_mode_results, all_modes_names):
+for results, name in zip(full_mode_results_avg, all_modes_names_avg):
     plt.plot(steps_list, results, marker='o', markersize='5', linestyle='solid', label=name)
 plt.axis([
     0, max_steps,
@@ -69,7 +73,21 @@ plt.axis([
 ])
 
 plt.legend(loc='best')
-plt.savefig("profiler/full_unified_singleaxis.png")
+plt.savefig("profiler/avg_unified_singleaxis.png")
+
+plt.clf()
+plt.title("Standard Deviation between trial execution time by steps for runtime modes")
+plt.ylabel("Standard Deviation (s)")
+plt.xlabel("Steps")
+for results, name in zip(full_mode_results_std, all_modes_names_std):
+    plt.plot(steps_list, results, marker='o', markersize='5', linestyle='solid', label=name)
+plt.axis([
+    0, max_steps,
+    0, full_maxtime
+])
+
+plt.legend(loc='best')
+plt.savefig("profiler/std_unified_singleaxis.png")
 
 
 plt.clf()
