@@ -34,9 +34,10 @@ full_mode_results_std = [[] for _ in range(len(all_modes))]
 verts_mode_results_std = [[] for _ in range(len(all_modes))]
 
 
-trials_per_stepsmode = 15
+trials_per_stepsmode = 75
 full_maxtime = 0
 verts_maxtime = 0
+std_maxtime = 0
 for steps in steps_list:
     dt = 1
     ttime = steps
@@ -60,12 +61,15 @@ for steps in steps_list:
         full_mode_results_std[num].append(np.std(full_steps_results))
         verts_mode_results_std[num].append(np.std(verts_steps_results))
 
+for mode in full_mode_results_std:
+    std_maxtime = max(max(mode), std_maxtime)
+
 
 
 plt.title("Combined execution time by steps for runtime modes")
 plt.ylabel("Execution Time (s)")
 plt.xlabel("Steps")
-for results, name in zip(full_mode_results_avg, all_modes_names_avg):
+for results, name in zip(full_mode_results_avg, all_modes_names):
     plt.plot(steps_list, results, marker='o', markersize='5', linestyle='solid', label=name)
 plt.axis([
     0, max_steps,
@@ -79,11 +83,11 @@ plt.clf()
 plt.title("Standard Deviation between trial execution time by steps for runtime modes")
 plt.ylabel("Standard Deviation (s)")
 plt.xlabel("Steps")
-for results, name in zip(full_mode_results_std, all_modes_names_std):
+for results, name in zip(full_mode_results_std, all_modes_names):
     plt.plot(steps_list, results, marker='o', markersize='5', linestyle='solid', label=name)
 plt.axis([
     0, max_steps,
-    0, full_maxtime
+    0, std_maxtime
 ])
 
 plt.legend(loc='best')
@@ -94,7 +98,7 @@ plt.clf()
 plt.title("Fraction of execution time in verts function by steps")
 plt.ylabel("Fraction spent in 'verts'")
 plt.xlabel("Steps")
-for results, name in zip(verts_mode_results, all_modes_names):
+for results, name in zip(verts_mode_results_avg, all_modes_names):
     plt.plot(steps_list, results, marker='o', markersize='5', linestyle='solid', label=name)
 plt.axis([
     0, max_steps,
