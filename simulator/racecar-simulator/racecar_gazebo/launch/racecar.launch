@@ -3,6 +3,7 @@
   <arg name="world_name" default="racecar" />
   <arg name="gui" default="true" />
   <arg name="run_camera" default="false"/>
+  <arg name="car_name" default=""/>
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(find racecar_gazebo)/worlds/$(arg world_name).world"/>
@@ -22,6 +23,7 @@
 
   <!-- ros_control racecar launch file -->
   <include file="$(find racecar_control)/launch/racecar_control.launch" ns="/"/>
+  
 
   <!-- Spawn the MUXs -->
   <arg name="racecar_version" default="racecar-v2" />
