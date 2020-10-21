@@ -40,7 +40,7 @@ class F1QuickZono:
         self.ZP = None 
 
 
-    def set_model_params(self, state_uncertainty, input_uncertainty, dynamics_module="kinematics_model", runtime_mode=ZP_TYPE.CPU):
+    def set_model_params(self, state_uncertainty, input_uncertainty, dynamics_module="kinematics_model", runtime_mode="CPU"):
         model_gen = importlib.import_module(dynamics_module)
         self.modeList = []
         self.state_uncertainty = state_uncertainty
@@ -49,7 +49,7 @@ class F1QuickZono:
         self.model.setInputUncertainty(input_uncertainty)
         
         
-        self.ZP = get_ZP_instance(runtime_mode)
+        self.ZP = get_ZP_instance(ZP_TYPE[runtime_mode])
         return 1
     
     def run(self, predictions, profile=False):

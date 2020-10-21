@@ -21,10 +21,11 @@ class ZONO_Node:
         #self.core = None        #core object for running hylaa with settings
 
         #---------------------------------------------------------
-        #                   HYLAA Params
+        #                   REACHABILITY Params
         #---------------------------------------------------------
         self.predictions = None #predictions from MPC
         self.reachability_horizon = rospy.get_param("/zono_node/horizon", 0)
+        self.runtime_mode = rospy.get_param("/zono_node/runtime_mode", "CPU")
         self.dt = None          #dt from MPC metdata
         self.mpc_horizon = None #simulation horizon from MPC metadata
 
@@ -49,10 +50,10 @@ class ZONO_Node:
 
 
         #---------------------------------------------------------
-        #                   HYLAA Calling Vars
+        #                   QUICKZONO Calling Vars
         #---------------------------------------------------------
         self.QuickZono = F1QuickZono()
-        self.QuickZono.set_model_params(self.state_uncertainty, self.input_uncertainty, "model_hardcode")
+        self.QuickZono.set_model_params(self.state_uncertainty, self.input_uncertainty, "model_hardcode", runtime_mode=self.runtime_mode)
 
         #custom interval in ms or 0=maximum speed
         self.reachability_interval = rospy.get_param("/zono_node/interval", 0)
