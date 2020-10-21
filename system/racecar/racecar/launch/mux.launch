@@ -9,7 +9,7 @@
 <launch>
 
   <arg name="racecar_version" default="racecar-v2" />
-  <arg name="car_name"/>
+  <arg name="car_name" default="car1_30m"/>
 
   <!-- Chain the MUXs -->
   <node name="mux_chainer" pkg="topic_tools" type="relay"
