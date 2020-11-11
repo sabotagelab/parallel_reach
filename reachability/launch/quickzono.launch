@@ -4,17 +4,18 @@
     <arg name="zono_config" value="$(find reachability)/config/quickzono.yaml"/>
     <arg name="mpc_sim" default="false"/>
     <arg name="viz" default="true"/>
+    <arg name="carname" default="car1_30m"/>
 
     <!-- ****** HYLAA Reachability Node ****** -->
-    <node name="zono_node" pkg="reachability" type="zono_node.py" output="screen" launch-prefix="taskset -c 4">
+    <node ns="$(arg carname)" name="zono_node" pkg="reachability" type="zono_node.py" output="screen">
         <rosparam file="$(arg zono_config)" command="load"/>
     </node>
 
     <!-- conditionally starts nonlinear simulator instead of mpc -->
-    <group if="$(arg mpc_sim)">
+    <group ns="$(arg carname)" if="$(arg mpc_sim)">
         <include file="$(find reachability)/launch/mpc_sim.launch"/>
     </group>
-    <group if="$(arg viz)">
+    <group ns="$(arg carname)" if="$(arg viz)">
         <include file="$(find reachability)/launch/viz.launch"/>
     </group>
 </launch>

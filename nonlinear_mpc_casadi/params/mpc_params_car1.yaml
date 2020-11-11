@@ -1,6 +1,6 @@
 # Parameter for MPC solver
 dT: 0.15 #unit: s
-mpc_steps_N: 15
+mpc_steps_N: 20
 vehicle_L: 0.325 # distance between the front of the vehicle and its center of gravity
 
 max_speed: 2.2 # unit: m/s  #1.5
