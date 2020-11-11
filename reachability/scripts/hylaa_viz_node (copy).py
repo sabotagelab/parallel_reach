@@ -20,7 +20,7 @@ class Hylaa_Viz_Node:
         rospy.init_node("hylaa_viz")
 
 
-        reach_sub_topic = rospy.get_param("/zono_node/reach_pub_topic", "hylaa_reach")
+        reach_sub_topic = rospy.get_param("/zono_node/reach_pub_topic", "reach_pub")
         self.reachPub = rospy.Subscriber(reach_sub_topic, ReachSets, self.makeViz) 
         sets_outline_topic = rospy.get_param("/hylaa_viz/outline_topic", "hylaa_viz_outline")
         sets_tris_topic = rospy.get_param("/hylaa_viz/tris_topic", "hylaa_viz_tris")
@@ -67,24 +67,24 @@ class Hylaa_Viz_Node:
         self.outlinePub.publish(lineMarkers)
 
 
-        #triPoints = [ xy for tri in triangleSets for xy in tri]
-#
-        #triMarker = Marker()
-        #triMarker.header = header
-        #triMarker.id = self.tri_marker_id
-        #triMarker.type = 11 #TRIANGLE_LIST
-        #triMarker.action = 0
-        #triMarker.pose = origin
-        #triMarker.color = ColorRGBA(1, 1, 1, 1)
-        #triMarker.scale = Vector3(1, 1, 1)
-        #triMarker.points = [Point(p[0], p[1], 0) for tri in triPoints for p in tri]
+        # triPoints = [ xy for tri in triangleSets for xy in tri]
 
-        #expand color array to cover all verts for all tris in each set with same color
-        #triFrequency = [ len(ps) for ps in pointSets ]
-        #triColors = [ self.colors[ii%len(self.colors)] for ii in range(len(pointSets))]
-        #triMarker.colors = [c for cidx in range(len(triColors)) for c in repeat(triColors[cidx], triFrequency[cidx])]
-#
-        #self.trisPub.publish(triMarker)
+        # triMarker = Marker()
+        # triMarker.header = header
+        # triMarker.id = self.tri_marker_id
+        # triMarker.type = 11 #TRIANGLE_LIST
+        # triMarker.action = 0
+        # triMarker.pose = origin
+        # triMarker.color = ColorRGBA(1, 1, 1, 1)
+        # triMarker.scale = Vector3(1, 1, 1)
+        # triMarker.points = [Point(p[0], p[1], 0) for tri in triPoints for p in tri]
+
+        # #expand color array to cover all verts for all tris in each set with same color
+        # triFrequency = [ len(ps) for ps in pointSets ]
+        # triColors = [ self.colors[ii%len(self.colors)] for ii in range(len(pointSets))]
+        # triMarker.colors = [c for cidx in range(len(triColors)) for c in repeat(triColors[cidx], triFrequency[cidx])]
+
+        # self.trisPub.publish(triMarker)
 
     #returns new rgba color tuple with alpha added from rgb tupe and a val
     def plusAlpha(self, ct, a):

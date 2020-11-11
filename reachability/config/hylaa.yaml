@@ -5,7 +5,7 @@ graph_predictions: True
 display_type: NONE #NONE IMAGE VIDEO
 display_filename: /home/nvidia/hylaa.png
 output_verbosity: NONE
-horizon: 1
+horizon: 0.5
 
 state_uncertainty:
   px: .1

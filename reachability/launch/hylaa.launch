@@ -3,10 +3,10 @@
 <launch>
     <arg name="hylaa_config" value="$(find reachability)/config/hylaa.yaml"/>
     <arg name="mpc_sim" default="false"/>
-    <arg name="viz" default="false"/>
+    <arg name="viz" default="true"/>
 
     <!-- ****** HYLAA Reachability Node ****** -->
-    <node name="hylaa_node" pkg="reachability" type="hylaa_node.py" output="screen" launch-prefix="taskset -c 1">
+    <node name="hylaa_node" pkg="reachability" type="hylaa_node.py" output="screen" launch-prefix="taskset -c 4">
         <rosparam file="$(arg hylaa_config)" command="load"/>
     </node>
 

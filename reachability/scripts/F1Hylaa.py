@@ -68,7 +68,7 @@ class F1Hylaa:
 
         initialBox = self.make_init(self.predictions[0][0])
         core = Core(self.ha, self.settings)
-        profile.runctx('resultprof = self.run_hylaa_profile(initialBox, core)', globals(), locals(), filename="profiler/prof/out_tmp.prof")
+        profile.runctx('resultprof = self.run_hylaa_profile(initialBox, core)', globals(), locals(), filename="/home/nvidia/f1racing/f110_ws/src/ppcm/reachability/scripts/profiler/prof/out_tmp.prof")
         result = locals()['resultprof']
         #result = core.run(initialBox)
         reachsets = [result.plot_data.get_verts_list(mode)[0] for mode in self.modeList]
