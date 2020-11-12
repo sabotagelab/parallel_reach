@@ -73,7 +73,7 @@ class Hylaa_Viz_Node:
         lineMarkers.markers = lineMarkerArray 
 
         self.outlinePub.publish(lineMarkers)
-        rospy.loginfo("Published Visualization")
+        rospy.logdebug("Published Visualization")
 
 
         #triPoints = [ xy for tri in triangleSets for xy in tri]

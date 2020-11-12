@@ -76,25 +76,55 @@ class ZONO_Node:
         #self.reach_viz_pub = rospy.Publisher(self.reach_pub_topic+'_viz') #TODO implement vizualizations
         self.MPC_frame_id = None
 
+        #---------------------------------------------------------
+        #                   PROFILING Params
+        #---------------------------------------------------------
+        self.do_profile = True
+        self.filename = f"/home/nvidia/f1racing/f110_ws/src/ppcm/reachability/scripts/raw/{self.runtime_mode}_offline.csv"
+        self.timefile = open(f"{self.filename}", "w+")
+        self.profiler_step = 2
+        self.profiler_max_steps = 15
+        self.timing_count = 199
+        self.timing_per_horizon = 200
+           #time, steps, mode, verts=0
+
 
     def start(self):
 	#TODO consider timing of run_hylaa calls more closely 
         #should it run ASAP on possibly old messages?
         #or should it run immediately after recieving mpc data to ensure largest useful horizon
+
         hz = 1/self.reachability_interval if self.reachability_interval else 0
         if hz:
             rate = rospy.Rate(hz)
         while not rospy.is_shutdown(): 
             if self.current_metadata and self.current_trajectory:
-                rospy.loginfo("STARTING QuickZono!!!!!!")
+                rospy.logdebug("STARTING QuickZono!!!!!!")
                 self.current_metadata = self.current_trajectory = False
                 start = time.perf_counter()
                 reach = self.QuickZono.run(self.predictions)
                 end = time.perf_counter()
-                rospy.loginfo("QuickZono reachability computation finished.") #TODO add time to output
-                rospy.loginfo("ITER TIME WAS {}".format(end-start))
-                rospy.loginfo(f"Steps is {len(reach)}, dt is {self.dt}, horizon is {self.reachability_horizon}")
-                rospy.loginfo(f"Mode is {self.runtime_mode}")
+                rospy.logdebug("QuickZono reachability computation finished.") #TODO add time to output
+                rospy.loginfo_throttle(1, "QZ ITER TIME WAS {}".format(end-start))
+                rospy.logdebug(f"Steps is {len(reach)}, dt is {self.dt}, horizon is {self.reachability_horizon}")
+                rospy.logdebug(f"Mode is {self.runtime_mode}")
+
+                if self.do_profile:
+                    datastring = ",".join([str(end-start), str(len(reach)), self.runtime_mode, str(0)]) + "\n"
+                    self.timefile.write(datastring)
+                    self.timing_count += 1
+                    rospy.loginfo_throttle(1, f"{self.timing_count} timings recorded for H={self.reachability_horizon}")
+
+                    if self.timing_count >= self.timing_per_horizon:
+                        self.profiler_step += 1
+                        self.timing_count = 0
+                        self.reachability_horizon = self.profiler_step * self.dt
+                        rospy.loginfo("New profiling horizon is {self.reachability_horizon}")
+                        if self.profiler_step > self.profiler_max_steps:
+                            rospy.logwarn("Max horizon reached for profiling, exiting now")
+                            exit(0)
+                        self.QuickZono.make_settings(self.dt, self.reachability_horizon)
+
 
                 #build message to publish reachset
                 reachMessage = ReachSets()
