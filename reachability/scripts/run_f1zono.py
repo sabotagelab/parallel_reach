@@ -46,6 +46,9 @@ def run_quickzono_CPU_MP(dt, ttime, initialState, profile=1):
 def run_quickzono_GPU_HYBRID(dt, ttime, initialState, profile=1):
     return run_quickzono(dt, ttime, initialState, profile, "GPU_HYBRID")
 
+def run_quickzono_GPU_DUMMY(dt, ttime, initialState, profile=1):
+    return run_quickzono(dt, ttime, initialState, profile, "GPU_DUMMY")
+
 def run_quickzono(dt, ttime, initialState, do_profile=0, runtime_mode="GPU_HYBRID"):
     fy.set_model_params(state_uncertainty, input_uncertainty, "model_hardcode", runtime_mode=runtime_mode)
     sim = simulator.ModelSimulator(dt, ttime, initialState, stepFunc, inputFunc, headless)

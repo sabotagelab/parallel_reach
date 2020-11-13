@@ -6,6 +6,7 @@ import math
 import time
 from timeit import Timer
 from run_f1zono import run_quickzono_CPU, run_quickzono_CPU_MP, run_quickzono_GPU_HYBRID
+from run_f1hylaa import run_hylaa_profiler
 #from run_f1hylaa import run_hylaa
 from quickzonoreach.zono_projection import ZP_TYPE
 import pstats
@@ -22,12 +23,14 @@ steps_list = list(range(min_steps, 16)) + list(range(20, max_steps, 5))
 qz_cpu = run_quickzono_CPU
 qz_mp = run_quickzono_CPU_MP 
 qz_hybrid = run_quickzono_GPU_HYBRID
+qz_dummy = run_quickzono_GPU_DUMMY
+hylaa = run_hylaa_profiler
 
-all_modes = [qz_cpu, qz_mp, qz_hybrid]
-all_modes_names = ["QZ-CPU", "QZ-MP", "QZ-HYBRID"]
+all_modes = [qz_cpu, qz_mp, qz_hybrid, qz_dummy, hylaa]
+all_modes_names = ["QZ-CPU", "QZ-MP", "QZ-HYBRID", "QZ-DUMMY", "HYLAA"]
 
 
-trials_per_stepsmode = 225
+trials_per_stepsmode = 200
 full_maxtime = 0
 verts_maxtime = 0
 std_maxtime = 0

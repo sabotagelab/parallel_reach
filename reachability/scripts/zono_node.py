@@ -11,6 +11,16 @@ from std_msgs.msg import Header
 from osuf1_common.msg import MPC_trajectory, MPC_metadata, MPC_prediction, ReachSets, NPointSet, NPoint
 import time
 
+#convenience map for outputing matching mode names from online and offline profiling
+mode_format = {
+    "CPU" : "QZ-CPU",
+    "CPU_MP" : "QZ-MP",
+    "GPU_HYBRID" : "QZ-HYBRID",
+    "GPU_DUMMY" : "QZ-DUMMY",
+    "GPU" : "QZ-GPU",
+    "HYLAA" : "HYLAA"
+}
+
 class ZONO_Node:
     def __init__(self):
 
@@ -110,7 +120,7 @@ class ZONO_Node:
                 rospy.logdebug(f"Mode is {self.runtime_mode}")
 
                 if self.do_profile:
-                    datastring = ",".join([str(end-start), str(len(reach)), self.runtime_mode, str(0)]) + "\n"
+                    datastring = ",".join([str(end-start), str(len(reach)), mode_format[self.runtime_mode], str(0)]) + "\n"
                     self.timefile.write(datastring)
                     self.timing_count += 1
                     rospy.loginfo_throttle(1, f"{self.timing_count} timings recorded for H={self.reachability_horizon}")
