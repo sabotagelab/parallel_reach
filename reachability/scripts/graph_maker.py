@@ -33,7 +33,6 @@ csv_input_2 = "raw/online.csv"
 
 
 import pdb
-pdb.set_trace()
 columns = ["time", "steps", "mode", "verts"]
 timing_data = pd.read_csv(csv_input, sep=",", names=columns) 
 timing_data["env"] = pd.Series(["offline"] * len(timing_data), index=timing_data.index)
@@ -44,7 +43,10 @@ timing_data = pd.concat([timing_data, timing_data_2])
 print(timing_data[:6])
 
 modes = timing_data['mode'].unique()
-steps = timing_data['steps'].unique()
+online_steps = timing_data.loc[timing_data['env']=="online"]['steps'].unique()
+offline_steps = timing_data.loc[timing_data['env']=="offline"]['steps'].unique()
+steps = offline_steps
+online_steps = [s for s in online_steps if s in offline_steps]
 envs = timing_data['env'].unique()
 conf_interval_prop = .95
 
@@ -59,19 +61,21 @@ for m in modes:
     timing_data_avg = []
     offline_rows = timing_data.loc[(timing_data['mode'] == m) & (timing_data['env'] == "offline")]
     online_rows = timing_data.loc[(timing_data['mode'] == m) & (timing_data['env'] == "online")]
-    pdb.set_trace()
     for s in steps:
         offline_full_data = offline_rows.loc[(offline_rows['steps'] == s) & (offline_rows['verts'] == 0)]
         offline_verts_data = offline_rows.loc[(offline_rows['steps'] == s) & (offline_rows['verts'] == 1)]
+        online_full_data = online_rows.loc[(online_rows['steps'] == s) & (online_rows['verts'] == 0)]
+
+        online_avg = 0
+        online_std = 0
+        if s <= max(online_steps):
+            online_avg = online_full_data['time'].mean()
+            online_std = online_full_data['time'].std()
         
         offline_full_avg = offline_full_data['time'].mean()
         offline_full_std = offline_full_data['time'].std()
         offline_verts_avg = offline_verts_data['time'].mean()
         offline_verts_std = offline_verts_data['time'].std()
-
-        online_full_data = online_rows.loc[(online_rows['steps'] == s) & (online_rows['verts'] == 0)]
-        online_avg = online_full_data['time'].mean()
-        online_std = online_full_data['time'].std()
 
         #print(f"{full_std}")
         #full_isnormal = scipy.stats.normaltest(full_data['time'])
@@ -92,7 +96,6 @@ for m in modes:
         #plt.hist(full_data['time'], bins=20)
         #plt.savefig(f"profiler/timing_dists/dist_{m}_{s}.png")
         timing_stats.loc[len(timing_stats)] = [s, m] + stats_list
-        print(timing_stats.loc[len(timing_stats)-1])
     
     best_dists.append(dists)
 
@@ -113,24 +116,43 @@ for mode in modes:
     data = mode_data[mode]['full_avg']
     plt.plot(steps, data, marker='o', markersize='5', linestyle='solid', label=mode)
 plt.axis([
-    0, max(steps),
+    min(steps), max(steps),
     0, timing_stats['full_avg'].max()
 ])
 plt.legend(loc='best')
 plt.savefig("profiler/offline_avg_unified.png")
 
+plt.clf()
 plt.title("Online execution time by steps for runtime modes")
 plt.ylabel("Execution Time (s)")
 plt.xlabel("Steps")
 for mode in modes:
-    data = mode_data[mode]['online_avg']
-    plt.plot(steps, data, marker='o', markersize='5', linestyle='solid', label=mode)
+    data = mode_data[mode]['online_avg'][:len(online_steps)]
+    plt.plot(online_steps, data, marker='o', markersize='5', linestyle='solid', label=mode)
 plt.axis([
-    0, max(steps),
+    min(steps), max(online_steps),
     0, timing_stats['online_avg'].max()
 ])
 plt.legend(loc='best')
 plt.savefig("profiler/online_avg_unified.png")
+
+plt.clf()
+fig, ax = plt.subplots()
+ax.set_title("Execution time by steps for runtime modes")
+ax.set_ylabel("Execution Time (s)")
+ax.set_xlabel("Steps")
+for mode in modes:
+    data = mode_data[mode]['online_avg'][:len(online_steps)]
+    for_color = ax.plot(online_steps, data, marker='o', markersize='5', linestyle='solid', label=f"Online {mode}")
+    print(ax)
+    data = mode_data[mode]['full_avg']
+    ax.plot(steps, data, marker='>', markersize='5', linestyle='solid', label=f"Offline {mode}", color=for_color[0].get_color())
+ax.axis([
+    min(steps), max(online_steps),
+    0, timing_stats['online_avg'].max()
+])
+ax.legend(loc='best')
+plt.savefig("profiler/all_avg_unified.png")
 
 CI_pval = .95
 CI_zscore = st.norm.pdf(CI_pval)
@@ -141,36 +163,49 @@ for mode in modes:
     plt.xlabel("Steps")
     offline_data = mode_data[mode]['full_avg']
     offline_std = mode_data[mode]['full_std']
-    online_data = mode_data[mode]['online_avg']
-    online_std = mode_data[mode]['online_std']
+    online_data = mode_data[mode]['online_avg'][:len(online_steps)]
+    online_std = mode_data[mode]['online_std'][:len(online_steps)]
 
-    plt.plot(steps, offline_data, marker= 'o', markersize='5', linestyle='solid', label=mode)
-    plt.plot(steps, online_data, marker= 'o', markersize='5', linestyle='solid', label=mode)
+    plt.plot(steps, offline_data, marker= 'o', markersize='5', linestyle='solid', label=f"Offline {mode}")
+    plt.plot(steps[:len(online_data)], online_data, marker= 'o', markersize='5', linestyle='solid', label=f"Online {mode}")
     plt.fill_between(steps, offline_data-offline_std*CI_zscore, offline_data+offline_std*CI_zscore, color=[(.6,1,.6,.5)])
-    plt.fill_between(steps, online_data-online_std*CI_zscore, online_data+online_std*CI_zscore, color=[(.6,1,.6,.5)])
-
+    plt.fill_between(online_steps, online_data-online_std*CI_zscore, online_data+online_std*CI_zscore, color=[(.6,1,.6,.5)])
     plt.axis([
-        0, max(steps),
+        min(steps), max(steps),
         0, max(online_data.max(), offline_data.max())
     ])
     plt.legend(loc='best')
     plt.savefig(f"profiler/avg_{mode}_CI.png")
 
 plt.clf()
-plt.title("Standard Deviation between trial execution time by steps for runtime modes")
+plt.title("Offline Stdev between execution time by steps for runtime modes")
 plt.ylabel("Standard Deviation (s)")
 plt.xlabel("Steps")
 for mode in modes:
     data = mode_data[mode]["full_std"]
-    pdb.set_trace()
     plt.plot(steps, data, marker='o', markersize='5', linestyle='solid', label=mode)
 plt.axis([
-    0, max(steps),
+    min(steps), max(steps),
     0, data.max()
 ])
 
 plt.legend(loc='best')
-plt.savefig("profiler/std_unified_singleaxis.png")
+plt.savefig("profiler/offline_std_unified.png")
+
+plt.clf()
+plt.title("Offline Stdev between execution time by steps for runtime modes")
+plt.ylabel("Standard Deviation (s)")
+plt.xlabel("Steps")
+for mode in modes:
+    data = mode_data[mode]["online_std"][:len(online_steps)]
+    plt.plot(steps[:len(online_steps)], data, marker='o', markersize='5', linestyle='solid', label=mode)
+plt.axis([
+    min(steps), max(steps),
+    0, data.max()
+])
+
+plt.legend(loc='best')
+plt.savefig("profiler/online_std_unified.png")
 
 
 plt.clf()
@@ -181,7 +216,7 @@ for mode in modes:
     verts_fractions = mode_data[mode]['verts_avg']/mode_data[mode]['full_avg']
     plt.plot(steps, verts_fractions, marker='o', markersize='5', linestyle='solid', label=mode)
 plt.axis([
-    0, max(steps),
+    min(steps), max(steps),
     .6, 1,
 ])
 
