@@ -51,7 +51,7 @@ envs = timing_data['env'].unique()
 conf_interval_prop = .95
 
 timing_stats = pd.DataFrame(
-    columns=['steps', 'mode', 'full_avg', 'verts_avg', 'full_std', 'verts_std', 'online_avg', 'online_std']
+    columns=['steps', 'mode', 'full_avg', 'verts_avg', 'full_std', 'verts_std', 'online_avg', 'online_std', 'tstat', 'pval', 'mean_diff']
     )
  #steps, mode, full_avg, verts_avg, full_std, verts_std
 best_dists = []
@@ -66,16 +66,23 @@ for m in modes:
         offline_verts_data = offline_rows.loc[(offline_rows['steps'] == s) & (offline_rows['verts'] == 1)]
         online_full_data = online_rows.loc[(online_rows['steps'] == s) & (online_rows['verts'] == 0)]
 
-        online_avg = 0
-        online_std = 0
-        if s <= max(online_steps):
-            online_avg = online_full_data['time'].mean()
-            online_std = online_full_data['time'].std()
         
         offline_full_avg = offline_full_data['time'].mean()
         offline_full_std = offline_full_data['time'].std()
         offline_verts_avg = offline_verts_data['time'].mean()
         offline_verts_std = offline_verts_data['time'].std()
+
+        online_avg = 0
+        online_std = 0
+        tstat = 0
+        pval = 0
+        mean_diff = 0
+        if s <= max(online_steps):
+            online_avg = online_full_data['time'].mean()
+            online_std = online_full_data['time'].std()
+            tstat, pval = scipy.stats.ttest_ind(offline_full_data, online_full_data)
+            mean_diff = offline_full_avg - online_avg
+
 
         #print(f"{full_std}")
         #full_isnormal = scipy.stats.normaltest(full_data['time'])
@@ -89,7 +96,7 @@ for m in modes:
         #conf_size = scipy.stats.norm.ppf(conf_interval_prop)
         #conf_low = full_avg - conf_size * full_std
         #conf_high = full_avg + conf_size * full_std
-        stats_list = [offline_full_avg, offline_verts_avg, offline_full_std, offline_verts_std, online_avg, online_std]
+        stats_list = [offline_full_avg, offline_verts_avg, offline_full_std, offline_verts_std, online_avg, online_std, tstat, pval, mean_diff]
         #dist_name, _, _ = get_best_distribution(full_data['time'])
         #dists.append(dist_name)
         #plt.clf()
@@ -222,4 +229,9 @@ plt.axis([
 
 plt.legend(loc='best')
 plt.savefig("profiler/verts_unified_singleaxis.png")
+
+
+for mode in modedata:
+    ttest_graph = mode[['tstat', 'pval', 'mean_diff']].loc[mode['steps'] <= max(online_steps) ]
+    ttest_graph.to_csv("results/{mode}-ttest.csv", index=False)
 

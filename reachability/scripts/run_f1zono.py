@@ -98,7 +98,7 @@ if __name__ == "__main__":
         with PyCallGraph(output=graphviz, config=config):
             zonos = run_quickzono(dt, ttime, initialState)
     else:
-        zonos = run_quickzono(dt, ttime, initialState, runtime_mode="GPU_HYBRID")
+        zonos = run_quickzono(dt, ttime, initialState, runtime_mode="CPU")
 
 
     xdim = 0
