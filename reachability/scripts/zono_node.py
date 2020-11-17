@@ -13,11 +13,11 @@ import time
 
 #convenience map for outputing matching mode names from online and offline profiling
 mode_format = {
-    "CPU" : "QZ-CPU",
-    "CPU_MP" : "QZ-MP",
-    "GPU_HYBRID" : "QZ-HYBRID",
-    "GPU_DUMMY" : "QZ-DUMMY",
-    "GPU" : "QZ-GPU",
+    "CPU" : "QZ_CPU",
+    "CPU_MP" : "QZ_MP",
+    "GPU_HYBRID" : "QZ_HYBRID",
+    "GPU_DUMMY" : "QZ_DUMMY",
+    "GPU" : "QZ_GPU",
     "HYLAA" : "HYLAA"
 }
 

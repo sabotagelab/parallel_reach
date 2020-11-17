@@ -21,6 +21,7 @@ import cProfile as profile
 #from pycallgraph.output import GraphvizOutput
 from timeit import Timer
 import numpy as np
+import sys
 
 gen_callgraph = False
 if gen_callgraph:
@@ -90,7 +91,7 @@ if __name__ == "__main__":
     print("Initializing Simulation")
     initialState = [0, 0, 0]
     dt = .05
-    ttime = 2.0
+    ttime = 1.0
 
     if gen_callgraph:
         config = Config(max_depth=15)
@@ -98,7 +99,11 @@ if __name__ == "__main__":
         with PyCallGraph(output=graphviz, config=config):
             zonos = run_quickzono(dt, ttime, initialState)
     else:
-        zonos = run_quickzono(dt, ttime, initialState, runtime_mode="GPU_HYBRID")
+        runtime_mode = "CPU"
+        if len(sys.argv) > 1:
+            runtime_mode = sys.argv[1]
+            print(f"MODE IS {runtime_mode}")
+        zonos = run_quickzono(dt, ttime, initialState, runtime_mode=runtime_mode)
 
 
     xdim = 0

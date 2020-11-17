@@ -30,7 +30,7 @@ qz_dummy = run_quickzono_GPU_DUMMY
 hylaa = run_hylaa_profile
 
 all_modes = [qz_cpu, qz_mp, qz_hybrid, qz_dummy, hylaa]
-all_modes_names = ["QZ-CPU", "QZ-MP", "QZ-HYBRID", "QZ-DUMMY", "HYLAA"]
+all_modes_names = ["QZ_CPU", "QZ_MP", "QZ_HYBRID", "QZ_DUMMY", "HYLAA"]
 all_modes_trials = [200, 200, 200, 200, 200, 30]
 
 
