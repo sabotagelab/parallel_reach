@@ -29,11 +29,11 @@ if gen_callgraph:
     from pycallgraph import Config
     from pycallgraph.output import GraphvizOutput
 
-state_uncertainty = [.05, .05, 0]
-input_uncertainty = [.1, 3.14/90] # .1m/s , 2deg
+state_uncertainty = [.05, .1, 0]
+input_uncertainty = [.2, 3.14/90] # .1m/s , 2deg
 nlDynamics = F1Dynamics()
 stepFunc = partial(nlDynamics.frontStep, nlDynamics)
-inputFunc = lambda t : [ -3 * t, 2 * math.sin(-3.14 * t)/4]
+inputFunc = lambda t : [ 3 * t, 2 * math.sin(3.14 * t)/2]
 headless = True
 fy = F1QuickZono() 
 
