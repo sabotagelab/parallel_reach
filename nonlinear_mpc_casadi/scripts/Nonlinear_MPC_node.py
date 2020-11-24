@@ -190,8 +190,8 @@ class MPCKinematicNode:
                 self.goal_received = False
                 self.mpc.WARM_START = False
                 self.mpc.init_mpc_start_conditions()
+                
                 rospy.loginfo("Goal Reached !")
-                self.plot_data()
 
     def odomCB(self, msg):
         '''Get odometry data especially velocity from the car'''
