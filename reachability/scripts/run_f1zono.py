@@ -35,7 +35,6 @@ nlDynamics = F1Dynamics()
 stepFunc = partial(nlDynamics.frontStep, nlDynamics)
 inputFunc = lambda t : [ 3 * t, 2 * math.sin(3.14 * t)/2]
 headless = True
-fy = F1QuickZono() 
 
 #modal wrappers for profiler
 def run_quickzono_CPU(dt, ttime, initialState, profile=1):
@@ -51,11 +50,11 @@ def run_quickzono_GPU_DUMMY(dt, ttime, initialState, profile=1):
     return run_quickzono(dt, ttime, initialState, profile, "GPU_DUMMY")
 
 def run_quickzono(dt, ttime, initialState, do_profile=0, runtime_mode="GPU_HYBRID"):
+    fy = F1QuickZono() 
     fy.set_model_params(state_uncertainty, input_uncertainty, "model_hardcode", runtime_mode=runtime_mode)
     sim = simulator.ModelSimulator(dt, ttime, initialState, stepFunc, inputFunc, headless)
 
     #print("Simulating")
-    global predictions
     predictions = sim.simulate()
     #print("Simulation Finished, Initializing Reachability")
 
@@ -64,8 +63,10 @@ def run_quickzono(dt, ttime, initialState, do_profile=0, runtime_mode="GPU_HYBRI
     result = None
     #print("Running quickzono")
     if do_profile==1:
-        timer = Timer("""fy.run(predictions)""", globals=globals())
-        result = timer.timeit(1)
+        start = time.perf_counter()
+        reach = fy.run(predictions)
+        end = time.perf_counter()
+        result = end - start
         #profile.runctx('resultprof = fy.run(predictions)', globals(), locals(), filename="profiler/prof/out_tmp.prof")
         #result = locals()['resultprof']
     elif do_profile==2:
