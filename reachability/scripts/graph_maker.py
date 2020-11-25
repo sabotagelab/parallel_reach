@@ -37,12 +37,17 @@ columns = ["time", "steps", "mode", "verts"]
 timing_data = pd.read_csv(csv_input, sep=",", names=columns) 
 timing_data["env"] = pd.Series(["offline"] * len(timing_data), index=timing_data.index)
 timing_data_2 = pd.read_csv(csv_input_2, sep=",", names=columns)
-timing_data_2["env"] = pd.Series(["online"] * len(timing_data), index=timing_data.index)
+timing_data_2["env"] = pd.Series(["online"] * len(timing_data_2), index=timing_data_2.index)
 timing_data = pd.concat([timing_data, timing_data_2])
+
+
 
 print(timing_data[:6])
 
-modes = timing_data['mode'].unique()
+import pdb
+pdb.set_trace()
+modes = list(timing_data['mode'].unique())
+modes.remove("HYLAA")
 online_steps = timing_data.loc[timing_data['env']=="online"]['steps'].unique()
 offline_steps = timing_data.loc[timing_data['env']=="offline"]['steps'].unique()
 steps = offline_steps
@@ -77,10 +82,11 @@ for m in modes:
         tstat = 0
         pval = 0
         mean_diff = 0
+        print(online_steps)
         if s <= max(online_steps):
             online_avg = online_full_data['time'].mean()
             online_std = online_full_data['time'].std()
-            tstat, pval = scipy.stats.ttest_ind(offline_full_data, online_full_data)
+            #tstat, pval = scipy.stats.ttest_ind(offline_full_data, online_full_data)
             mean_diff = offline_full_avg - online_avg
 
 

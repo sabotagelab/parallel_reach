@@ -90,11 +90,12 @@ class ZONO_Node:
         #                   PROFILING Params
         #---------------------------------------------------------
         self.do_profile = False
-        self.filename = f"/home/nvidia/f1racing/f110_ws/src/ppcm/reachability/scripts/raw/{self.runtime_mode}_offline.csv"
+        self.filename = f"/home/nvidia/f1racing/f110_ws/src/ppcm/reachability/scripts/raw/{self.runtime_mode}_online.csv"
         self.timefile = open(f"{self.filename}", "w+")
         self.profiler_step = 2
-        self.profiler_max_steps = 15
-        self.timing_count = 199
+        self.profiler_max_steps = 24
+        self.profiler_steps_increment = 2
+        self.timing_count = 200
         self.timing_per_horizon = 200
            #time, steps, mode, verts=0
 
@@ -126,7 +127,7 @@ class ZONO_Node:
                     rospy.loginfo_throttle(1, f"{self.timing_count} timings recorded for H={self.reachability_horizon}")
 
                     if self.timing_count >= self.timing_per_horizon:
-                        self.profiler_step += 1
+                        self.profiler_step += self.profiler_steps_increment
                         self.timing_count = 0
                         self.reachability_horizon = self.profiler_step * self.dt
                         rospy.loginfo("New profiling horizon is {self.reachability_horizon}")
