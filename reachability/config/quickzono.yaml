@@ -5,8 +5,8 @@ graph_predictions: True
 display_type: NONE #NONE IMAGE VIDEO
 display_filename: /home/nvidia/quickzono.png
 output_verbosity: NONE
-horizon: 0
-runtime_mode: "GPU_HYBRID" #CPU, CPU_MP, GPU_DUMMY, GPU_HYBRID
+horizon: 1.5
+runtime_mode: "CPU_MP" #CPU, CPU_MP, GPU_DUMMY, GPU_HYBRID
 
 state_uncertainty:
   px: .1

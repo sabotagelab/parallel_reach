@@ -29,7 +29,7 @@ class Model:
         v, d,  = (val for val in inputs)
         L, d0 = (val for val in self.constants)
         # i1, i2 = input_uncertainty[1](val for val in self.input_uncertainty)
-        p_d = p + d
+        p_d = p + d*.5
         sin_p_d = math.sin(p_d)
         cos_p_d = math.cos(p_d)
         #sin_p_d = math.sin(p_d)
