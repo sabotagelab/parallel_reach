@@ -28,8 +28,8 @@ def get_best_distribution(data):
     return best_dist, best_p, params[best_dist]
 
 upstatus = "Offline"
-csv_input = "raw/offline.csv"
-csv_input_2 = "raw/online.csv"
+csv_input = "raw/offline_FINAL.csv"
+csv_input_2 = "raw/online_FINAL.csv"
 
 
 import pdb
@@ -44,8 +44,6 @@ timing_data = pd.concat([timing_data, timing_data_2])
 
 print(timing_data[:6])
 
-import pdb
-pdb.set_trace()
 modes = list(timing_data['mode'].unique())
 modes.remove("HYLAA")
 online_steps = timing_data.loc[timing_data['env']=="online"]['steps'].unique()
@@ -61,6 +59,10 @@ timing_stats = pd.DataFrame(
  #steps, mode, full_avg, verts_avg, full_std, verts_std
 best_dists = []
 
+mode_full_data = {}
+intermode_ttest = pd.DataFrame(
+    columns=['tstat', 'pval', 'mean_diff', 'steps']
+)
 for m in modes:
     dists = []
     timing_data_avg = []
@@ -86,9 +88,12 @@ for m in modes:
         if s <= max(online_steps):
             online_avg = online_full_data['time'].mean()
             online_std = online_full_data['time'].std()
-            #tstat, pval = scipy.stats.ttest_ind(offline_full_data, online_full_data)
+            min_data_len = min(len(offline_full_data), len(online_full_data))
+            tstat, pval = scipy.stats.ttest_ind(offline_full_data[:min_data_len]['time'], online_full_data[:min_data_len]['time'])
             mean_diff = offline_full_avg - online_avg
 
+        if s == 10:
+            mode_full_data[m] = np.asarray(offline_full_data['time'])
 
         #print(f"{full_std}")
         #full_isnormal = scipy.stats.normaltest(full_data['time'])
@@ -111,6 +116,11 @@ for m in modes:
         timing_stats.loc[len(timing_stats)] = [s, m] + stats_list
     
     best_dists.append(dists)
+
+tstat, pval = scipy.stats.ttest_ind(mode_full_data["QZ_HYBRID"], mode_full_data["QZ_MP"])
+pdb.set_trace()
+mean_diff_percent = (mode_full_data["QZ_CPU"].mean() - mode_full_data["QZ_HYBRID"].mean())/mode_full_data["QZ_CPU"].mean()
+print(f"HYBRID vs MP: t={tstat}, p={pval}, diff={mean_diff_percent}")
 
 print("collated statistics")
 print(best_dists)
@@ -190,6 +200,46 @@ for mode in modes:
     plt.legend(loc='best')
     plt.savefig(f"profiler/avg_{mode}_CI.png")
 
+#QZ_MP + QZ_HYBRID w/ CI
+plt.clf()
+fig, ax = plt.subplots()
+ax.set_title(f"Avg Runtime w/ 95% CI for QZ_MP and QZ_HYBRID vs #steps")
+ax.set_ylabel("Runtime (s)")
+ax.set_xlabel("Steps")
+
+#QZ_MP Plotting
+mode = "QZ_MP"
+mp_color =  [(.6,1,.6,.5)]
+offline_data_mp = mode_data[mode]['full_avg']
+offline_std_mp = mode_data[mode]['full_std']
+online_data_mp = mode_data[mode]['online_avg'][:len(online_steps)]
+online_std_mp = mode_data[mode]['online_std'][:len(online_steps)]
+for_color = ax.plot(steps, offline_data_mp, marker= 'o', markersize='5', linestyle='solid', label=f"Offline {mode}")
+ax.plot(steps[:len(online_data_mp)], online_data_mp, marker= '>', markersize='5', linestyle='solid', label=f"Online {mode}", color=for_color[0].get_color())
+ax.fill_between(steps, offline_data_mp-offline_std_mp*CI_zscore, offline_data_mp+offline_std_mp*CI_zscore, color=mp_color)
+ax.fill_between(online_steps, online_data_mp-online_std_mp*CI_zscore, online_data_mp+online_std_mp*CI_zscore, color=mp_color)
+
+#QZ HYBRID PLOTTING
+mode = "QZ_HYBRID"
+hybrid_color = [(.6, 1, .6, .5)]
+offline_data_hybrid = mode_data[mode]['full_avg']
+offline_std_hybrid = mode_data[mode]['full_std']
+online_data_hybrid = mode_data[mode]['online_avg'][:len(online_steps)]
+online_std_hybrid = mode_data[mode]['online_std'][:len(online_steps)]
+
+for_color = ax.plot(steps, offline_data_hybrid, marker= 'o', markersize='5', linestyle='solid', label=f"Offline {mode}")
+ax.plot(steps[:len(online_data_hybrid)], online_data_hybrid, marker= '>', markersize='5', linestyle='solid', label=f"Online {mode}", color=for_color[0].get_color())
+ax.fill_between(steps, offline_data_hybrid-offline_std_hybrid*CI_zscore, offline_data_hybrid+offline_std_hybrid*CI_zscore, color=hybrid_color)
+ax.fill_between(online_steps, online_data_hybrid-online_std_hybrid*CI_zscore, online_data_hybrid+online_std_hybrid*CI_zscore, color=hybrid_color)
+
+plt.axis([
+    min(steps), max(steps),
+    0, max(max(online_data_mp.max(), offline_data_mp.max()), max(online_data_hybrid.max(), offline_data_hybrid.max()))
+])
+plt.legend(loc='best')
+plt.savefig(f"profiler/avg_mp_hybrid_CI.png")
+
+
 plt.clf()
 plt.title("Offline Stdev between execution time by steps for runtime modes")
 plt.ylabel("Standard Deviation (s)")
@@ -237,7 +287,9 @@ plt.legend(loc='best')
 plt.savefig("profiler/verts_unified_singleaxis.png")
 
 
-for mode in modedata:
-    ttest_graph = mode[['tstat', 'pval', 'mean_diff']].loc[mode['steps'] <= max(online_steps) ]
-    ttest_graph.to_csv("results/{mode}-ttest.csv", index=False)
+for mode in mode_data:
+    savefile_name = f"results/{mode}-ttest.csv"
+    mode = mode_data[mode]
+    ttest_graph = mode[['tstat', 'pval', 'mean_diff', 'steps']].loc[mode['steps'] <= max(online_steps) ]
+    ttest_graph.to_csv(savefile_name, index=False)
 
