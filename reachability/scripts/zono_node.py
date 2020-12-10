@@ -89,7 +89,7 @@ class ZONO_Node:
         #---------------------------------------------------------
         #                   PROFILING Params
         #---------------------------------------------------------
-        self.do_profile = True
+        self.do_profile = False
         self.filename = f"/home/nvidia/f1racing/f110_ws/src/ppcm/reachability/scripts/raw/{self.runtime_mode}_online.csv"
         self.timefile = open(f"{self.filename}", "w+")
         self.profiler_step = 1
