@@ -18,7 +18,7 @@ Some of the larger external dependencies:
   - (to run reachability) Hylaa (https://github.com/stanleybak/hylaa) and/or QuickZonoReach(https://github.com/NathanJewell/quickzonoreach/tree/cuda) code in the PATH
   - same hardware, or properly configured launch files and ROS nodes for your specific hardware configuration
 
-# Mapping and Preperation #
+# Mapping and Preparation #
 It is necessary to create the rasterized map using the cartographer nodes. For using the MPCC it is then also necessary to run some post-processing steps and generate the optimal racing lines etc for that specific map.
 
 # Running the Code #
@@ -37,9 +37,9 @@ I would reccomend running this code using screen/tmux etc since there are a numb
 
 # Known Issues and Quirks #
 By no means exhaustive ...
-The MPCC uses JIT compilation so takes a while to start
-Using the QZ_HYBRID reachability mode has bugs in the kernel, use <20 steps to avoid crashes in this mode
-If the visualization breaks or nav point cannot be set, close rviz and the mpcc node then restart rviz then the mpcc node 
+ - The MPCC uses JIT compilation so takes a while to start
+ - Using the QZ_HYBRID reachability mode has bugs in the kernel, use <20 steps to avoid crashes in this mode
+ - If the visualization breaks or nav point cannot be set, close rviz and the mpcc node then restart rviz then the mpcc node 
 
 # Contact #
 Be in touch if and when there are complications using this code.
